@@ -31,8 +31,16 @@ public class BateauPeche extends Bateau{
     {
         super.Affiche();
         System.out.println("-- Bateau de peche --");
-        System.out.println("Type: "+_type);
+        System.out.println("Type: "+getType());
         System.out.println("nbequip: " +getNombreHumains());
         
+    }
+
+    public String getType() {
+        return _type;
+    }
+
+    public void setType(String _type) {
+        this._type = _type;
     }
 }

@@ -18,7 +18,7 @@ public class Bateau extends MoyenDeTransportSurEau implements AUnIdentifiant{
     protected int _longueur;
     private int _tonnage;
     protected String _pavillon; // nationalité
-    private Equipage _equipage;
+    protected Equipage _equipage;
 
 /* ----------------------------------- CONSTRUCTEURS ------------------------------------*/
     public Bateau(String nom, String portattache,int longueur ,int tonnage, String pavillon ,Equipage equipage,boolean doesFloat, Energie energie) throws SailorWithoutIdentificationException, ShipWithoutIdentificationException 

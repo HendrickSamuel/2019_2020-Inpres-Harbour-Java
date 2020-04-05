@@ -12,23 +12,24 @@
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/Amarrages/Quai.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/VehiculesMarins/Bateau.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/VehiculesMarins/BateauPeche.java</file>
+            <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/capitainerie/DialogAbout.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/utilisateurs/stopduke.png</file>
-            <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/utilisateurs/LoginUser.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/utilisateurs/LoginException.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/capitainerie/Capitainerie.java</file>
+            <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/utilisateurs/DialogLogin.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/Equipage/SailorWithoutIdentificationException.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/utilisateurs/DialogErreur.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/Equipage/Humain.java</file>
-            <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/Amarrages/AUnIdentifiant.java</file>
+            <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/HarbourGlobal/AUnIdentifiant.java</file>
+            <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/capitainerie/DialogDateParam.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/Equipage/Marin.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/capitainerie/CapitainerieBateauEntrant.java</file>
+            <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/HarbourGlobal/DialogResult.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/VehiculesMarins/MoyenDeTransportSurEau.java</file>
-            <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/Equipage/AUnIdentifiant.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/VehiculesMarins/Energie.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/utilisateurs/VerificateurMotDePasse.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/inpresharbour/InpresHarbour.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/Equipage/Equipage.java</file>
-            <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/VehiculesMarins/AUnIdentifiant.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/VehiculesMarins/ShipWithoutIdentificationException.java</file>
         </group>
     </open-files>

@@ -7,21 +7,17 @@
 
 package Amarrages;
 
-import VehiculesMarins.MoyenDeTransportSurEau;
+import VehiculesMarins.*;
 import java.util.Vector;
 
 public class Ponton extends Amarrage
 {
-    Vector<MoyenDeTransportSurEau> _gauche;
-    Vector<MoyenDeTransportSurEau> _droite;
+    MoyenDeTransportSurEau[][] _liste;
     
     public Ponton(int capacite)
     {
         super(capacite);
-        _gauche = new Vector<MoyenDeTransportSurEau>();
-        _droite = new Vector<MoyenDeTransportSurEau>();
-        
-        
+        _liste = new MoyenDeTransportSurEau[2][capacite]; 
     }
     
     @Override
@@ -29,12 +25,13 @@ public class Ponton extends Amarrage
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
-    public Vector<MoyenDeTransportSurEau> getListe(int cote)
+    
+    public MoyenDeTransportSurEau[] getListe(int cote)
     {
         if(cote == 1)
-            return _gauche;
+            return _liste[1];
         else
-            return _droite;
+            return _liste[2];
     }
     
 }

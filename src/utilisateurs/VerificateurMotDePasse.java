@@ -10,7 +10,9 @@ package utilisateurs;
 import java.util.Hashtable;
 
 public class VerificateurMotDePasse {
+    
     static Hashtable<String, String> logins = new Hashtable<String, String>();
+    
     static 
     {
         logins.put("sam", "333");
@@ -24,6 +26,7 @@ public class VerificateurMotDePasse {
     
     public boolean TryLogin(String user, String pass) throws LoginException
     {
+        //if(logins.containsKey(user)); user inexistant
         if(user.length() < 1 || logins.get(user).compareTo(pass) != 0)
             {
                 throw new LoginException();

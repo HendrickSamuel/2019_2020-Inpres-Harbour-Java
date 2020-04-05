@@ -14,6 +14,6 @@ public abstract class MoyenDeTransportSurEau extends MoyenDeTransport
     public MoyenDeTransportSurEau(boolean doesFloat, Energie energie)
     {
         super(energie);
-        isSubmersible = doesFloat;
+        isSubmersible = !doesFloat;
     }
 }

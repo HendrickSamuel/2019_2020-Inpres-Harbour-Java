@@ -20,5 +20,13 @@ public class Marin extends Humain{
         }
         _fonction = fonction;
     }
+
+    public String getFonction() {
+        return _fonction;
+    }
+
+    public void setFonction(String fonction) {
+        _fonction = fonction;
+    }
     
 }
