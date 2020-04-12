@@ -12,6 +12,7 @@ import HarbourGlobal.DialogResult;
 public class DialogLogin extends javax.swing.JDialog {
 
     private DialogResult _result = DialogResult.untouched;
+    private String _connectedUserName;
     
     public DialogLogin(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -106,6 +107,7 @@ public class DialogLogin extends javax.swing.JDialog {
         try {
             vmdp.TryLogin(UserInput.getText(), PwdInput.getText());
             setResult(DialogResult.ok);
+            this.setConnectedUserName(UserInput.getText());
             this.setVisible(false);
         } catch (LoginException ex) {
             DialogErreur dlg = new DialogErreur((java.awt.Frame)getParent(), true);
@@ -172,8 +174,16 @@ public class DialogLogin extends javax.swing.JDialog {
         return _result;
     }
 
+    public String getConnectedUserName() {
+        return _connectedUserName;
+    }
 /* ------------------------- SETTERS ----------------------*/
     public void setResult(DialogResult _result) {
         this._result = _result;
+    }
+
+
+    public void setConnectedUserName(String _connectedUserName) {
+        this._connectedUserName = _connectedUserName;
     }
 }

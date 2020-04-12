@@ -11,28 +11,18 @@ import HarbourGlobal.DialogResult;
 import utilisateurs.DialogLogin;
 
 public class Capitainerie extends javax.swing.JFrame {
-
+    
+    private String _connectedUser;
 
     public Capitainerie() {
         initComponents();
         
-        this.setVisible(false);
-        DialogLogin dlg = new DialogLogin(this, true);
-        dlg.setVisible(true);
-        
-        if(dlg.getResult() == DialogResult.ok)
+        if(this.UserLogin() == true)
         {
-            System.out.println("c'est ok");
-            this.setVisible(true);
+            this.SetTitre(_connectedUser);
         }
-        else if (dlg.getResult() == DialogResult.cancel)
+        else
         {
-            System.out.println("c'est annulé");
-            this.Close();            
-        }
-        else if (dlg.getResult() == DialogResult.untouched)
-        {
-            System.out.println("c'est ferme sans y toucher");
             this.Close();
         }
     }
@@ -133,9 +123,19 @@ public class Capitainerie extends javax.swing.JFrame {
         MenuUser.setText("Utilisateurs");
 
         MenuItemLogin.setText("login");
+        MenuItemLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuItemLoginActionPerformed(evt);
+            }
+        });
         MenuUser.add(MenuItemLogin);
 
         MenuItemLogout.setText("Logout");
+        MenuItemLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuItemLogoutActionPerformed(evt);
+            }
+        });
         MenuUser.add(MenuItemLogout);
 
         MenuItemNouveau.setText("Nouveau");
@@ -319,6 +319,18 @@ public class Capitainerie extends javax.swing.JFrame {
         // récupérer les formats etc pour appliquer à la date courante
     }//GEN-LAST:event_MenuItemFormatDateActionPerformed
 
+    private void MenuItemLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemLoginActionPerformed
+        if(IsUserConnected() )
+            System.out.println("Utilisatuer deja connecté"); // error popup
+        else
+            UserLogin();
+    }//GEN-LAST:event_MenuItemLoginActionPerformed
+
+    private void MenuItemLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemLogoutActionPerformed
+        this._connectedUser = "";
+        this.SetTitre("offline");
+    }//GEN-LAST:event_MenuItemLogoutActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -393,4 +405,43 @@ public class Capitainerie extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
+    private void SetTitre(String _connectedUser) {
+        this.setTitle(_connectedUser + " | InpresHarbour");
+    }
+    
+    private boolean IsUserConnected()
+    {
+        if(_connectedUser.compareTo("") != 0)
+            return true;
+        else
+            return false;
+    }
+    
+    public boolean UserLogin()
+    {
+         DialogLogin dlg = new DialogLogin(this, true);
+        dlg.setVisible(true);
+        
+        if(dlg.getResult() == DialogResult.ok)
+        {
+            System.out.println("c'est ok");
+            this._connectedUser = dlg.getConnectedUserName();
+            this.SetTitre(_connectedUser);
+            return true;
+            
+        }
+        else if (dlg.getResult() == DialogResult.cancel)
+        {
+            System.out.println("c'est annulé");
+            return false;
+        }
+        else if (dlg.getResult() == DialogResult.untouched)
+        {
+            System.out.println("c'est ferme sans y toucher");
+            return false;
+        }
+        else
+            return false;
+    }
 }
