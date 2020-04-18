@@ -33,4 +33,20 @@ public class VerificateurMotDePasse {
             }
         else return true;
     }
+    
+    public boolean DoesUserExist(String user)
+    {
+        return logins.contains(user);
+    }
+    
+    public boolean AddUser(String user, String pwd)
+    {
+        if(!DoesUserExist(user))
+        {
+            logins.put(user, pwd);
+            return true;
+        }
+        else
+            return false;
+    }
 }

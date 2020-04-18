@@ -14,15 +14,15 @@ public class Ponton extends Amarrage
 {
     MoyenDeTransportSurEau[][] _liste;
     
-    public Ponton(int capacite)
+    public Ponton(int id, int capacite)
     {
-        super(capacite);
+        super(id, capacite);
         _liste = new MoyenDeTransportSurEau[2][capacite]; 
     }
     
     @Override
     public String getIdentifiant() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "P"+ _idNumder;
     }
     
     

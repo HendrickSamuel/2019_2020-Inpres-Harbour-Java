@@ -76,7 +76,11 @@ public class Bateau extends MoyenDeTransportSurEau implements AUnIdentifiant{
     public int getTonnage() {
         return _tonnage;
     }
-
+    
+    public String getNom()
+    {
+        return _nom;
+    }
     
     /* ----------------------------------- SETTERS ------------------------------------*/
     public void setEquipage(Equipage _equipage) 

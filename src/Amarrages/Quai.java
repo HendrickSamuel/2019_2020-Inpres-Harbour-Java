@@ -14,15 +14,15 @@ public class Quai extends Amarrage
 {
     private Vector<MoyenDeTransportSurEau> _liste;
     
-    public Quai(int capacite)
+    public Quai(int id, int capacite)
     {
-        super(capacite);
+        super(id, capacite);
         _liste = new Vector<MoyenDeTransportSurEau>();
     }
     
     @Override
     public String getIdentifiant() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "Q"+_idNumder;
     }
     
 }

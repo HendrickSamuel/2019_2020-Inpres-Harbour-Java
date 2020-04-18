@@ -12,14 +12,16 @@ import HarbourGlobal.AUnIdentifiant;
 public abstract class Amarrage implements AUnIdentifiant
 {
     protected int _capacite;
+    protected int _idNumder;
 
     public Amarrage() 
     {
         _capacite = 0;
     }
     
-    public Amarrage(int capacite)
+    public Amarrage(int id, int capacite)
     {
+        _idNumder = id;
         _capacite = capacite;
     }
     

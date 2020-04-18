@@ -7,36 +7,44 @@
 
 package capitainerie;
 
+import Amarrages.Ponton;
+import Equipage.Equipage;
+import Equipage.Marin;
+import Equipage.SailorWithoutIdentificationException;
 import HarbourGlobal.DialogResult;
 import utilisateurs.DialogLogin;
+import VehiculesMarins.*;
+import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.AbstractButton;
 
 public class Capitainerie extends javax.swing.JFrame {
     
-    private String _connectedUser;
-
+    public CapitainerieBrain CB;
+    
+    /* --------------------------- CONSTRUCTEUR ----------------------- */
     public Capitainerie() {
         initComponents();
         
-        if(this.UserLogin() == true)
-        {
-            this.SetTitre(_connectedUser);
-        }
-        else
+        CB = new CapitainerieBrain();
+        
+        if(this.UserLogin() == false)
         {
             this.Close();
         }
-    }
-    
-    private void Close()
-    {
-        this.dispose();
-        System.exit(0);
+        else
+        {
+            SetButtons(true);
+        }
     }
             
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
+        BoutonsLogin = new javax.swing.ButtonGroup();
         ButtonStartServer = new javax.swing.JButton();
         CheckRequestPending = new javax.swing.JCheckBox();
         ButtonRead = new javax.swing.JButton();
@@ -81,24 +89,29 @@ public class Capitainerie extends javax.swing.JFrame {
         setTitle("Capitainerie d'Inpres-Harbour");
 
         ButtonStartServer.setText("Démarrer le serveur");
+        ButtonStartServer.setContentAreaFilled(false);
 
         CheckRequestPending.setText("Requête en attente");
 
         ButtonRead.setText("Lire");
+        BoutonsLogin.add(ButtonRead);
 
         TextFieldPendingRequest.setText("??");
 
         LabelAmaragePossible.setText("Amarrage possible:");
 
         ButtonChoose.setText("choisir");
+        BoutonsLogin.add(ButtonChoose);
 
         InputAmarrage.setText("??");
 
         ButtonSendChoise.setText("Envoyer choix");
+        BoutonsLogin.add(ButtonSendChoise);
 
         InputChoice.setText("???");
 
         ButtonSendConfirmation.setText("Envoyer confirmation");
+        BoutonsLogin.add(ButtonSendConfirmation);
 
         LabelBateauxEntree.setText("bateaux en entrée");
         LabelBateauxEntree.setToolTipText("");
@@ -106,13 +119,18 @@ public class Capitainerie extends javax.swing.JFrame {
         jScrollPane1.setViewportView(ListeBateauxEntree);
 
         ButtonBateauAmarre.setText("Bateau amarré");
-        ButtonBateauAmarre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        BoutonsLogin.add(ButtonBateauAmarre);
+        ButtonBateauAmarre.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        ButtonBateauAmarre.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 ButtonBateauAmarreActionPerformed(evt);
             }
         });
 
         jButton2.setText("Arrêter le serveur");
+        BoutonsLogin.add(jButton2);
 
         jLabel1.setText("Img1");
 
@@ -123,22 +141,28 @@ public class Capitainerie extends javax.swing.JFrame {
         MenuUser.setText("Utilisateurs");
 
         MenuItemLogin.setText("login");
-        MenuItemLogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        MenuItemLogin.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 MenuItemLoginActionPerformed(evt);
             }
         });
         MenuUser.add(MenuItemLogin);
 
         MenuItemLogout.setText("Logout");
-        MenuItemLogout.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        BoutonsLogin.add(MenuItemLogout);
+        MenuItemLogout.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 MenuItemLogoutActionPerformed(evt);
             }
         });
         MenuUser.add(MenuItemLogout);
 
         MenuItemNouveau.setText("Nouveau");
+        BoutonsLogin.add(MenuItemNouveau);
         MenuUser.add(MenuItemNouveau);
 
         jMenuBar1.add(MenuUser);
@@ -146,9 +170,11 @@ public class Capitainerie extends javax.swing.JFrame {
         MenuAmarrages.setText("Amarrages");
 
         MenuItemPlaisance.setText("Plaisance");
+        BoutonsLogin.add(MenuItemPlaisance);
         MenuAmarrages.add(MenuItemPlaisance);
 
         MenuItemPeche.setText("Pêche");
+        BoutonsLogin.add(MenuItemPeche);
         MenuAmarrages.add(MenuItemPeche);
 
         jMenuBar1.add(MenuAmarrages);
@@ -156,9 +182,11 @@ public class Capitainerie extends javax.swing.JFrame {
         MenuBateaux.setText("Bateaux");
 
         MenuItemListerBateaux.setText("Liste complète");
+        BoutonsLogin.add(MenuItemListerBateaux);
         MenuBateaux.add(MenuItemListerBateaux);
 
         MenuItemRechercherBateau.setText("Rechercher un bateau");
+        BoutonsLogin.add(MenuItemRechercherBateau);
         MenuBateaux.add(MenuItemRechercherBateau);
 
         jMenuBar1.add(MenuBateaux);
@@ -166,9 +194,11 @@ public class Capitainerie extends javax.swing.JFrame {
         MenuPersonnel.setText("Personnel");
 
         MenuItemEquipageBateau.setText("Equipage d'un bateau");
+        BoutonsLogin.add(MenuItemEquipageBateau);
         MenuPersonnel.add(MenuItemEquipageBateau);
 
         MenuItemRechercheMarin.setText("Rechercher un marin");
+        BoutonsLogin.add(MenuItemRechercheMarin);
         MenuPersonnel.add(MenuItemRechercheMarin);
 
         jMenuBar1.add(MenuPersonnel);
@@ -176,8 +206,10 @@ public class Capitainerie extends javax.swing.JFrame {
         MenuAPropos.setText("A propos");
 
         ButtonAbout.setText("Auteur(s)");
-        ButtonAbout.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        ButtonAbout.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 ButtonAboutActionPerformed(evt);
             }
         });
@@ -191,14 +223,18 @@ public class Capitainerie extends javax.swing.JFrame {
         jMenu1.setText("Paramètres");
 
         MenuItemFormatDate.setText("Format date");
-        MenuItemFormatDate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        BoutonsLogin.add(MenuItemFormatDate);
+        MenuItemFormatDate.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 MenuItemFormatDateActionPerformed(evt);
             }
         });
         jMenu1.add(MenuItemFormatDate);
 
         jMenuItem6.setText("Fichier log");
+        BoutonsLogin.add(jMenuItem6);
         jMenu1.add(jMenuItem6);
 
         jCheckBoxMenuItem1.setSelected(true);
@@ -302,38 +338,59 @@ public class Capitainerie extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    /* ----------------------- EVENTS LISTENERS ----------------------*/
     private void ButtonBateauAmarreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonBateauAmarreActionPerformed
-        CapitainerieBateauEntrant cpte = new CapitainerieBateauEntrant();
-        cpte.setVisible(true);
-    }//GEN-LAST:event_ButtonBateauAmarreActionPerformed
+       
+        try
+        {
+            Bateau bateau = new Bateau("george", "ok", 10, 100, "pavillon", new Equipage(), true, Energie.essence);
+            Ponton ponton = new Ponton(1,10);
+            bateau.getEquipage().AjoutMembre(new Marin("jean","thierry","0000","Capitaine"));
+            
+            DialogAmarage am = new DialogAmarage(bateau, ponton ,this, true);
+            // remplir la fenetre avec l'emplacement et le bateau ?
+            am.setVisible(true);
+            // bloquant jusqu'au retour 
+            if(am.getResult() == DialogResult.ok)
+            {
+                // recup le bon amarrage + mettre le bateau dedans
+            }
+            }
+        catch (Exception ex)
+        {
+            Logger.getLogger(Capitainerie.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     private void ButtonAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonAboutActionPerformed
         DialogAbout dab = new DialogAbout(this, true);
         dab.setVisible(true);
-    }//GEN-LAST:event_ButtonAboutActionPerformed
+    }
 
     private void MenuItemFormatDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemFormatDateActionPerformed
         DialogDateParam ddp = new DialogDateParam(this, true);
         ddp.setVisible(true);
         // récupérer les formats etc pour appliquer à la date courante
-    }//GEN-LAST:event_MenuItemFormatDateActionPerformed
+    }
 
     private void MenuItemLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemLoginActionPerformed
-        if(IsUserConnected() )
-            System.out.println("Utilisatuer deja connecté"); // error popup
-        else
+        if(!CB.isUserConnected())
+        {
             UserLogin();
-    }//GEN-LAST:event_MenuItemLoginActionPerformed
+            SetButtons(true);
+        }
+    }
 
     private void MenuItemLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemLogoutActionPerformed
-        this._connectedUser = "";
+        CB.LogoutUser();
+        SetButtons(false);
         this.SetTitre("offline");
-    }//GEN-LAST:event_MenuItemLogoutActionPerformed
+    }
 
-    /**
-     * @param args the command line arguments
-     */
+    /* -------------------------------------------------------------------------------------*/
+    
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -365,6 +422,7 @@ public class Capitainerie extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup BoutonsLogin;
     private javax.swing.JMenuItem ButtonAbout;
     private javax.swing.JButton ButtonBateauAmarre;
     private javax.swing.JButton ButtonChoose;
@@ -405,19 +463,27 @@ public class Capitainerie extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
-
+    
+    
+    /* ------------------------------- METHODES --------------------------*/
+    private void Close()
+    {
+        this.dispose();
+        System.exit(0);
+    }
+    
     private void SetTitre(String _connectedUser) {
         this.setTitle(_connectedUser + " | InpresHarbour");
     }
     
-    private boolean IsUserConnected()
+    private void SetButtons(boolean status)
     {
-        if(_connectedUser.compareTo("") != 0)
-            return true;
-        else
-            return false;
+        Enumeration<AbstractButton> enumeration = BoutonsLogin.getElements();
+        while (enumeration.hasMoreElements()) {
+            enumeration.nextElement().setEnabled(status);
+        }
     }
-    
+        
     public boolean UserLogin()
     {
          DialogLogin dlg = new DialogLogin(this, true);
@@ -426,8 +492,8 @@ public class Capitainerie extends javax.swing.JFrame {
         if(dlg.getResult() == DialogResult.ok)
         {
             System.out.println("c'est ok");
-            this._connectedUser = dlg.getConnectedUserName();
-            this.SetTitre(_connectedUser);
+            CB.RegisterUser(dlg.getConnectedUserName());
+            this.SetTitre(CB.getConnectedUser());
             return true;
             
         }

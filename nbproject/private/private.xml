@@ -4,12 +4,13 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/VehiculesMarins/AvecHumains.java</file>
-            <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/capitainerie/CapitainerieEnregistrementEquipage.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/VehiculesMarins/BateauPlaisance.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/VehiculesMarins/MoyenDeTransport.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/Amarrages/Amarrage.java</file>
+            <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/capitainerie/buttonGroupEnableProgram.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/Amarrages/Ponton.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/Amarrages/Quai.java</file>
+            <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/capitainerie/DialogAmarage.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/VehiculesMarins/Bateau.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/VehiculesMarins/BateauPeche.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/capitainerie/DialogAbout.java</file>
@@ -23,15 +24,15 @@
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/HarbourGlobal/AUnIdentifiant.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/capitainerie/DialogDateParam.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/Equipage/Marin.java</file>
-            <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/capitainerie/CapitainerieBateauEntrant.java</file>
-            <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/HarbourGlobal/DialogResult.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/VehiculesMarins/MoyenDeTransportSurEau.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/utilisateurs/NewPwdDialog.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/VehiculesMarins/Energie.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/utilisateurs/VerificateurMotDePasse.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/inpresharbour/InpresHarbour.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/Equipage/Equipage.java</file>
+            <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/capitainerie/CapitainerieBrain.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/VehiculesMarins/ShipWithoutIdentificationException.java</file>
+            <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/capitainerie/DialogEquipage.java</file>
         </group>
     </open-files>
 </project-private>
