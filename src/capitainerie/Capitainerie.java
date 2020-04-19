@@ -16,18 +16,29 @@ import HarbourGlobal.DialogResult;
 import utilisateurs.DialogLogin;
 import VehiculesMarins.*;
 import java.awt.Image;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.Enumeration;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractButton;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import java.util.Timer;
+import java.util.TimerTask;
 import utilisateurs.NewPwdDialog;
 
 public class Capitainerie extends javax.swing.JFrame {
     
     private CapitainerieBrain CB;
-
+    
+    private int _formatDate;
+    private int _formatHeure;
+    private Locale _fuseau;
+    
+    
+    private Timer timer;
     private DialogErreurModifiable _DialogErreur;
     
      /* ----------------------- CONSTRUCTEUR ----------------------*/
@@ -49,6 +60,9 @@ public class Capitainerie extends javax.swing.JFrame {
         {
             SetButtons(true);
             _DialogErreur = new DialogErreurModifiable(this, true);
+            _fuseau = Locale.FRANCE;
+            _formatDate = 1;
+            _formatHeure = 1;
             
             InitListe();
             
@@ -81,7 +95,19 @@ public class Capitainerie extends javax.swing.JFrame {
                  Logger.getLogger(Capitainerie.class.getName()).log(Level.SEVERE, null, exc);
             }
             
-            
+            /*
+            timer = new Timer();
+            TimerTask task = new TimerTask()
+            {
+                @Override
+                public
+                void run()
+                {
+                    ShowTime();
+                }
+            };
+            timer.schedule(task,0, 1*1000);
+            */
         }
     }
             
@@ -108,7 +134,7 @@ public class Capitainerie extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         Image1 = new javax.swing.JLabel();
         Image2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        LabelHeure = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         MenuUser = new javax.swing.JMenu();
         MenuItemLogin = new javax.swing.JMenuItem();
@@ -129,7 +155,7 @@ public class Capitainerie extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         MenuItemFormatDate = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+        HeureVisibleChack = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Capitainerie d'Inpres-Harbour");
@@ -190,7 +216,7 @@ public class Capitainerie extends javax.swing.JFrame {
 
         Image2.setBackground(new java.awt.Color(0, 255, 255));
 
-        jLabel3.setText("current time");
+        LabelHeure.setText("current time");
 
         MenuUser.setText("Utilisateurs");
 
@@ -305,9 +331,16 @@ public class Capitainerie extends javax.swing.JFrame {
         BoutonsLogin.add(jMenuItem6);
         jMenu1.add(jMenuItem6);
 
-        jCheckBoxMenuItem1.setSelected(true);
-        jCheckBoxMenuItem1.setText("Affichage date-heure courante");
-        jMenu1.add(jCheckBoxMenuItem1);
+        HeureVisibleChack.setSelected(true);
+        HeureVisibleChack.setText("Affichage date-heure courante");
+        HeureVisibleChack.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                HeureVisibleChackActionPerformed(evt);
+            }
+        });
+        jMenu1.add(HeureVisibleChack);
 
         jMenuBar1.add(jMenu1);
 
@@ -345,7 +378,7 @@ public class Capitainerie extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(ButtonStartServer)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel3))
+                        .addComponent(LabelHeure))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -371,7 +404,7 @@ public class Capitainerie extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ButtonStartServer)
-                    .addComponent(jLabel3))
+                    .addComponent(LabelHeure))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
@@ -429,6 +462,18 @@ public class Capitainerie extends javax.swing.JFrame {
         CB.setEmplacementSelectione(2);
         InputAmarrage.setText(CB.GetEmplacement());
     }//GEN-LAST:event_ButtonChooseActionPerformed
+
+    private void HeureVisibleChackActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_HeureVisibleChackActionPerformed
+    {//GEN-HEADEREND:event_HeureVisibleChackActionPerformed
+        if(HeureVisibleChack.getState() == true)
+        {
+            LabelHeure.setVisible(true);
+        }
+        else
+        {
+            LabelHeure.setVisible(false);
+        }
+    }//GEN-LAST:event_HeureVisibleChackActionPerformed
     
     private void ButtonBateauAmarreActionPerformed(java.awt.event.ActionEvent evt) {      
         if(CB.getBateauEnCoursAmarrage() != null && CB.IsAmarrageValide() == true)
@@ -476,7 +521,20 @@ public class Capitainerie extends javax.swing.JFrame {
     private void MenuItemFormatDateActionPerformed(java.awt.event.ActionEvent evt) {                                                   
         DialogDateParam ddp = new DialogDateParam(this, true);
         ddp.setVisible(true);
-        // récupérer les formats etc pour appliquer à la date courante
+        
+        if(ddp.getResult() == DialogResult.ok)
+        {
+            _formatDate = ddp.getFormatDate();
+            _formatHeure = ddp.getFormatHeure();
+            _fuseau = ddp.getFuseauPays(); 
+            ShowTime();
+        }
+    }
+    
+    private void ShowTime()
+    {
+        Date maintenant = new Date();
+            LabelHeure.setText(DateFormat.getDateTimeInstance(_formatDate, _formatHeure, _fuseau).format(maintenant));
     }
 
     private void MenuItemLoginActionPerformed(java.awt.event.ActionEvent evt) {                                              
@@ -537,12 +595,14 @@ public class Capitainerie extends javax.swing.JFrame {
     private javax.swing.JButton ButtonSendConfirmation;
     private javax.swing.JButton ButtonStartServer;
     private javax.swing.JCheckBox CheckRequestPending;
+    private javax.swing.JCheckBoxMenuItem HeureVisibleChack;
     private javax.swing.JLabel Image1;
     private javax.swing.JLabel Image2;
     private javax.swing.JTextField InputAmarrage;
     private javax.swing.JTextField InputChoice;
     private javax.swing.JLabel LabelAmaragePossible;
     private javax.swing.JLabel LabelBateauxEntree;
+    private javax.swing.JLabel LabelHeure;
     private javax.swing.JList<String> ListeBateauxEntree;
     private javax.swing.JMenu MenuAPropos;
     private javax.swing.JMenu MenuAmarrages;
@@ -561,8 +621,6 @@ public class Capitainerie extends javax.swing.JFrame {
     private javax.swing.JMenu MenuUser;
     private javax.swing.JTextField TextFieldPendingRequest;
     private javax.swing.JButton jButton2;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem6;
