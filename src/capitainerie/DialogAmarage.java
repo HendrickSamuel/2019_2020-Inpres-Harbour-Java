@@ -11,35 +11,66 @@ import Equipage.Equipage;
 import Equipage.Marin;
 import Equipage.SailorWithoutIdentificationException;
 import HarbourGlobal.DialogResult;
+import HarbourGlobal.MyLogger;
 import VehiculesMarins.*;
+import java.awt.Image;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 
 
 public class DialogAmarage extends javax.swing.JDialog {
 
+    public
+            Bateau getBateauEnCours()
+    {
+        return _bateauEnCours;
+    }
+
     private DialogResult _result = DialogResult.untouched;
     private Bateau _bateauEnCours;
-    private Amarrage _amarrageEnCours;
+    private MyLogger _logger;
     
     public DialogAmarage(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
     
-    public DialogAmarage(Bateau bateau, Amarrage amarrage, java.awt.Frame parent, boolean modal) {
+    public DialogAmarage(Bateau bateau, String emplacement, java.awt.Frame parent, boolean modal) {
         this(parent, modal);
-        _bateauEnCours = bateau;
-        _amarrageEnCours = amarrage;
         
-        System.out.println(amarrage.getClass().getName()); // Amarrages.Ponton ou Amarrages.Quai
+        _logger = new MyLogger();
+        _bateauEnCours = bateau;
+           
+        //System.out.println(amarrage.getClass().getName()); // Amarrages.Ponton ou Amarrages.Quai
         
         InitCombobox(_bateauEnCours.getEquipage());        
-        LabelEmplacement.setText(amarrage.getIdentifiant());
+        LabelEmplacement.setText(emplacement);
         LabelNomBateau.setText(bateau.getNom()); 
         
         this.setTitle("Gestion Amarrage: "+ bateau.getNom());
+        
+        try
+        {
+            ImageIcon icon = new ImageIcon(getClass().getResource("/Images/pavillons/pavillon"+getBateauEnCours().getPavillon()+".png"));
+            Image scaleImage = icon.getImage().getScaledInstance(150, 100,Image.SCALE_DEFAULT);
+            ImagePavillon.setIcon(new javax.swing.ImageIcon(scaleImage));
+            //<editor-fold defaultstate="collapsed" desc="GUI print">
+            System.out.println(_logger.Now() + " | création de l'image du bateau");
+            //</editor-fold>
+        }
+        catch (Exception e)
+        {
+            ImageIcon icon = new ImageIcon(getClass().getResource("/Images/pavillons/pavillonInconnu.png"));
+            Image scaleImage = icon.getImage().getScaledInstance(150, 100,Image.SCALE_DEFAULT);
+            ImagePavillon.setIcon(new javax.swing.ImageIcon(scaleImage));
+            //<editor-fold defaultstate="collapsed" desc="GUI print">
+            System.out.println(_logger.Now() + " | création de l'image du bateau au pavillon inconnu");
+            //</editor-fold>
+        }
+        
+        
     }
     
     @SuppressWarnings("unchecked")
@@ -61,6 +92,7 @@ public class DialogAmarage extends javax.swing.JDialog {
         CancelButton = new javax.swing.JButton();
         LabelEmplacement = new javax.swing.JLabel();
         LabelNomBateau = new javax.swing.JLabel();
+        ImagePavillon = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -116,35 +148,37 @@ public class DialogAmarage extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ButtonEqupiage)
                     .addComponent(jLabel5)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(InputTonnage, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ComboBoxMarins, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(InputPortAttache, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(InputTonnage, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ComboBoxMarins, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(InputPortAttache, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(29, 29, 29))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(66, 66, 66)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1))
+                        .addGap(68, 68, 68)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(LabelEmplacement, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(LabelNomBateau, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addComponent(jSeparator1)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addComponent(OkButton)
-                .addGap(47, 47, 47)
-                .addComponent(CancelButton)
+                            .addComponent(LabelNomBateau, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(ImagePavillon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(86, 86, 86)
+                        .addComponent(OkButton)
+                        .addGap(47, 47, 47)
+                        .addComponent(CancelButton)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -157,9 +191,15 @@ public class DialogAmarage extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(LabelNomBateau))
-                .addGap(40, 40, 40)
-                .addComponent(jLabel3)
-                .addGap(53, 53, 53)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(ImagePavillon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel4)
                     .addComponent(InputPortAttache, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -171,13 +211,13 @@ public class DialogAmarage extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ButtonEqupiage)
                     .addComponent(ComboBoxMarins, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(OkButton)
                     .addComponent(CancelButton))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addGap(47, 47, 47))
         );
 
         pack();
@@ -186,13 +226,13 @@ public class DialogAmarage extends javax.swing.JDialog {
     
     /* ----------------------- EVENTS LISTENER ------------------------- */
     private void ButtonEqupiageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonEqupiageActionPerformed
-        DialogEquipage de = new DialogEquipage(_bateauEnCours,(java.awt.Frame)getParent(), true);
+        DialogEquipage de = new DialogEquipage(getBateauEnCours(),(java.awt.Frame)getParent(), true);
         de.setVisible(true);
         // recuperer equipage en cours
         if(de.getResult() == DialogResult.ok)
         {
             Equipage equip = de.getEquipageEnCours();
-            _bateauEnCours.setEquipage(equip);
+            getBateauEnCours().setEquipage(equip);
             
             InitCombobox(equip);
             
@@ -252,6 +292,7 @@ public class DialogAmarage extends javax.swing.JDialog {
     private javax.swing.JButton ButtonEqupiage;
     private javax.swing.JButton CancelButton;
     private javax.swing.JComboBox<String> ComboBoxMarins;
+    private javax.swing.JLabel ImagePavillon;
     private javax.swing.JTextField InputPortAttache;
     private javax.swing.JTextField InputTonnage;
     private javax.swing.JLabel LabelEmplacement;
@@ -274,6 +315,7 @@ public class DialogAmarage extends javax.swing.JDialog {
     {
         DefaultComboBoxModel dcbm = (DefaultComboBoxModel) this.ComboBoxMarins.getModel();
         dcbm.removeAllElements();
+        
         if(equipage.getCapitaine() != null)
             dcbm.addElement(equipage.getCapitaine());
 

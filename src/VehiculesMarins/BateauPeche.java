@@ -43,4 +43,10 @@ public class BateauPeche extends Bateau{
     public void setType(String _type) {
         this._type = _type;
     }
+ 
+    @Override
+    public String toString()
+    {
+        return getNom() + " -- Peche -- " + getPavillon();
+    }
 }

@@ -25,6 +25,11 @@ public class Ponton extends Amarrage
         return "P"+ _idNumder;
     }
     
+    @Override
+    public String toString()
+    {
+        return getIdentifiant();
+    }
     
     public MoyenDeTransportSurEau[] getListe(int cote)
     {

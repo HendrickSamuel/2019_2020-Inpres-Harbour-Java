@@ -50,7 +50,14 @@ public class Bateau extends MoyenDeTransportSurEau implements AUnIdentifiant{
         System.out.println("Longueur: " + _longueur);
         System.out.println("Tonnage: " + getTonnage());
         System.out.println("Pavillon: " + _pavillon);
+        System.out.println("----------------------------");
         //System.out.println("Equipage: " + _equipage);  
+    }
+    
+    @Override
+    public String toString()
+    {
+        return getNom() + " -- indéfini -- " + getPavillon();
     }
     
 /* ----------------------------------- GETTERS ------------------------------------*/
@@ -81,7 +88,11 @@ public class Bateau extends MoyenDeTransportSurEau implements AUnIdentifiant{
     {
         return _nom;
     }
-    
+
+    public String getPavillon()
+    {
+        return _pavillon;
+    }
     /* ----------------------------------- SETTERS ------------------------------------*/
     public void setEquipage(Equipage _equipage) 
     {

@@ -9,10 +9,15 @@ package Equipage;
 import java.util.Vector;
 
 public class Equipage {
+    
+    //<editor-fold defaultstate="collapsed" desc="variables">
+    
     private Vector<Marin> _marins;
     private Marin _capitaine;
     private Marin _second;
+//</editor-fold>
     
+   //<editor-fold defaultstate="collapsed" desc="Constructeurs">
     public Equipage()
     {
         _marins = new Vector<Marin>();
@@ -39,38 +44,47 @@ public class Equipage {
         else
             _marins = new Vector<Marin>();
     }
+   //</editor-fold>
     
-    public void AjoutMarin(Marin marin)
-    {
-        _marins.add(marin); // verifier le rang 
-    }
-
-    public Vector<Marin> getMarins() {
-        return _marins;
-    }
-
+    //<editor-fold defaultstate="collapsed" desc="setters">
     public void setMarins(Vector<Marin> marins) {
         _marins = marins;
     }
-
-    public Marin getCapitaine()
-    {
-        return _capitaine;
-    }
-
+    
     public void setCapitaine(Marin capitaine)
     {
         this._capitaine = capitaine;
     }
-
+    
+    public void setSecond(Marin second)
+    {
+        this._second = second;
+    }
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="getters">
+    
+    public Vector<Marin> getMarins() {
+        return _marins;
+    }
+    
+    public Marin getCapitaine()
+    {
+        return _capitaine;
+    }
+    
+    
     public Marin getSecond()
     {
         return _second;
     }
+//</editor-fold>
 
-    public void setSecond(Marin second)
+    //<editor-fold defaultstate="collapsed" desc="methodes">
+    
+    public void AjoutMarin(Marin marin)
     {
-        this._second = second;
+        _marins.add(marin); // verifier le rang
     }
     
     public void Clear()
@@ -81,9 +95,9 @@ public class Equipage {
     }
     
     public boolean AjoutMembre(Marin marin)
-    {   
+    {
         if(marin.getFonction().compareTo("Capitaine") == 0)
-        {   
+        {
             if(getCapitaine() == null)
             {
                 setCapitaine(marin);
@@ -95,23 +109,24 @@ public class Equipage {
             }
         }
         else
-        if (marin.getFonction().compareTo("Second") == 0)
-        {
-            if(getSecond() == null)
+            if (marin.getFonction().compareTo("Second") == 0)
             {
-                setSecond(marin);
-                return true;
+                if(getSecond() == null)
+                {
+                    setSecond(marin);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
-                return false;
+                // verifier l'ID
+                getMarins().add(marin);
+                return true;
             }
-        }
-        else    
-        {
-            // verifier l'ID
-            getMarins().add(marin);
-            return true;
-        }
-    } 
+    }
+//</editor-fold>
 }

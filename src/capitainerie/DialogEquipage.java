@@ -19,6 +19,7 @@ public class DialogEquipage extends javax.swing.JDialog {
    private Equipage _equipageEnCours;
    private Equipage _equipageRecu;
    private Bateau _bateauEnCours;
+   private MyLogger _logger;
    
    private DialogResult _result = DialogResult.untouched;
     
@@ -32,7 +33,9 @@ public class DialogEquipage extends javax.swing.JDialog {
         LabelBateau.setText("none");
         this.setTitle("Gestion Equipage: none" );
         
-        ErrorLabel.setVisible(false);
+        ErrorLabel.setVisible(true);
+        _logger = new MyLogger();
+        ErrorLabel.setText(_logger.Now() + " Application should not be used like this");
     }
     
     
@@ -41,9 +44,13 @@ public class DialogEquipage extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         
+        _logger = new MyLogger();
         _bateauEnCours = bateau;
         _equipageRecu = _bateauEnCours.getEquipage();
         _equipageEnCours = new Equipage(_equipageRecu);
+        //<editor-fold defaultstate="collapsed" desc="GUI print">
+            System.out.println(_logger.Now() + " | copie de l'equipage le temps de la modification ");
+        //</editor-fold>
         InitListe(_equipageEnCours);    
         
         LabelBateau.setText(_bateauEnCours.getNom());
@@ -267,18 +274,21 @@ public class DialogEquipage extends javax.swing.JDialog {
     {//GEN-HEADEREND:event_ButtonAjoutEquipageActionPerformed
        try
        {
-           ErrorLabel.setVisible(false);
-           Marin marin = new Marin(InputNom.getText(), InputPrenom.getText(), InputDateNaissance.getText(), getSelectedButtonText(ButtonGroupGrade));
-           if(getEquipageEnCours().AjoutMembre(marin) == true)
-           {
-               DefaultListModel lm = (DefaultListModel)ListeMarins.getModel();
-               lm.addElement(marin.toString());
-           }
-           else
-           {
-               ErrorLabel.setText("Cette fonction est déja prise ou ce marin existe déja");
-               ErrorLabel.setVisible(true);
-           }
+            ErrorLabel.setVisible(false);
+            Marin marin = new Marin(InputNom.getText(), InputPrenom.getText(), InputDateNaissance.getText(), getSelectedButtonText(ButtonGroupGrade));
+            //<editor-fold defaultstate="collapsed" desc="GUI print">
+            System.out.println(_logger.Now() + " | creation d'un marin: " + marin);
+            //</editor-fold>
+            if(getEquipageEnCours().AjoutMembre(marin) == true)
+            {
+                DefaultListModel lm = (DefaultListModel)ListeMarins.getModel();
+                lm.addElement(marin);
+            }
+            else
+            {
+                ErrorLabel.setText("Cette fonction est déja prise ou ce marin existe déja");
+                ErrorLabel.setVisible(true);
+            }
        }
        catch (SailorWithoutIdentificationException ex)
        {

@@ -16,7 +16,8 @@ public class DialogErreur extends javax.swing.JDialog {
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         Image = new javax.swing.JLabel();
         PageTitle = new javax.swing.JLabel();
@@ -31,6 +32,13 @@ public class DialogErreur extends javax.swing.JDialog {
         PageTitle.setText("Erreur de login !!!");
 
         OkButton.setText("Ok");
+        OkButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                OkButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -63,6 +71,11 @@ public class DialogErreur extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void OkButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_OkButtonActionPerformed
+    {//GEN-HEADEREND:event_OkButtonActionPerformed
+        this.setVisible(false);
+    }//GEN-LAST:event_OkButtonActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

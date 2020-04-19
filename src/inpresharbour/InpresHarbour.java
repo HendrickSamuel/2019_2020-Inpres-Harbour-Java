@@ -8,10 +8,7 @@ package inpresharbour;
 import Equipage.Marin;
 import VehiculesMarins.*;
 
-/**
- *
- * @author hydro
- */
+
 public class InpresHarbour {
 
     /**

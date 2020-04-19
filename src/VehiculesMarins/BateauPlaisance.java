@@ -33,4 +33,10 @@ public class BateauPlaisance extends Bateau{
         System.out.println("-- Bateau de plaisance --");
         System.out.println("Permis: "+ _permisNecessaire);
     }
+    
+    @Override
+    public String toString()
+    {
+        return getNom() + " -- Plaisance -- " + getPavillon();
+    }
 }

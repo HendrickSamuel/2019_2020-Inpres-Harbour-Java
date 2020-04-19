@@ -36,7 +36,7 @@ public class VerificateurMotDePasse {
     
     public boolean DoesUserExist(String user)
     {
-        return logins.contains(user);
+        return logins.containsKey(user);
     }
     
     public boolean AddUser(String user, String pwd)

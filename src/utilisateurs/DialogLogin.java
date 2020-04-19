@@ -17,11 +17,13 @@ public class DialogLogin extends javax.swing.JDialog {
     public DialogLogin(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        ErrorLabel.setVisible(false);
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         PageTitle = new javax.swing.JLabel();
         UserLabel = new javax.swing.JLabel();
@@ -30,6 +32,7 @@ public class DialogLogin extends javax.swing.JDialog {
         PwdInput = new javax.swing.JTextField();
         OkButton = new javax.swing.JButton();
         CancelButton = new javax.swing.JButton();
+        ErrorLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -41,18 +44,25 @@ public class DialogLogin extends javax.swing.JDialog {
         PwdLabel.setText("Mot de passe");
 
         OkButton.setText("Valider");
-        OkButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        OkButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 OkButtonActionPerformed(evt);
             }
         });
 
         CancelButton.setText("Annuler");
-        CancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        CancelButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 CancelButtonActionPerformed(evt);
             }
         });
+
+        ErrorLabel.setForeground(new java.awt.Color(255, 0, 51));
+        ErrorLabel.setText("jLabel1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -60,6 +70,7 @@ public class DialogLogin extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(ErrorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(UserLabel)
@@ -92,7 +103,9 @@ public class DialogLogin extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(PwdLabel)
                     .addComponent(PwdInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
+                .addGap(18, 18, 18)
+                .addComponent(ErrorLabel)
+                .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(OkButton)
                     .addComponent(CancelButton))
@@ -103,15 +116,38 @@ public class DialogLogin extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
-        VerificateurMotDePasse vmdp = new VerificateurMotDePasse();
-        try {
-            vmdp.TryLogin(UserInput.getText(), PwdInput.getText());
-            setResult(DialogResult.ok);
-            this.setConnectedUserName(UserInput.getText());
-            this.setVisible(false);
-        } catch (LoginException ex) {
-            DialogErreur dlg = new DialogErreur((java.awt.Frame)getParent(), true);
-            dlg.setVisible(true);
+        String user = UserInput.getText();
+        String mdp = PwdInput.getText();
+        ErrorLabel.setVisible(false);
+        
+        if(user.length() > 0 && mdp.length() > 0)
+        {
+            VerificateurMotDePasse vmdp = new VerificateurMotDePasse();
+            if(vmdp.DoesUserExist(user))
+            {
+                try 
+                {
+                    vmdp.TryLogin(user, mdp);
+                    setResult(DialogResult.ok);
+                    this.setConnectedUserName(UserInput.getText());
+                    this.setVisible(false);
+                } 
+                catch (LoginException ex) 
+                {
+                    DialogErreur dlg = new DialogErreur((java.awt.Frame)getParent(), true);
+                    dlg.setVisible(true);
+                }
+            }
+            else
+            {
+                ErrorLabel.setText(user+" n'existe pas");
+                ErrorLabel.setVisible(true);
+            }
+        }
+        else
+        {
+            ErrorLabel.setText("veillez à completer tous les champs");
+            ErrorLabel.setVisible(true);
         }
     }//GEN-LAST:event_OkButtonActionPerformed
 
@@ -161,6 +197,7 @@ public class DialogLogin extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CancelButton;
+    private javax.swing.JLabel ErrorLabel;
     private javax.swing.JButton OkButton;
     private javax.swing.JLabel PageTitle;
     private javax.swing.JTextField PwdInput;

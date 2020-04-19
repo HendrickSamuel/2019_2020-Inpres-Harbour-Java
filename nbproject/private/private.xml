@@ -7,7 +7,6 @@
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/VehiculesMarins/BateauPlaisance.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/VehiculesMarins/MoyenDeTransport.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/Amarrages/Amarrage.java</file>
-            <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/capitainerie/buttonGroupEnableProgram.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/Amarrages/Ponton.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/Amarrages/Quai.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/capitainerie/DialogAmarage.java</file>
@@ -26,9 +25,11 @@
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/Equipage/Marin.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/VehiculesMarins/MoyenDeTransportSurEau.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/utilisateurs/NewPwdDialog.java</file>
+            <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/HarbourGlobal/DialogErreurModifiable.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/VehiculesMarins/Energie.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/utilisateurs/VerificateurMotDePasse.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/inpresharbour/InpresHarbour.java</file>
+            <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/capitainerie/HelpDialog.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/Equipage/Equipage.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/capitainerie/CapitainerieBrain.java</file>
             <file>file:/D:/Documents/Seraing/2019-2020/JAVA/labo/InpresHarbour/src/VehiculesMarins/ShipWithoutIdentificationException.java</file>
