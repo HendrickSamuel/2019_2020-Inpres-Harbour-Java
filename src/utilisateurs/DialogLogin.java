@@ -1,5 +1,5 @@
 /******************************************************/
-/*Auteur: Hendrick Samuel                             */
+/*Auteur: Hendrick Samuel & Khamana Benedict          */
 /*Groupe: 2203                                        */
 /*Application: Inpres Harbour                         */
 /*Date de creation: 25/03/2020                        */
@@ -35,6 +35,7 @@ public class DialogLogin extends javax.swing.JDialog {
         ErrorLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Login Capitainerie");
 
         PageTitle.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         PageTitle.setText("Bienvenue !");

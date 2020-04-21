@@ -1,13 +1,12 @@
 /******************************************************/
-/*Auteur: Hendrick Samuel                             */
+/*Auteur: Hendrick Samuel & Khamana Benedict          */
 /*Groupe: 2203                                        */
 /*Application: Inpres Harbour                         */
-/*Date de creation: 25/03/2020                        */
+/*Date de creation: 27/03/2020                        */
 /******************************************************/
 
 package capitainerie;
 
-import Amarrages.Amarrage;
 import Amarrages.Ponton;
 import Equipage.Equipage;
 import Equipage.Marin;
@@ -95,7 +94,7 @@ public class Capitainerie extends javax.swing.JFrame {
                  Logger.getLogger(Capitainerie.class.getName()).log(Level.SEVERE, null, exc);
             }
             
-            /*
+            
             timer = new Timer();
             TimerTask task = new TimerTask()
             {
@@ -107,7 +106,7 @@ public class Capitainerie extends javax.swing.JFrame {
                 }
             };
             timer.schedule(task,0, 1*1000);
-            */
+            
         }
     }
             
@@ -157,7 +156,7 @@ public class Capitainerie extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         HeureVisibleChack = new javax.swing.JCheckBoxMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Capitainerie d'Inpres-Harbour");
 
         ButtonStartServer.setText("Démarrer le serveur");
@@ -468,10 +467,22 @@ public class Capitainerie extends javax.swing.JFrame {
         if(HeureVisibleChack.getState() == true)
         {
             LabelHeure.setVisible(true);
+            
+            TimerTask task = new TimerTask()
+            {
+                @Override
+                public
+                void run()
+                {
+                    ShowTime();
+                }
+            };
+            timer.schedule(task,0, 1*1000);
         }
         else
         {
             LabelHeure.setVisible(false);
+            timer.cancel();
         }
     }//GEN-LAST:event_HeureVisibleChackActionPerformed
     
@@ -533,7 +544,7 @@ public class Capitainerie extends javax.swing.JFrame {
     
     private void ShowTime()
     {
-        Date maintenant = new Date();
+            Date maintenant = new Date();
             LabelHeure.setText(DateFormat.getDateTimeInstance(_formatDate, _formatHeure, _fuseau).format(maintenant));
     }
 

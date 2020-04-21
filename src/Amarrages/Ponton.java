@@ -1,5 +1,5 @@
 /******************************************************/
-/*Auteur: Hendrick Samuel                             */
+/*Auteur: Hendrick Samuel & Khamana Benedict          */
 /*Groupe: 2203                                        */
 /*Application: Inpres Harbour                         */
 /*Date de creation: 25/03/2020                        */
@@ -8,7 +8,6 @@
 package Amarrages;
 
 import VehiculesMarins.*;
-import java.util.Vector;
 
 public class Ponton extends Amarrage
 {
@@ -33,10 +32,17 @@ public class Ponton extends Amarrage
     
     public MoyenDeTransportSurEau[] getListe(int cote)
     {
-        if(cote == 1)
-            return _liste[1];
-        else
-            return _liste[2];
+        cote --;
+        
+        switch (cote)
+        {
+            case 0:
+                return _liste[0];
+            case 1:
+                return _liste[1];
+            default:
+                return null;
+        }
     }
     
 }

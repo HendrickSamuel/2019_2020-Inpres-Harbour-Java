@@ -1,3 +1,10 @@
+/******************************************************/
+/*Auteur: Hendrick Samuel & Khamana Benedict          */
+/*Groupe: 2203                                        */
+/*Application: Inpres Harbour                         */
+/*Date de creation:13/04/2020                         */
+/******************************************************/
+
 package capitainerie;
 
 import HarbourGlobal.DialogResult;

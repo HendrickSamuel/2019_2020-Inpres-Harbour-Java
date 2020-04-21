@@ -1,21 +1,16 @@
 /******************************************************/
-/*Auteur: Hendrick Samuel                             */
+/*Auteur: Hendrick Samuel & Khamana Benedict          */
 /*Groupe: 2203                                        */
 /*Application: Inpres Harbour                         */
-/*Date de creation: 13/04/2020                        */
+/*Date de creation:13/04/2020                        */
 /******************************************************/
 package capitainerie;
 
-import Amarrages.*;
 import Equipage.Equipage;
-import Equipage.Marin;
-import Equipage.SailorWithoutIdentificationException;
 import HarbourGlobal.DialogResult;
 import HarbourGlobal.MyLogger;
 import VehiculesMarins.*;
 import java.awt.Image;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 
