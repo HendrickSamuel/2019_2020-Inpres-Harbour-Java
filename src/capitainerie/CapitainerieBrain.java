@@ -134,8 +134,7 @@ public class CapitainerieBrain {
         this._AmarrageSelectionne = _AmarrageSelectionne;
     }
 
-    public
-            int getCoteSelectionne()
+    public int getCoteSelectionne()
     {
         return _coteSelectionne;
     }
@@ -146,8 +145,7 @@ public class CapitainerieBrain {
         this._coteSelectionne = _coteSelectionne;
     }
 
-    public
-            int getEmplacementSelectione()
+    public int getEmplacementSelectione()
     {
         return _emplacementSelectione;
     }

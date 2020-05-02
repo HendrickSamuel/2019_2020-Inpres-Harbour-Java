@@ -77,6 +77,7 @@ public class Capitainerie extends javax.swing.JFrame {
             //<editor-fold defaultstate="collapsed" desc="GUI print">
 
             System.out.println(CB.Now() + " | création d'un ponton: " + ponton.getIdentifiant());
+            //Ajout d'un ponton pour le test
             CB.ListeAmarrages.add(ponton);
             System.out.println(CB.Now() + " |ajout du ponton à la liste du cerveau");
             //</editor-fold>
@@ -95,7 +96,7 @@ public class Capitainerie extends javax.swing.JFrame {
             }
             
             
-            timer = new Timer();
+            /*timer = new Timer();
             TimerTask task = new TimerTask()
             {
                 @Override
@@ -105,7 +106,7 @@ public class Capitainerie extends javax.swing.JFrame {
                     ShowTime();
                 }
             };
-            timer.schedule(task,0, 1*1000);
+            timer.schedule(task,0, 1*1000);*/
             
         }
     }
@@ -456,6 +457,7 @@ public class Capitainerie extends javax.swing.JFrame {
 
     private void ButtonChooseActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_ButtonChooseActionPerformed
     {//GEN-HEADEREND:event_ButtonChooseActionPerformed
+        //Ouvrira une fenetre dans la suite d'application pour choisir un quai ou un ponton
         CB.setAmarrageSelectionne(CB.ListeAmarrages.firstElement());
         CB.setCoteSelectionne(1);
         CB.setEmplacementSelectione(2);
@@ -468,7 +470,7 @@ public class Capitainerie extends javax.swing.JFrame {
         {
             LabelHeure.setVisible(true);
             
-            TimerTask task = new TimerTask()
+            /*TimerTask task = new TimerTask()
             {
                 @Override
                 public
@@ -477,12 +479,12 @@ public class Capitainerie extends javax.swing.JFrame {
                     ShowTime();
                 }
             };
-            timer.schedule(task,0, 1*1000);
+            timer.schedule(task,0, 1*1000);*/
         }
         else
         {
             LabelHeure.setVisible(false);
-            timer.cancel();
+            //timer.cancel();
         }
     }//GEN-LAST:event_HeureVisibleChackActionPerformed
     
@@ -509,7 +511,7 @@ public class Capitainerie extends javax.swing.JFrame {
                 }
                 else
                 {
-                    // effacer le bateau ?? comme refus d'ammarage ?
+                    // effacer le bateau ?? comme refus d'ammarage ? // Le bateau en cours d'amarrage
                 }
             }
             catch (Exception ex)
@@ -544,8 +546,8 @@ public class Capitainerie extends javax.swing.JFrame {
     
     private void ShowTime()
     {
-            Date maintenant = new Date();
-            LabelHeure.setText(DateFormat.getDateTimeInstance(_formatDate, _formatHeure, _fuseau).format(maintenant));
+        Date maintenant = new Date();
+        LabelHeure.setText(DateFormat.getDateTimeInstance(_formatDate, _formatHeure, _fuseau).format(maintenant));
     }
 
     private void MenuItemLoginActionPerformed(java.awt.event.ActionEvent evt) {                                              
