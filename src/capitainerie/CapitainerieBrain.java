@@ -10,13 +10,24 @@ import Amarrages.*;
 import HarbourGlobal.MyLogger;
 import VehiculesMarins.Bateau;
 import VehiculesMarins.MoyenDeTransportSurEau;
+import inpresharbour.InpresHarbour;
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
-public class CapitainerieBrain {
+public final class CapitainerieBrain {
 
     public Vector<Amarrage> ListeAmarrages;
+    public Vector<MoyenDeTransportSurEau> ListeBeateauxEnAttente;
     private MyLogger _logger;
     
     private Bateau _bateauEnCoursAmarrage;
@@ -30,9 +41,72 @@ public class CapitainerieBrain {
     
     public CapitainerieBrain() {
         _logger = new MyLogger();
-        ListeAmarrages = new Vector<Amarrage>();
+        //ListeAmarrages = new Vector<Amarrage>();
+        Load();
         setCoteSelectionne(-1);
         setEmplacementSelectione(-1);
+    }
+    
+    public void Save()
+    {
+        String sep = System.getProperty("file.separator");
+        String rep = System.getProperty("user.dir");
+       
+        try{
+            FileOutputStream fos = new FileOutputStream(rep+sep+"bateaux.data");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(ListeBeateauxEnAttente);
+            // dire combien on a encodés
+        } 
+        catch (IOException ex) {
+            Logger.getLogger(InpresHarbour.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        
+        try{
+            FileOutputStream fos = new FileOutputStream(rep+sep+"amarrages.data");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(ListeAmarrages);
+            // dire combien on a encodés
+        } 
+        catch (IOException ex) {
+            Logger.getLogger(InpresHarbour.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void Load()
+    {
+       String sep = System.getProperty("file.separator");
+       String rep = System.getProperty("user.dir");
+       
+        try{
+            FileInputStream fis = new FileInputStream(rep+sep+"bateaux.data");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            ListeBeateauxEnAttente = (Vector<MoyenDeTransportSurEau>)ois.readObject();
+            System.out.println("j'ai chargé " + ListeBeateauxEnAttente.size() + " bateaux");
+            // dire combien on a encodés
+        } 
+        catch(FileNotFoundException ex)
+        {
+            ListeBeateauxEnAttente = new Vector<MoyenDeTransportSurEau>();
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(InpresHarbour.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+         try{
+            FileInputStream fis = new FileInputStream(rep+sep+"amarrages.data");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            ListeAmarrages = (Vector<Amarrage>)ois.readObject();
+            System.out.println("j'ai chargé " + ListeAmarrages.size() + " amarrages");
+            // dire combien on a encodés
+        } 
+        catch(FileNotFoundException ex)
+        {
+            ListeAmarrages = new Vector<Amarrage>();
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(InpresHarbour.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
     }
     
     public void RegisterUser(String newUser)

@@ -7,7 +7,9 @@
 
 package VehiculesMarins;
 
-public abstract class MoyenDeTransportSurEau extends MoyenDeTransport
+import java.io.Serializable;
+
+public abstract class MoyenDeTransportSurEau extends MoyenDeTransport implements Serializable
 {
     public boolean isSubmersible;
     

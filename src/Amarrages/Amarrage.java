@@ -8,8 +8,9 @@
 package Amarrages;
 
 import HarbourGlobal.AUnIdentifiant;
+import java.io.Serializable;
 
-public abstract class Amarrage implements AUnIdentifiant
+public abstract class Amarrage implements AUnIdentifiant, Serializable 
 {
     protected int _capacite;
     protected int _idNumder;
