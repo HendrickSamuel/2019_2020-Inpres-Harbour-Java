@@ -6,9 +6,10 @@
 /******************************************************/
 package Equipage;
 
+import java.io.Serializable;
 import java.util.Vector;
 
-public class Equipage {
+public class Equipage implements Serializable{
     
     //<editor-fold defaultstate="collapsed" desc="variables">
     

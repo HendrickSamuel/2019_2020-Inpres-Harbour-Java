@@ -8,6 +8,7 @@
 package Amarrages;
 
 import VehiculesMarins.*;
+import java.io.Serializable;
 
 public class Ponton extends Amarrage
 {
@@ -22,6 +23,11 @@ public class Ponton extends Amarrage
     @Override
     public String getIdentifiant() {
         return "P"+ _idNumder;
+    }
+    
+    public void Affiche()
+    {
+        System.out.println(getIdentifiant());
     }
     
     @Override

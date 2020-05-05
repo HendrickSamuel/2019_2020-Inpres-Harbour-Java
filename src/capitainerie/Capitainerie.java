@@ -84,6 +84,7 @@ public class Capitainerie extends javax.swing.JFrame {
             
             try{
                 Bateau bateau = new Bateau("george", "ok", 10, 100, "Germanique", new Equipage(), true, Energie.essence);
+                CB.ListeBeateauxEnAttente.add(bateau);
                 CB.setBateauEnCoursAmarrage(bateau);
                 //<editor-fold defaultstate="collapsed" desc="GUI print">
                 System.out.println(CB.Now() + " | création d'un bateau: " + bateau);
@@ -107,7 +108,7 @@ public class Capitainerie extends javax.swing.JFrame {
                 }
             };
             timer.schedule(task,0, 1*1000);*/
-            
+            CB.Save();
         }
     }
             
