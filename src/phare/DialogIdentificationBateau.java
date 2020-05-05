@@ -5,12 +5,32 @@
  */
 package phare;
 
+import HarbourGlobal.DialogResult;
+import HarbourGlobal.MyLogger;
+import java.awt.Image;
+import java.util.StringTokenizer;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
 /**
  *
  * @author benka
  */
 public class DialogIdentificationBateau extends javax.swing.JDialog {
 
+    //<editor-fold defaultstate="collapsed" desc="Variables">
+    private DialogResult _result = DialogResult.untouched;
+    private MyLogger _logger;
+    
+    private String _nomBateau;
+    private String _longueur;
+    private String _pavillon;
+    private String _typeBateau;
+    private String chaineDelimiteurs = "/";
+    
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Constructeurs">
     /**
      * Creates new form DialogIdentificationBateau
      */
@@ -18,7 +38,53 @@ public class DialogIdentificationBateau extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
-
+    
+    public DialogIdentificationBateau(java.awt.Frame parent, boolean modal, String bateauIdentifie) {
+        this(parent, modal);
+        
+        //<editor-fold defaultstate="collapsed" desc="Init des variables">
+        this._logger = new MyLogger();
+        System.out.println(_logger.Now() + " IdentificationBateau bateauIdentifie recu : " + bateauIdentifie);
+        StringTokenizer parser = new StringTokenizer(bateauIdentifie, chaineDelimiteurs);
+        int i = 0;
+        while (parser.hasMoreTokens()) {
+            if(i == 0)
+               this._typeBateau = parser.nextToken().trim();
+            else
+                this._pavillon = parser.nextToken().trim();
+            i++;
+        }
+        System.out.println(_logger.Now() + " IdentificationBateau Type recu : " + _typeBateau);
+        System.out.println(_logger.Now() + " IdentificationBateau Pavillon recu : " + _pavillon);
+        this.typeBateauLabel.setText(_typeBateau);
+        this.pavilionLabel.setText(_pavillon);
+        //</editor-fold>
+        
+        //<editor-fold defaultstate="collapsed" desc="Init image pavillon">
+        try
+        {
+            ImageIcon icon = new ImageIcon(getClass().getResource("/Images/pavillons/pavillon"+ this.getPavillon() +".png"));
+            Image scaleImage = icon.getImage().getScaledInstance(150, 100,Image.SCALE_SMOOTH);
+            this.imgPavillonLabel.setIcon(new javax.swing.ImageIcon(scaleImage));
+            //<editor-fold defaultstate="collapsed" desc="GUI print">
+            System.out.println(_logger.Now() + " IdentificationBateau | création de l'image du pavillion");
+            //</editor-fold>
+        }
+        catch (Exception e)
+        {
+            ImageIcon icon = new ImageIcon(getClass().getResource("/Images/pavillons/pavillonInconnu.png"));
+            Image scaleImage = icon.getImage().getScaledInstance(150, 100,Image.SCALE_SMOOTH);
+            this.imgPavillonLabel.setIcon(new javax.swing.ImageIcon(scaleImage));
+            //<editor-fold defaultstate="collapsed" desc="GUI print">
+            System.out.println(_logger.Now() + " IdentificationBateau | création de l'image du bateau au pavillon inconnu");
+            //</editor-fold>
+        }
+        //</editor-fold>
+    }
+    //</editor-fold>
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,13 +99,13 @@ public class DialogIdentificationBateau extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        nomBateauTF = new javax.swing.JTextField();
-        longueurBateauTF = new javax.swing.JTextField();
         pavilionLabel = new javax.swing.JLabel();
         imgPavillonLabel = new javax.swing.JLabel();
         typeBateauLabel = new javax.swing.JLabel();
         btnOk = new javax.swing.JButton();
         btnAnnuler = new javax.swing.JButton();
+        nomBateauTF = new javax.swing.JTextField();
+        longueurTF = new javax.swing.JTextField();
 
         jLabel1.setText("jLabel1");
 
@@ -54,23 +120,36 @@ public class DialogIdentificationBateau extends javax.swing.JDialog {
 
         jLabel5.setText("Longueur :");
 
-        nomBateauTF.addActionListener(new java.awt.event.ActionListener() {
+        pavilionLabel.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
+        pavilionLabel.setText("Pavillon");
+
+        imgPavillonLabel.setText("imgPavillion");
+
+        typeBateauLabel.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
+        typeBateauLabel.setText("Type bateau");
+
+        btnOk.setText("OK");
+        btnOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nomBateauTFActionPerformed(evt);
+                btnOkActionPerformed(evt);
             }
         });
 
-        pavilionLabel.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
-        pavilionLabel.setText("UK");
-
-        imgPavillonLabel.setText("imagePavillion");
-
-        typeBateauLabel.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
-        typeBateauLabel.setText("Plaisance");
-
-        btnOk.setText("OK");
-
         btnAnnuler.setText("Annuler");
+        btnAnnuler.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnnulerActionPerformed(evt);
+            }
+        });
+
+        nomBateauTF.setToolTipText("nom du bateau");
+
+        longueurTF.setToolTipText("taille <= 15");
+        longueurTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                longueurTFActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -92,11 +171,15 @@ public class DialogIdentificationBateau extends javax.swing.JDialog {
                         .addGap(83, 83, 83)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(147, 147, 147)
                                 .addComponent(pavilionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 202, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                                 .addComponent(imgPavillonLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(nomBateauTF, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(longueurBateauTF, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(nomBateauTF, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(longueurTF, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(46, 46, 46))
             .addGroup(layout.createSequentialGroup()
                 .addGap(116, 116, 116)
@@ -108,28 +191,31 @@ public class DialogIdentificationBateau extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(typeBateauLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(typeBateauLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jLabel2)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(64, 64, 64)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(pavilionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(50, 50, 50)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(nomBateauTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(longueurBateauTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(pavilionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(44, 44, 44)
                         .addComponent(imgPavillonLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 28, Short.MAX_VALUE)
+                .addGap(48, 48, 48)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(nomBateauTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(longueurTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 19, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAnnuler)
                     .addComponent(btnOk))
@@ -139,10 +225,82 @@ public class DialogIdentificationBateau extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void nomBateauTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomBateauTFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nomBateauTFActionPerformed
+    //<editor-fold defaultstate="collapsed" desc="Event">
+    private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
+        System.out.println(_logger.Now() + " IdentificationBateau | Dans btn OK");
+        String nom = this.nomBateauTF.getText();
+        String longueur = this.longueurTF.getText();
+        System.out.println(_logger.Now() + " IdentificationBateau | nom : " + nom + " , Taille : " + nom.length());
+        System.out.println(_logger.Now() + " IdentificationBateau | longueur : " + longueur + " , Taille : " + longueur.length());
+        if(nom.length() > 0 && longueur.length() > 0)
+        {
+            _result = DialogResult.ok;
+            this.setNomBateau(nom);
+            this.setLongueur(longueur);
+            this.setVisible(false);            
+        }  
+    }//GEN-LAST:event_btnOkActionPerformed
 
+    private void btnAnnulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnnulerActionPerformed
+        System.out.println(_logger.Now() + " IdentificationBateau | Dans btn Annuler");
+        _result = DialogResult.cancel;
+        this.setVisible(false);
+    }//GEN-LAST:event_btnAnnulerActionPerformed
+
+    private void longueurTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_longueurTFActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_longueurTFActionPerformed
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Méthodes">
+    //<editor-fold defaultstate="collapsed" desc="Getters">
+    public DialogResult getResult() {
+        return _result;    
+    }
+    public MyLogger getLogger() {
+        return _logger;
+    }
+    public String getNom() {
+        return _nomBateau;
+    }
+
+    public String getLongueur() {
+        return _longueur;
+    }
+
+    public String getPavillon() {
+        return _pavillon;
+    }
+    public String getTypeBateau() {    
+        return _typeBateau;
+    }
+    //</editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="Setters">
+    public void setResult(DialogResult result) {
+        this._result = result;
+    }
+    public void setLogger(MyLogger logger) {
+        this._logger = logger;
+    }
+
+    public void setNomBateau(String nomBateau) {
+        this._nomBateau = nomBateau;
+    }
+
+    public void setLongueur(String longueur) {
+        this._longueur = longueur;
+    }
+
+    public void setPavillon(String pavillon) {
+        this._pavillon = pavillon;
+    }
+
+    public void setTypeBateau(String typeBateau) {
+        this._typeBateau = typeBateau;
+    }
+    //</editor-fold>
+    
+    //</editor-fold>
     /**
      * @param args the command line arguments
      */
@@ -194,7 +352,7 @@ public class DialogIdentificationBateau extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField longueurBateauTF;
+    private javax.swing.JTextField longueurTF;
     private javax.swing.JTextField nomBateauTF;
     private javax.swing.JLabel pavilionLabel;
     private javax.swing.JLabel typeBateauLabel;

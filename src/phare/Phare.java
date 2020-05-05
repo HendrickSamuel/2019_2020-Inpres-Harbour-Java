@@ -6,6 +6,14 @@
 /******************************************************/
 package phare;
 
+import HarbourGlobal.DialogResult;
+import java.awt.Color;
+import java.awt.Image;
+import java.util.StringTokenizer;
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import utilisateurs.DialogLogin;
+
 /**
  *
  * @author benka
@@ -13,8 +21,8 @@ package phare;
 public class Phare extends javax.swing.JFrame {
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
-    private PhareBrain phareBrain = new PhareBrain();
-    
+    private PhareBrain _phareBrain;
+    private DialogIdentificationBateau identiBateau;
     //</editor-fold>
     
     
@@ -23,6 +31,26 @@ public class Phare extends javax.swing.JFrame {
      */
     public Phare() {
         initComponents();
+        _phareBrain = new PhareBrain();
+        System.out.println(_phareBrain.Now() + " Phare | création du cerveau de l'application");
+        //</editor-fold>
+       
+        if(!this.UserLogin())
+        {
+            this.Close();
+        }
+        else
+        {
+            //<editor-fold defaultstate="collapsed" desc="Init de la liste des bateaux en attente">
+            this.InitListe();   
+            //</editor-fold>
+            
+            //<editor-fold defaultstate="collapsed" desc="Init image du phare">
+            ImageIcon icon1 = new ImageIcon(getClass().getResource("/Images/phare.jpg"));
+            Image scaleImage1 = icon1.getImage().getScaledInstance(300, 200,Image.SCALE_SMOOTH);
+            this.imgPhare.setIcon(new javax.swing.ImageIcon(scaleImage1));                   
+            //</editor-fold>
+        }
     }
 
     /**
@@ -42,22 +70,30 @@ public class Phare extends javax.swing.JFrame {
         bateauIdentifieTF = new javax.swing.JTextField();
         btnAutorisationEntree = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        reponseCapitainerieLabel = new javax.swing.JLabel();
         btnRAZ = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
+        btnEntreRade = new javax.swing.JButton();
+        confirmationLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         bateauxEnAttenteJL = new javax.swing.JList<>();
         btnDecoServeur = new javax.swing.JButton();
+        reponseCapitainerieTF = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Phare d'entrée d'Inpres-Harbour");
 
-        imgPhare.setText("image phare");
-
         btnConnexionServeur.setText("Se connecter au serveur");
+        btnConnexionServeur.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConnexionServeurActionPerformed(evt);
+            }
+        });
 
         btnSuivant.setText("Suivant");
+        btnSuivant.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuivantActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Bateaux en attente");
 
@@ -65,23 +101,26 @@ public class Phare extends javax.swing.JFrame {
 
         bateauIdentifieTF.setEditable(false);
         bateauIdentifieTF.setText("??");
-        bateauIdentifieTF.addActionListener(new java.awt.event.ActionListener() {
+
+        btnAutorisationEntree.setText("Demander autorisation entrée");
+        btnAutorisationEntree.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bateauIdentifieTFActionPerformed(evt);
+                btnAutorisationEntreeActionPerformed(evt);
             }
         });
 
-        btnAutorisationEntree.setText("Demander autorisation entrée");
-
         jLabel3.setText("Réponse de la capitainerie :");
-
-        reponseCapitainerieLabel.setText("Aigle des mers --> P11*4");
 
         btnRAZ.setText("RAZ");
 
-        jButton4.setText("Bateau entré dans la rade");
+        btnEntreRade.setText("Bateau entré dans la rade");
+        btnEntreRade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEntreRadeActionPerformed(evt);
+            }
+        });
 
-        jLabel5.setText("??");
+        confirmationLabel.setText("??");
 
         bateauxEnAttenteJL.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -91,6 +130,14 @@ public class Phare extends javax.swing.JFrame {
         jScrollPane1.setViewportView(bateauxEnAttenteJL);
 
         btnDecoServeur.setText("Se déconnecter du serveur");
+        btnDecoServeur.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDecoServeurActionPerformed(evt);
+            }
+        });
+
+        reponseCapitainerieTF.setEditable(false);
+        reponseCapitainerieTF.setText("??");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -100,25 +147,25 @@ public class Phare extends javax.swing.JFrame {
                 .addGap(84, 84, 84)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(46, 46, 46)
-                        .addComponent(reponseCapitainerieLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnRAZ))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jButton4)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(btnAutorisationEntree)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(jLabel2)
                                     .addGap(48, 48, 48)
-                                    .addComponent(bateauIdentifieTF, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(bateauIdentifieTF, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(btnEntreRade)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(reponseCapitainerieTF, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(confirmationLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
-                        .addComponent(btnDecoServeur)))
+                        .addComponent(btnDecoServeur))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnRAZ)))
                 .addGap(42, 42, 42))
             .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
@@ -135,50 +182,166 @@ public class Phare extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(imgPhare, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(68, 68, 68)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(bateauIdentifieTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48)
-                .addComponent(btnAutorisationEntree)
-                .addGap(36, 36, 36)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(imgPhare, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(68, 68, 68)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(bateauIdentifieTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(48, 48, 48)
+                        .addComponent(btnAutorisationEntree))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnConnexionServeur)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSuivant))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(reponseCapitainerieLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRAZ))
+                    .addComponent(btnRAZ)
+                    .addComponent(reponseCapitainerieTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEntreRade)
+                    .addComponent(confirmationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDecoServeur))
                 .addGap(25, 25, 25))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnConnexionServeur)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSuivant))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     //<editor-fold defaultstate="collapsed" desc="Event">
-    private void bateauIdentifieTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bateauIdentifieTFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bateauIdentifieTFActionPerformed
+    private void btnConnexionServeurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnexionServeurActionPerformed
+        this._phareBrain.connexionServeur();
+    }//GEN-LAST:event_btnConnexionServeurActionPerformed
+
+    private void btnDecoServeurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDecoServeurActionPerformed
+        this._phareBrain.deconnexionServeur();
+    }//GEN-LAST:event_btnDecoServeurActionPerformed
+
+    private void btnSuivantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuivantActionPerformed
+        //Vérifie que la liste des bateaux en attente n'est pas vide
+        if(this.bateauxEnAttenteJL.getModel().getSize() > 0)
+        {
+            //Premier element
+            String bateauEnAttente = this.bateauxEnAttenteJL.getModel().getElementAt(0);
+            if(bateauEnAttente.length() > 0)
+            {
+                System.out.println(_phareBrain.Now() + " Phare | Identification Bateau : " + bateauEnAttente);
+                //<editor-fold defaultstate="collapsed" desc="Ouverture de la fenetre d'Identification du bateau">
+                identiBateau = new DialogIdentificationBateau(this, true, bateauEnAttente);
+                identiBateau.setVisible(true);
+                 
+                if(identiBateau.getResult() == DialogResult.ok)
+                {
+                    System.out.println(_phareBrain.Now() + " Phare | Bateau identifie : "
+                        + "\nNom : " + identiBateau.getNom() 
+                        + "\nType : " + identiBateau.getTypeBateau()
+                        + "\nPavillon : " + identiBateau.getPavillon()
+                        + "\nLongueur : " + identiBateau.getLongueur() + "\n");
+                   this.bateauIdentifieTF.setText(identiBateau.getNom() +" / "+ identiBateau.getLongueur());
+                   this.bateauIdentifieTF.setBackground(Color.GREEN);    
+                }
+                //</editor-fold>
+            }
+        }   
+    }//GEN-LAST:event_btnSuivantActionPerformed
+
+    private void btnAutorisationEntreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAutorisationEntreeActionPerformed
+        if(this.bateauIdentifieTF.getText().length() > 0)
+        {
+            this._phareBrain.envoiMsg(identiBateau.getNom(), identiBateau.getTypeBateau(), identiBateau.getPavillon(), identiBateau.getLongueur());
+            String reponse = this._phareBrain.getReponseBateauIdentifie();
+            if(reponse.length() > 0)
+            {
+                //reponse a separe avec nom + amarrage + emplacement => / est le delimiteur
+                StringTokenizer parser = new StringTokenizer(reponse, _phareBrain.getDelimiteur());
+                int i = 0;
+                String nom = "", amarrage = "", emplacement = "";
+                while (parser.hasMoreTokens()) 
+                {
+                    switch(i)
+                    {
+                        case 0:
+                            nom = parser.nextToken().trim();
+                            break;
+                        case 1:
+                            amarrage = parser.nextToken().trim();
+                            break;
+                        case 2:
+                            emplacement = parser.nextToken().trim();
+                    }
+                    i++;
+                }
+                this.reponseCapitainerieTF.setText(nom + " -> " + amarrage + "*" + emplacement);
+                this.reponseCapitainerieTF.setBackground(Color.LIGHT_GRAY);  
+            }
+            else
+                System.out.println(_phareBrain.Now() + " Phare | Reponse emplacement non recue");
+        }
+    }//GEN-LAST:event_btnAutorisationEntreeActionPerformed
+
+    private void btnEntreRadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntreRadeActionPerformed
+        
+    }//GEN-LAST:event_btnEntreRadeActionPerformed
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Méthodes">
+    //<editor-fold defaultstate="collapsed" desc="Fermeture de la fenetre">
+    private void Close()
+    {
+        this.dispose();
+        System.exit(0);
+    }
+    //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Connexion d'un utilisateur">
+    public boolean UserLogin()
+    {
+        DialogLogin dlg = new DialogLogin(this, true);
+        dlg.setVisible(true);
+        
+        if(dlg.getResult() == DialogResult.ok)
+        {
+            System.out.println("c'est ok");
+            return true;
+            
+        }
+        else if (dlg.getResult() == DialogResult.cancel)
+        {
+            System.out.println("c'est annulé");
+            return false;
+        }
+        else if (dlg.getResult() == DialogResult.untouched)
+        {
+            System.out.println("c'est ferme sans y toucher");
+            return false;
+        }
+        else
+            return false;
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Liste des bateaux en attente">
+    private void InitListe()
+    {
+        DefaultListModel dlm = new DefaultListModel();
+        
+        // bateaux en dur => après java beans
+        for(String bateauEnAttente : this._phareBrain.getBateauxEnAttente())
+            dlm.addElement(bateauEnAttente);
+        
+        this.bateauxEnAttenteJL.setModel(dlm); 
+    }
     
     //</editor-fold>
+    
     //</editor-fold>
 
     /**
@@ -223,15 +386,15 @@ public class Phare extends javax.swing.JFrame {
     private javax.swing.JButton btnAutorisationEntree;
     private javax.swing.JButton btnConnexionServeur;
     private javax.swing.JButton btnDecoServeur;
+    private javax.swing.JButton btnEntreRade;
     private javax.swing.JButton btnRAZ;
     private javax.swing.JButton btnSuivant;
+    private javax.swing.JLabel confirmationLabel;
     private javax.swing.JLabel imgPhare;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel reponseCapitainerieLabel;
+    private javax.swing.JTextField reponseCapitainerieTF;
     // End of variables declaration//GEN-END:variables
 }
