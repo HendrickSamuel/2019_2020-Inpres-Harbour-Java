@@ -8,6 +8,7 @@ package capitainerie;
 import Amarrages.Amarrage;
 import Amarrages.Ponton;
 import Amarrages.Quai;
+import VehiculesMarins.Bateau;
 import VehiculesMarins.BateauPlaisance;
 import VehiculesMarins.MoyenDeTransportSurEau;
 import java.util.Enumeration;
@@ -191,7 +192,7 @@ private void InitTable()
             MoyenDeTransportSurEau[] mte = ponton.getListe(y);
             for(int i = 0; i < mte.length; i++)
             {
-                BateauPlaisance bp = (BateauPlaisance)mte[i];
+                Bateau bp = (Bateau)mte[i];
                 ligne = new Vector();
                 if(i == 0)
                     ligne.add(ponton.getIdentifiant()+y);
@@ -224,7 +225,7 @@ private void InitTable()
         MoyenDeTransportSurEau[] mte = quai.getListe();
         for(int i = 0; i < mte.length; i++)
         {
-            BateauPlaisance bp = (BateauPlaisance)mte[i];
+            Bateau bp = (Bateau)mte[i];
             ligne = new Vector();
             if(i == 0)
                 ligne.add(quai.getIdentifiant());

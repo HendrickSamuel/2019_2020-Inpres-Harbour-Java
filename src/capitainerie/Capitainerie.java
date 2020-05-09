@@ -75,7 +75,7 @@ public class Capitainerie extends javax.swing.JFrame {
             Image scaleImage2 = icon2.getImage().getScaledInstance(300, 200,Image.SCALE_DEFAULT);
             Image2.setIcon(new javax.swing.ImageIcon(scaleImage2));
             
-            /*
+            
             try{
                Bateau bateau1 = new Bateau("ccc", "test", 10, 100, "UK", new Equipage(), true, Energie.essence);
                Bateau bateau2 = new Bateau("aaa", "autre", 10, 100, "Germanique", new Equipage(), true, Energie.essence);
@@ -99,7 +99,7 @@ public class Capitainerie extends javax.swing.JFrame {
            catch(Exception exc)
            {
                 Logger.getLogger(Capitainerie.class.getName()).log(Level.SEVERE, null, exc);
-           }*/
+           }
 
             
             /*timer = new Timer();
@@ -298,6 +298,11 @@ public class Capitainerie extends javax.swing.JFrame {
 
         MenuItemRechercherBateau.setText("Rechercher un bateau");
         BoutonsLogin.add(MenuItemRechercherBateau);
+        MenuItemRechercherBateau.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuItemRechercherBateauActionPerformed(evt);
+            }
+        });
         MenuBateaux.add(MenuItemRechercherBateau);
 
         jMenuBar1.add(MenuBateaux);
@@ -550,9 +555,14 @@ public class Capitainerie extends javax.swing.JFrame {
     }//GEN-LAST:event_MenuItemPecheActionPerformed
 
     private void MenuItemListerBateauxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemListerBateauxActionPerformed
-        DialogListeBateaux dlb = new DialogListeBateaux(this, true, CB.ListeAmarrages);
+        DialogListeBateaux dlb = new DialogListeBateaux(this, true, CB.ListeAmarrages, false);
         dlb.setVisible(true);
     }//GEN-LAST:event_MenuItemListerBateauxActionPerformed
+
+    private void MenuItemRechercherBateauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemRechercherBateauActionPerformed
+        DialogListeBateaux dlb = new DialogListeBateaux(this, true, CB.ListeAmarrages, true);
+        dlb.setVisible(true);
+    }//GEN-LAST:event_MenuItemRechercherBateauActionPerformed
     
     private void ButtonBateauAmarreActionPerformed(java.awt.event.ActionEvent evt) {      
         if(CB.getBateauEnCoursAmarrage() != null && CB.IsAmarrageValide() == true)

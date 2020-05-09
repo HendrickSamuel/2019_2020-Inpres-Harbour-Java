@@ -10,6 +10,7 @@ import Amarrages.Amarrage;
 import Amarrages.Ponton;
 import Amarrages.Quai;
 import HarbourGlobal.DialogResult;
+import VehiculesMarins.Bateau;
 import VehiculesMarins.BateauPlaisance;
 import VehiculesMarins.MoyenDeTransportSurEau;
 import java.util.Enumeration;       
@@ -242,7 +243,7 @@ public class DialogChoixAmarrage extends javax.swing.JDialog {
             MoyenDeTransportSurEau[] mte = ponton.getListe(y);
             for(int i = 0; i < mte.length; i++)
             {
-                BateauPlaisance bp = (BateauPlaisance)mte[i];
+                Bateau bp = (Bateau)mte[i];
                 ligne = new Vector();
                 if(i == 0)
                     ligne.add(ponton.getIdentifiant()+y);
@@ -274,7 +275,7 @@ public class DialogChoixAmarrage extends javax.swing.JDialog {
         MoyenDeTransportSurEau[] mte = quai.getListe();
         for(int i = 0; i < mte.length; i++)
         {
-            BateauPlaisance bp = (BateauPlaisance)mte[i];
+            Bateau bp = (Bateau)mte[i];
             ligne = new Vector();
             if(i == 0)
                 ligne.add(quai.getIdentifiant());
