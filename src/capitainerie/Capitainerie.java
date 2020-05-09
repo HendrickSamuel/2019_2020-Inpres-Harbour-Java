@@ -7,7 +7,9 @@
 
 package capitainerie;
 
+import Amarrages.Amarrage;
 import Amarrages.Ponton;
+import Amarrages.Quai;
 import Equipage.Equipage;
 import Equipage.Marin;
 import HarbourGlobal.DialogErreurModifiable;
@@ -72,6 +74,32 @@ public class Capitainerie extends javax.swing.JFrame {
             ImageIcon icon2 = new ImageIcon(getClass().getResource("/Images/bateaupeche.jpg"));
             Image scaleImage2 = icon2.getImage().getScaledInstance(300, 200,Image.SCALE_DEFAULT);
             Image2.setIcon(new javax.swing.ImageIcon(scaleImage2));
+            
+            /*
+            try{
+               Bateau bateau1 = new Bateau("ccc", "test", 10, 100, "UK", new Equipage(), true, Energie.essence);
+               Bateau bateau2 = new Bateau("aaa", "autre", 10, 100, "Germanique", new Equipage(), true, Energie.essence);
+               Amarrage am = CB.ListeAmarrages.get(0);
+               if(am instanceof Ponton)
+               {
+                   Ponton ponton = (Ponton)am;
+                   MoyenDeTransportSurEau[] liste = ponton.getListe(1);
+                   liste[1] = bateau1;
+                   liste[2] = bateau2;
+               }
+               else if(am instanceof Quai)
+               {
+                    Quai quai = (Quai)am;
+                   MoyenDeTransportSurEau[] liste = quai.getListe();
+                   liste[2] = bateau1;
+                   liste[1] = bateau2;
+               }
+
+           }
+           catch(Exception exc)
+           {
+                Logger.getLogger(Capitainerie.class.getName()).log(Level.SEVERE, null, exc);
+           }*/
 
             
             /*timer = new Timer();
@@ -176,6 +204,11 @@ public class Capitainerie extends javax.swing.JFrame {
         LabelBateauxEntree.setToolTipText("");
 
         ListeBateauxEntree.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        ListeBateauxEntree.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ListeBateauxEntreeMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(ListeBateauxEntree);
 
         ButtonBateauAmarre.setText("Bateau amarré");
@@ -234,10 +267,20 @@ public class Capitainerie extends javax.swing.JFrame {
 
         MenuItemPlaisance.setText("Plaisance");
         BoutonsLogin.add(MenuItemPlaisance);
+        MenuItemPlaisance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuItemPlaisanceActionPerformed(evt);
+            }
+        });
         MenuAmarrages.add(MenuItemPlaisance);
 
         MenuItemPeche.setText("Pêche");
         BoutonsLogin.add(MenuItemPeche);
+        MenuItemPeche.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuItemPecheActionPerformed(evt);
+            }
+        });
         MenuAmarrages.add(MenuItemPeche);
 
         jMenuBar1.add(MenuAmarrages);
@@ -246,6 +289,11 @@ public class Capitainerie extends javax.swing.JFrame {
 
         MenuItemListerBateaux.setText("Liste complète");
         BoutonsLogin.add(MenuItemListerBateaux);
+        MenuItemListerBateaux.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuItemListerBateauxActionPerformed(evt);
+            }
+        });
         MenuBateaux.add(MenuItemListerBateaux);
 
         MenuItemRechercherBateau.setText("Rechercher un bateau");
@@ -330,15 +378,16 @@ public class Capitainerie extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(LabelAmaragePossible)
                         .addGap(18, 18, 18)
-                        .addComponent(ButtonChoose)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(InputAmarrage, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
-                        .addComponent(ButtonSendChoise)
-                        .addGap(18, 18, 18)
-                        .addComponent(InputChoice, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(ButtonSendConfirmation)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ButtonSendChoise)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(ButtonChoose)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(InputAmarrage, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(156, 156, 156)
+                                .addComponent(InputChoice, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(ButtonSendConfirmation)))))
                 .addContainerGap(134, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -391,10 +440,11 @@ public class Capitainerie extends javax.swing.JFrame {
                             .addComponent(LabelAmaragePossible)
                             .addComponent(ButtonChoose)
                             .addComponent(InputAmarrage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ButtonSendChoise)
                             .addComponent(InputChoice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(ButtonSendConfirmation))
-                        .addGap(39, 39, 39)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ButtonSendChoise)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Image1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(Image2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -483,6 +533,26 @@ public class Capitainerie extends javax.swing.JFrame {
     private void ButtonSendChoiseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonSendChoiseActionPerformed
         CB.sendMessage(CB.getMessageAEnvoyer());
     }//GEN-LAST:event_ButtonSendChoiseActionPerformed
+
+    private void ListeBateauxEntreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ListeBateauxEntreeMouseClicked
+        String msg = ListeBateauxEntree.getSelectedValue();
+        CB.SetBateauFromText(msg);
+    }//GEN-LAST:event_ListeBateauxEntreeMouseClicked
+
+    private void MenuItemPlaisanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemPlaisanceActionPerformed
+        DialogListesAmarrages dla = new DialogListesAmarrages(this, true, CB.ListeAmarrages, "Plaisance");
+        dla.setVisible(true);
+    }//GEN-LAST:event_MenuItemPlaisanceActionPerformed
+
+    private void MenuItemPecheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemPecheActionPerformed
+        DialogListesAmarrages dla = new DialogListesAmarrages(this, true, CB.ListeAmarrages, "Peche");
+        dla.setVisible(true);
+    }//GEN-LAST:event_MenuItemPecheActionPerformed
+
+    private void MenuItemListerBateauxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemListerBateauxActionPerformed
+        DialogListeBateaux dlb = new DialogListeBateaux(this, true, CB.ListeAmarrages);
+        dlb.setVisible(true);
+    }//GEN-LAST:event_MenuItemListerBateauxActionPerformed
     
     private void ButtonBateauAmarreActionPerformed(java.awt.event.ActionEvent evt) {      
         if(CB.getBateauEnCoursAmarrage() != null && CB.IsAmarrageValide() == true)
@@ -686,7 +756,11 @@ public class Capitainerie extends javax.swing.JFrame {
     {
         DefaultListModel dlm = new DefaultListModel();
             
-        // verifier fichier et initialiser les bateaux deja la 
+        Enumeration enu = CB.ListeBateauxEntree.elements();
+        while(enu.hasMoreElements())
+        {
+            dlm.addElement(enu.nextElement());
+        }
         
         ListeBateauxEntree.setModel(dlm); 
     }

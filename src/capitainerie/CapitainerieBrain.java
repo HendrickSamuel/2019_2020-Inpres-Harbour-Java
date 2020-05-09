@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -165,6 +167,7 @@ public final class CapitainerieBrain {
     
     public void AmarrerBateau(Bateau bateau)
     {
+        // verifi la validite 
         if(getAmarrageSelectionne() instanceof Ponton)
         {
             Ponton ponton = (Ponton)getAmarrageSelectionne();
@@ -211,8 +214,7 @@ public final class CapitainerieBrain {
             return false;
     }
 
-    public
-            Bateau getBateauEnCoursAmarrage()
+    public Bateau getBateauEnCoursAmarrage()
     {
         return _bateauEnCoursAmarrage;
     }
@@ -230,9 +232,9 @@ public final class CapitainerieBrain {
     }
 
     public
-    void setAmarrageSelectionne(Amarrage _AmarrageSelectionne)
+    void setAmarrageSelectionne(Amarrage amarrageSelectionne)
     {
-        this._AmarrageSelectionne = _AmarrageSelectionne;
+        this._AmarrageSelectionne = amarrageSelectionne;
     }
 
     public int getCoteSelectionne()
@@ -259,7 +261,23 @@ public final class CapitainerieBrain {
     
     public String GetEmplacement()
     {
-        return getAmarrageSelectionne().getIdentifiant()+getCoteSelectionne()+"*"+_emplacementSelectione;
+        if(getAmarrageSelectionne() != null)
+        {
+            if(getAmarrageSelectionne() instanceof Ponton)
+            {
+               return getAmarrageSelectionne().getIdentifiant()+getCoteSelectionne()+"*"+_emplacementSelectione;
+            }
+            else
+            if(getAmarrageSelectionne() instanceof Quai)
+            {
+                return getAmarrageSelectionne().getIdentifiant()+"*"+_emplacementSelectione;
+            }
+            else
+                return "";
+        }
+        else
+            return "";
+        
     }
     
     public void DemarrerServeur(JCheckBox check)
@@ -304,18 +322,70 @@ public final class CapitainerieBrain {
             return "";
     }
 
-    /**
-     * @return the _messageAEnvoyer
-     */
     public String getMessageAEnvoyer() {
         return _messageAEnvoyer;
     }
 
-    /**
-     * @param _messageAEnvoyer the _messageAEnvoyer to set
-     */
     public void setMessageAEnvoyer(String _messageAEnvoyer) {
         this._messageAEnvoyer = _messageAEnvoyer;
+    }
+    
+    public void SetBateauFromText(String text)
+    {
+        boolean found = false;
+        //division de la chaine de charactere passée au format Test -- Peche -- FR -> Q2*4 OU Test -- Plaisance -- FR -> P22*4
+        
+        text = text.replaceAll("\\s+",""); // prendre char espace ?
+        text = text.replaceAll("--"," ");
+        text = text.replaceAll("->"," ");
+        text = text.replaceAll("\\*"," ");
+        
+        StringTokenizer st = new StringTokenizer(text);
+
+        String nomBateau = st.nextToken();
+        
+        String typeBateau = st.nextToken();
+        
+        String pavillon = st.nextToken();
+        
+        String amarrage = st.nextToken(); // P11 ou Q1
+        String cote = "";
+        switch(amarrage.substring(0,1))
+        {
+            case "Q":
+                cote = "-1";
+                break;
+                
+            case "P":
+                cote = amarrage.substring(amarrage.length()-1);
+                amarrage = amarrage.substring(0,amarrage.length()-1);
+                break;         
+        }
+
+        String emplacement = st.nextToken();        
+        // recherche l'amarrage
+        
+        Enumeration enu = ListeAmarrages.elements();
+        while(enu.hasMoreElements() && !found)
+        {
+            Amarrage am = (Amarrage)enu.nextElement();
+            if(am.getIdentifiant().compareTo(amarrage) == 0)
+            {
+                found = true;
+                System.out.println("Trouvé");
+                this.setAmarrageSelectionne(am);
+                this.setEmplacementSelectione(Integer.parseInt(emplacement));
+                this.setCoteSelectionne(Integer.parseInt(cote));
+                
+                //verifier que l'emplacement contient le bateau en cours ? 
+            }
+        }
+        
+        if(!found)
+        {
+            System.out.println("Pas Trouvé");
+        }
+        
     }
     
 }
