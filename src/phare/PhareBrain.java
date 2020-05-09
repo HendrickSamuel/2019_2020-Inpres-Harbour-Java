@@ -22,11 +22,17 @@ public class PhareBrain {
     private boolean _estConnecte = false;
     private Vector<String> _bateauxEnAttente;
     private String _bateauIdentifie;
-    private int PORT_SERVICE = 50000;
+    private final int PORT_SERVICE = 50000;
     private MyLogger _logger;
     private String _reponseBateauIdentifie;
     private String _reponseBateauEntreRade;
-    private String _delimiteur = "/";
+    private String _amarrageEnCours;
+    private String _emplacementEnCours;
+    private final String _delimiteur = "/";
+    public static final String ENVOI_IDENTIFICATION = "1";
+    public static final String RECEP_IDENTIFICATION = "2";
+    public static final String ENVOI_ENTRE_RADE = "3";
+    public static final String RECEP_ENTRE_RADE = "4";
     //</editor-fold>
   
     //<editor-fold defaultstate="collapsed" desc="Constructeur">
@@ -76,6 +82,15 @@ public class PhareBrain {
     public String getReponseBateauEntreRade() {
         return _reponseBateauEntreRade;
     }
+    /*-----------------------------------------------------------*/
+    public String getAmarrageEnCours() {
+        return _amarrageEnCours;
+    }
+    /*-----------------------------------------------------------*/
+    public String getEmplacementEnCours() {
+        return _emplacementEnCours;
+    }
+    
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Setters">
@@ -101,7 +116,16 @@ public class PhareBrain {
     /*-----------------------------------------------------------*/
     public void setEstConnecte(boolean estConnecte) {
         this._estConnecte = estConnecte;
-    }    
+    }
+    /*-----------------------------------------------------------*/
+    public void setAmarrageEnCours(String amarrageEnCours) {
+        this._amarrageEnCours = amarrageEnCours;
+    }
+    /*-----------------------------------------------------------*/
+    public void setEmplacementEnCours(String emplacementEnCours) {
+        this._emplacementEnCours = emplacementEnCours;
+    }
+    
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Publique">
@@ -155,14 +179,16 @@ public class PhareBrain {
         return _logger.Now();
     }
     /*-----------------------------------------------------------*/
-    public void envoiMsg(String nomBateau , String Type , String pavillon , String longueur)
+    //BateauQuiAEteIdentifie - 1
+    public void envoiMsg(String typeEnvoi, String nomBateau , String Type , String pavillon , String longueur)
     { 
-        _reponseBateauIdentifie = this._nbc.sendString(nomBateau + "/" + Type + "/" + pavillon + "/" + longueur);
+        _reponseBateauIdentifie = this._nbc.sendString(typeEnvoi + "/" + nomBateau + "/" + Type + "/" + pavillon + "/" + longueur);
     }
     /*-----------------------------------------------------------*/
-    public void envoiMsg(String nomBateau , String amarrage, String emplacement)
+    //BateauEntreRade - 3
+    public void envoiMsgRade(String typeEnvoi, String msg)
     { 
-        _reponseBateauEntreRade = this._nbc.sendString(nomBateau + "/" + amarrage + "/" + emplacement);
+        _reponseBateauEntreRade = this._nbc.sendString(typeEnvoi + "/" + msg);
     }
     //</editor-fold>
     

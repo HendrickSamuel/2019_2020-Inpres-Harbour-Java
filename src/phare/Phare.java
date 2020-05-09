@@ -24,8 +24,7 @@ public class Phare extends javax.swing.JFrame {
     private PhareBrain _phareBrain;
     private DialogIdentificationBateau identiBateau;
     //</editor-fold>
-    
-    
+        
     /**
      * Creates new form Phare
      */
@@ -228,7 +227,8 @@ public class Phare extends javax.swing.JFrame {
 
     private void btnSuivantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuivantActionPerformed
         //Vérifie que la liste des bateaux en attente n'est pas vide
-        if(this.bateauxEnAttenteJL.getModel().getSize() > 0)
+        if(this.bateauxEnAttenteJL.getModel().getSize() > 0 
+                && this.bateauIdentifieTF.getText().compareTo("??") == 0)
         {
             //Premier element
             String bateauEnAttente = this.bateauxEnAttenteJL.getModel().getElementAt(0);
@@ -255,41 +255,116 @@ public class Phare extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSuivantActionPerformed
 
     private void btnAutorisationEntreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAutorisationEntreeActionPerformed
-        if(this.bateauIdentifieTF.getText().length() > 0)
+        if(this.bateauIdentifieTF.getText().compareTo("??") != 0)
         {
-            this._phareBrain.envoiMsg(identiBateau.getNom(), identiBateau.getTypeBateau(), identiBateau.getPavillon(), identiBateau.getLongueur());
+            this._phareBrain.envoiMsg(_phareBrain.ENVOI_IDENTIFICATION, identiBateau.getNom(), identiBateau.getTypeBateau(), identiBateau.getPavillon(), identiBateau.getLongueur());
             String reponse = this._phareBrain.getReponseBateauIdentifie();
+            System.out.println(_phareBrain.Now() + " Phare | Reponse recue : " + reponse);
             if(reponse.length() > 0)
             {
-                //reponse a separe avec nom + amarrage + emplacement => / est le delimiteur
+                //reponse a separe avec TypeDeReception + nom + amarrage + emplacement => / est le delimiteur
                 StringTokenizer parser = new StringTokenizer(reponse, _phareBrain.getDelimiteur());
                 int i = 0;
-                String nom = "", amarrage = "", emplacement = "";
-                while (parser.hasMoreTokens()) 
+                String typeReception = "", nom = "", amarrage = "", emplacement = "";
+                boolean bonneReception = true;
+                while (parser.hasMoreTokens() && bonneReception) 
                 {
                     switch(i)
                     {
                         case 0:
-                            nom = parser.nextToken().trim();
+                            typeReception = parser.nextToken().trim();
+                            if(typeReception.compareTo(_phareBrain.RECEP_IDENTIFICATION) != 0)
+                            {
+                                bonneReception = false;
+                            }
                             break;
                         case 1:
-                            amarrage = parser.nextToken().trim();
+                            nom = parser.nextToken().trim();
                             break;
                         case 2:
+                            amarrage = parser.nextToken().trim();
+                            break;
+                        case 3:
                             emplacement = parser.nextToken().trim();
                     }
                     i++;
                 }
-                this.reponseCapitainerieTF.setText(nom + " -> " + amarrage + "*" + emplacement);
-                this.reponseCapitainerieTF.setBackground(Color.LIGHT_GRAY);  
+                if(bonneReception)
+                {
+                    this.reponseCapitainerieTF.setText(nom + " -> " + amarrage + "*" + emplacement);
+                    this.reponseCapitainerieTF.setBackground(Color.LIGHT_GRAY);  
+                    this._phareBrain.setAmarrageEnCours(amarrage);
+                    this._phareBrain.setEmplacementEnCours(emplacement);
+                    System.out.println(_phareBrain.Now() + " Phare | Bon TYPE Reponse - Autorisation d'entrée");
+                }
+                else
+                {
+                    this.reponseCapitainerieTF.setText("??");
+                    this.reponseCapitainerieTF.setBackground(Color.WHITE);
+                    this._phareBrain.setAmarrageEnCours("");
+                    this._phareBrain.setEmplacementEnCours("");
+                    System.out.println(_phareBrain.Now() + " Phare | Mauvais TYPE Reponse - Autorisation d'entrée");
+                }
             }
             else
-                System.out.println(_phareBrain.Now() + " Phare | Reponse emplacement non recue");
+                System.out.println(_phareBrain.Now() + " Phare | Reponse amarrage non recue");
         }
     }//GEN-LAST:event_btnAutorisationEntreeActionPerformed
 
     private void btnEntreRadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntreRadeActionPerformed
-        
+        if(this.reponseCapitainerieTF.getText().compareTo("??") == 0)
+        {
+            this._phareBrain.envoiMsgRade(_phareBrain.ENVOI_ENTRE_RADE, "OK");
+            String reponse = this._phareBrain.getReponseBateauIdentifie();
+                        System.out.println(_phareBrain.Now() + " Phare | Reponse recue : " + reponse);
+            if(reponse.length() > 0)
+            {
+                StringTokenizer parser = new StringTokenizer(reponse, _phareBrain.getDelimiteur());
+                int i = 0;
+                String typeReception = "", msg = "";
+                boolean bonneReception = true;
+                while (parser.hasMoreTokens() && bonneReception) 
+                {
+                    switch(i)
+                    {
+                        case 0:
+                            typeReception = parser.nextToken().trim();
+                            if(typeReception.compareTo(_phareBrain.RECEP_ENTRE_RADE) != 0)
+                            {
+                                bonneReception = false;
+                            }
+                            break;
+                        case 1:
+                            msg = parser.nextToken().trim();
+                            if(msg.compareTo("OK") != 0)
+                                bonneReception = false;
+                            break;
+                    }
+                    i++;
+                }
+                if(bonneReception)
+                {
+                    this.confirmationLabel.setText(identiBateau.getNom() + " <- " + 
+                            _phareBrain.getAmarrageEnCours()+ "*" + _phareBrain.getEmplacementEnCours());
+                    this.reponseCapitainerieTF.setBackground(Color.LIGHT_GRAY);  
+                    this._phareBrain.setAmarrageEnCours("");
+                    this._phareBrain.setEmplacementEnCours("");
+                    this.bateauIdentifieTF.setText("??");
+                    this.reponseCapitainerieTF.setText("??");
+                    this.reponseCapitainerieTF.setBackground(Color.WHITE);
+                    this.bateauIdentifieTF.setBackground(Color.WHITE);
+                    System.out.println(_phareBrain.Now() + " Phare | Bon TYPE Reponse - Entre dans la rade");
+                }
+                else
+                {
+                    this.confirmationLabel.setText("??");
+                    System.out.println(_phareBrain.Now() + " Phare | Mauvais TYPE Reponse - Entre dans la rade");
+                }
+            }
+            else
+                System.out.println(_phareBrain.Now() + " Phare | Reponse Vide - Entre dans la rade");
+            
+        }
     }//GEN-LAST:event_btnEntreRadeActionPerformed
     //</editor-fold>
     
