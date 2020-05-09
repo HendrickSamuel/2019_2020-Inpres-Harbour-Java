@@ -22,15 +22,24 @@ import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.CheckBox;
+import javax.swing.JCheckBox;
+import network.NetworkBasicServer;
 
 
 public final class CapitainerieBrain {
+    
+    private NetworkBasicServer _nbs = null;
+    private int PORT_ECOUTE = 50000;
+    private String _messageAEnvoyer;
+    
 
     public Vector<Amarrage> ListeAmarrages;
-    public Vector<MoyenDeTransportSurEau> ListeBeateauxEnAttente;
+    public Vector<String> ListeBateauxEntree;
     private MyLogger _logger;
     
     private Bateau _bateauEnCoursAmarrage;
+    
     private Amarrage _AmarrageSelectionne;
     
     private int _coteSelectionne;
@@ -41,7 +50,6 @@ public final class CapitainerieBrain {
     
     public CapitainerieBrain() {
         _logger = new MyLogger();
-        //ListeAmarrages = new Vector<Amarrage>();
         Load();
         setCoteSelectionne(-1);
         setEmplacementSelectione(-1);
@@ -51,18 +59,17 @@ public final class CapitainerieBrain {
     {
         String sep = System.getProperty("file.separator");
         String rep = System.getProperty("user.dir");
-       
-        try{
+        
+         try{
             FileOutputStream fos = new FileOutputStream(rep+sep+"bateaux.data");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(ListeBeateauxEnAttente);
+            oos.writeObject(ListeBateauxEntree);
             // dire combien on a encodés
         } 
         catch (IOException ex) {
             Logger.getLogger(InpresHarbour.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        
+      
         try{
             FileOutputStream fos = new FileOutputStream(rep+sep+"amarrages.data");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -79,34 +86,55 @@ public final class CapitainerieBrain {
        String sep = System.getProperty("file.separator");
        String rep = System.getProperty("user.dir");
        
-        try{
+       try{
             FileInputStream fis = new FileInputStream(rep+sep+"bateaux.data");
             ObjectInputStream ois = new ObjectInputStream(fis);
-            ListeBeateauxEnAttente = (Vector<MoyenDeTransportSurEau>)ois.readObject();
-            System.out.println("j'ai chargé " + ListeBeateauxEnAttente.size() + " bateaux");
-            // dire combien on a encodés
+            ListeBateauxEntree = (Vector<String>)ois.readObject();
+            System.out.println("j'ai chargé " + ListeBateauxEntree.size() + " bateaux en attente");
         } 
         catch(FileNotFoundException ex)
         {
-            ListeBeateauxEnAttente = new Vector<MoyenDeTransportSurEau>();
+            ListeBateauxEntree = new Vector<String>();
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(InpresHarbour.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-         try{
-            FileInputStream fis = new FileInputStream(rep+sep+"amarrages.data");
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            ListeAmarrages = (Vector<Amarrage>)ois.readObject();
-            System.out.println("j'ai chargé " + ListeAmarrages.size() + " amarrages");
-            // dire combien on a encodés
+            
+        try{
+           FileInputStream fis = new FileInputStream(rep+sep+"amarrages.data");
+           ObjectInputStream ois = new ObjectInputStream(fis);
+           ListeAmarrages = (Vector<Amarrage>)ois.readObject();
+           System.out.println("j'ai chargé " + ListeAmarrages.size() + " amarrages");
         } 
         catch(FileNotFoundException ex)
         {
+            System.out.println("Fichier non trouvé, Initialisation de InpresHarbour");
             ListeAmarrages = new Vector<Amarrage>();
+            InitHarbour();
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(InpresHarbour.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
+    }
+    
+    private void InitHarbour()
+    {
+        Ponton ponton;
+        Quai quai;
+        
+        ponton = new Ponton(1, 5);
+        ListeAmarrages.add(ponton);
+        
+        ponton = new Ponton(2, 8);
+        ListeAmarrages.add(ponton);
+        
+        ponton = new Ponton(3,5);
+        ListeAmarrages.add(ponton);
+        
+        quai = new Quai(1, 7);
+        ListeAmarrages.add(quai);
+        
+        quai = new Quai(2, 5);
+        ListeAmarrages.add(quai);
+
     }
     
     public void RegisterUser(String newUser)
@@ -137,7 +165,7 @@ public final class CapitainerieBrain {
     
     public void AmarrerBateau(Bateau bateau)
     {
-        if(getAmarrageSelectionne().getClass().toString().compareTo("class Amarrages.Ponton") == 0)
+        if(getAmarrageSelectionne() instanceof Ponton)
         {
             Ponton ponton = (Ponton)getAmarrageSelectionne();
             // verifier la taille disponible + coté
@@ -146,7 +174,7 @@ public final class CapitainerieBrain {
             cote[getEmplacementSelectione()] = bateau;
         }
         else
-        if(getAmarrageSelectionne().getClass().toString().compareTo("class Amarrages.Quai") == 0)
+        if(getAmarrageSelectionne() instanceof Quai)
         {
             Quai quai = (Quai)getAmarrageSelectionne();
             // verifier la taille disponible
@@ -161,8 +189,7 @@ public final class CapitainerieBrain {
     {
         if(getAmarrageSelectionne() != null)
         {
-            System.out.println(getAmarrageSelectionne().getClass().toString());
-            if(getAmarrageSelectionne().getClass().toString().compareTo("class Amarrages.Ponton") == 0)
+            if(getAmarrageSelectionne() instanceof Ponton)
             {
                 if(getEmplacementSelectione() != -1 && getCoteSelectionne() != -1) // verifier qu'on ne depasse pas
                     return true;
@@ -170,7 +197,7 @@ public final class CapitainerieBrain {
                     return false;
             }
             else
-            if(getAmarrageSelectionne().getClass().toString().compareTo("class Amarrages.Quai") == 0)
+            if(getAmarrageSelectionne() instanceof Quai)
             {
                 if(getEmplacementSelectione() != -1) // verifier qu'on ne depasse pas
                     return true;
@@ -233,6 +260,62 @@ public final class CapitainerieBrain {
     public String GetEmplacement()
     {
         return getAmarrageSelectionne().getIdentifiant()+getCoteSelectionne()+"*"+_emplacementSelectione;
+    }
+    
+    public void DemarrerServeur(JCheckBox check)
+    {
+        if(!IsServerOn())
+        {
+            _nbs = new NetworkBasicServer(PORT_ECOUTE, check);
+        }
+        else
+            System.out.println("Le serveur est déja en cours");
+    }
+    
+    public void ArreterServeur()
+    {
+        if(IsServerOn())
+        {
+            _nbs.setEndReceiving();
+            _nbs = null;
+        }
+    }
+
+    public boolean IsServerOn() {
+        if(_nbs == null)
+            return false;
+        else
+            return true;
+    }
+    
+    public void sendMessage(String amarrage)
+    {
+        _nbs.sendMessage(amarrage);
+    }
+    
+    public String ReadMessage()
+    {
+        if(IsServerOn())
+        {
+            String message = _nbs.getMessage();
+            return message;
+        }
+        else
+            return "";
+    }
+
+    /**
+     * @return the _messageAEnvoyer
+     */
+    public String getMessageAEnvoyer() {
+        return _messageAEnvoyer;
+    }
+
+    /**
+     * @param _messageAEnvoyer the _messageAEnvoyer to set
+     */
+    public void setMessageAEnvoyer(String _messageAEnvoyer) {
+        this._messageAEnvoyer = _messageAEnvoyer;
     }
     
 }

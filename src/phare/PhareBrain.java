@@ -10,10 +10,6 @@ import HarbourGlobal.MyLogger;
 import java.util.Vector;
 import network.NetworkBasicClient;
 
-/**
- *
- * @author benka
- */
 public class PhareBrain {
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private NetworkBasicClient _nbc = null;
@@ -112,7 +108,7 @@ public class PhareBrain {
         {
             this.setNbc(new NetworkBasicClient("localhost", PORT_SERVICE));
             System.out.println(this.Now() + " PhareBrain | le phare est (init) connecté au serveur");
-            this._estConnecte = true;
+            this._estConnecte = true; // utile ? 
             System.out.println("2 :" + this.getNbc());
             
             /*catch(java.lang.NullPointerException e)
@@ -141,7 +137,7 @@ public class PhareBrain {
         {
             this.getNbc().setEndSending();
             this._nbc = null;
-            this._estConnecte = false;
+            this._estConnecte = false; // utile ? 
             System.out.println(this.Now() + " PhareBrain | le phare est deconnecté au serveur");
         }
         else
@@ -158,6 +154,7 @@ public class PhareBrain {
     public void envoiMsg(String nomBateau , String Type , String pavillon , String longueur)
     { 
         _reponseBateauIdentifie = this._nbc.sendString(nomBateau + "/" + Type + "/" + pavillon + "/" + longueur);
+        System.out.println(_reponseBateauIdentifie);
     }
     /*-----------------------------------------------------------*/
     public void envoiMsg(String nomBateau , String amarrage, String emplacement)

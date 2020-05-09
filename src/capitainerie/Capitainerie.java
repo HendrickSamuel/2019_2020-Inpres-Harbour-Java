@@ -72,30 +72,7 @@ public class Capitainerie extends javax.swing.JFrame {
             ImageIcon icon2 = new ImageIcon(getClass().getResource("/Images/bateaupeche.jpg"));
             Image scaleImage2 = icon2.getImage().getScaledInstance(300, 200,Image.SCALE_DEFAULT);
             Image2.setIcon(new javax.swing.ImageIcon(scaleImage2));
-            
-            Ponton ponton = new Ponton(1,10);
-            //<editor-fold defaultstate="collapsed" desc="GUI print">
 
-            System.out.println(CB.Now() + " | création d'un ponton: " + ponton.getIdentifiant());
-            //Ajout d'un ponton pour le test
-            CB.ListeAmarrages.add(ponton);
-            System.out.println(CB.Now() + " |ajout du ponton à la liste du cerveau");
-            //</editor-fold>
-            
-            try{
-                Bateau bateau = new Bateau("george", "ok", 10, 100, "Germanique", new Equipage(), true, Energie.essence);
-                CB.ListeBeateauxEnAttente.add(bateau);
-                CB.setBateauEnCoursAmarrage(bateau);
-                //<editor-fold defaultstate="collapsed" desc="GUI print">
-                System.out.println(CB.Now() + " | création d'un bateau: " + bateau);
-                bateau.Affiche();
-                //</editor-fold>
-            }
-            catch(Exception exc)
-            {
-                 Logger.getLogger(Capitainerie.class.getName()).log(Level.SEVERE, null, exc);
-            }
-            
             
             /*timer = new Timer();
             TimerTask task = new TimerTask()
@@ -108,17 +85,14 @@ public class Capitainerie extends javax.swing.JFrame {
                 }
             };
             timer.schedule(task,0, 1*1000);*/
-            CB.Save();
         }
     }
             
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         BoutonsLogin = new javax.swing.ButtonGroup();
-        ButtonStartServer = new javax.swing.JButton();
         CheckRequestPending = new javax.swing.JCheckBox();
         ButtonRead = new javax.swing.JButton();
         TextFieldPendingRequest = new javax.swing.JTextField();
@@ -132,10 +106,10 @@ public class Capitainerie extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         ListeBateauxEntree = new javax.swing.JList<>();
         ButtonBateauAmarre = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         Image1 = new javax.swing.JLabel();
         Image2 = new javax.swing.JLabel();
         LabelHeure = new javax.swing.JLabel();
+        ButtonServeur = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         MenuUser = new javax.swing.JMenu();
         MenuItemLogin = new javax.swing.JMenuItem();
@@ -161,13 +135,15 @@ public class Capitainerie extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Capitainerie d'Inpres-Harbour");
 
-        ButtonStartServer.setText("Démarrer le serveur");
-        ButtonStartServer.setContentAreaFilled(false);
-
         CheckRequestPending.setText("Requête en attente");
 
         ButtonRead.setText("Lire");
         BoutonsLogin.add(ButtonRead);
+        ButtonRead.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonReadActionPerformed(evt);
+            }
+        });
 
         TextFieldPendingRequest.setText("??");
 
@@ -175,10 +151,8 @@ public class Capitainerie extends javax.swing.JFrame {
 
         ButtonChoose.setText("choisir");
         BoutonsLogin.add(ButtonChoose);
-        ButtonChoose.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        ButtonChoose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ButtonChooseActionPerformed(evt);
             }
         });
@@ -187,6 +161,11 @@ public class Capitainerie extends javax.swing.JFrame {
 
         ButtonSendChoise.setText("Envoyer choix");
         BoutonsLogin.add(ButtonSendChoise);
+        ButtonSendChoise.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonSendChoiseActionPerformed(evt);
+            }
+        });
 
         InputChoice.setText("???");
 
@@ -202,16 +181,11 @@ public class Capitainerie extends javax.swing.JFrame {
         ButtonBateauAmarre.setText("Bateau amarré");
         BoutonsLogin.add(ButtonBateauAmarre);
         ButtonBateauAmarre.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        ButtonBateauAmarre.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        ButtonBateauAmarre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ButtonBateauAmarreActionPerformed(evt);
             }
         });
-
-        jButton2.setText("Arrêter le serveur");
-        BoutonsLogin.add(jButton2);
 
         Image1.setBackground(new java.awt.Color(51, 204, 255));
 
@@ -219,13 +193,18 @@ public class Capitainerie extends javax.swing.JFrame {
 
         LabelHeure.setText("current time");
 
+        ButtonServeur.setText("Demarrer Serveur");
+        ButtonServeur.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonServeurActionPerformed(evt);
+            }
+        });
+
         MenuUser.setText("Utilisateurs");
 
         MenuItemLogin.setText("login");
-        MenuItemLogin.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        MenuItemLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MenuItemLoginActionPerformed(evt);
             }
         });
@@ -233,10 +212,8 @@ public class Capitainerie extends javax.swing.JFrame {
 
         MenuItemLogout.setText("Logout");
         BoutonsLogin.add(MenuItemLogout);
-        MenuItemLogout.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        MenuItemLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MenuItemLogoutActionPerformed(evt);
             }
         });
@@ -244,10 +221,8 @@ public class Capitainerie extends javax.swing.JFrame {
 
         MenuItemNouveau.setText("Nouveau");
         BoutonsLogin.add(MenuItemNouveau);
-        MenuItemNouveau.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        MenuItemNouveau.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MenuItemNouveauActionPerformed(evt);
             }
         });
@@ -294,20 +269,16 @@ public class Capitainerie extends javax.swing.JFrame {
         MenuAPropos.setText("A propos");
 
         ButtonAbout.setText("Auteur(s)");
-        ButtonAbout.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        ButtonAbout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ButtonAboutActionPerformed(evt);
             }
         });
         MenuAPropos.add(ButtonAbout);
 
         ButtonAide.setText("Aide");
-        ButtonAide.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        ButtonAide.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ButtonAideActionPerformed(evt);
             }
         });
@@ -319,10 +290,8 @@ public class Capitainerie extends javax.swing.JFrame {
 
         MenuItemFormatDate.setText("Format date");
         BoutonsLogin.add(MenuItemFormatDate);
-        MenuItemFormatDate.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        MenuItemFormatDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MenuItemFormatDateActionPerformed(evt);
             }
         });
@@ -334,10 +303,8 @@ public class Capitainerie extends javax.swing.JFrame {
 
         HeureVisibleChack.setSelected(true);
         HeureVisibleChack.setText("Affichage date-heure courante");
-        HeureVisibleChack.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        HeureVisibleChack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 HeureVisibleChackActionPerformed(evt);
             }
         });
@@ -377,7 +344,7 @@ public class Capitainerie extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(ButtonStartServer)
+                        .addComponent(ButtonServeur)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(LabelHeure))
                     .addGroup(layout.createSequentialGroup()
@@ -389,12 +356,8 @@ public class Capitainerie extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(12, 12, 12)
-                                        .addComponent(LabelBateauxEntree))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(ButtonBateauAmarre, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jButton2)))
+                                    .addComponent(LabelBateauxEntree, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(ButtonBateauAmarre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(228, 228, 228))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(71, 71, 71))
@@ -404,8 +367,10 @@ public class Capitainerie extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ButtonStartServer)
-                    .addComponent(LabelHeure))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(LabelHeure)
+                        .addGap(9, 9, 9))
+                    .addComponent(ButtonServeur, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
@@ -414,9 +379,7 @@ public class Capitainerie extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12)
                         .addComponent(ButtonBateauAmarre)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
-                        .addGap(30, 30, 30))
+                        .addGap(62, 62, 62))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -459,10 +422,18 @@ public class Capitainerie extends javax.swing.JFrame {
     private void ButtonChooseActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_ButtonChooseActionPerformed
     {//GEN-HEADEREND:event_ButtonChooseActionPerformed
         //Ouvrira une fenetre dans la suite d'application pour choisir un quai ou un ponton
-        CB.setAmarrageSelectionne(CB.ListeAmarrages.firstElement());
-        CB.setCoteSelectionne(1);
-        CB.setEmplacementSelectione(2);
-        InputAmarrage.setText(CB.GetEmplacement());
+        
+        DialogChoixAmarrage dca = new DialogChoixAmarrage(this, true, CB.ListeAmarrages,"Plaisance");
+        dca.setVisible(true);
+        
+        if(dca.getResult() == DialogResult.ok)
+        {
+            String choixAmarrage = dca.getChoixAmarrage();
+            String choixEmplacement = dca.getChoixEmplacement();
+            InputAmarrage.setText(choixAmarrage+"*"+choixEmplacement);
+            
+            CB.setMessageAEnvoyer("test" + "/" + choixAmarrage + "/" + choixEmplacement);
+        }
     }//GEN-LAST:event_ButtonChooseActionPerformed
 
     private void HeureVisibleChackActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_HeureVisibleChackActionPerformed
@@ -488,6 +459,30 @@ public class Capitainerie extends javax.swing.JFrame {
             //timer.cancel();
         }
     }//GEN-LAST:event_HeureVisibleChackActionPerformed
+
+    private void ButtonServeurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonServeurActionPerformed
+       if(CB.IsServerOn() == false)
+        {
+            CB.DemarrerServeur(CheckRequestPending);
+            ButtonServeur.setText("Arreter serveur");
+        }
+        else
+        {
+            CB.ArreterServeur();
+            ButtonServeur.setText("Demarrer serveur");
+        }
+    }//GEN-LAST:event_ButtonServeurActionPerformed
+
+    private void ButtonReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonReadActionPerformed
+        String msg = CB.ReadMessage();
+        TextFieldPendingRequest.setText(msg);
+        
+        CB.setMessageAEnvoyer(msg);
+    }//GEN-LAST:event_ButtonReadActionPerformed
+
+    private void ButtonSendChoiseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonSendChoiseActionPerformed
+        CB.sendMessage(CB.getMessageAEnvoyer());
+    }//GEN-LAST:event_ButtonSendChoiseActionPerformed
     
     private void ButtonBateauAmarreActionPerformed(java.awt.event.ActionEvent evt) {      
         if(CB.getBateauEnCoursAmarrage() != null && CB.IsAmarrageValide() == true)
@@ -607,7 +602,7 @@ public class Capitainerie extends javax.swing.JFrame {
     private javax.swing.JButton ButtonRead;
     private javax.swing.JButton ButtonSendChoise;
     private javax.swing.JButton ButtonSendConfirmation;
-    private javax.swing.JButton ButtonStartServer;
+    private javax.swing.JButton ButtonServeur;
     private javax.swing.JCheckBox CheckRequestPending;
     private javax.swing.JCheckBoxMenuItem HeureVisibleChack;
     private javax.swing.JLabel Image1;
@@ -634,7 +629,6 @@ public class Capitainerie extends javax.swing.JFrame {
     private javax.swing.JMenu MenuPersonnel;
     private javax.swing.JMenu MenuUser;
     private javax.swing.JTextField TextFieldPendingRequest;
-    private javax.swing.JButton jButton2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem6;
