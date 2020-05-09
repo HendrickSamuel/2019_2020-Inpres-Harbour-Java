@@ -14,7 +14,7 @@ public class Bateau extends MoyenDeTransportSurEau implements AUnIdentifiant{
 
 /* ----------------------------------- VARIABLES ------------------------------------*/
     protected String _nom;
-    protected String _portAttache;
+    private String _portAttache;
     protected int _longueur;
     private int _tonnage;
     protected String _pavillon; // nationalité
@@ -46,7 +46,7 @@ public class Bateau extends MoyenDeTransportSurEau implements AUnIdentifiant{
     {
         System.out.println("-----------Bateau-----------");
         System.out.println("Nom: " + _nom);
-        System.out.println("Port attache: " + _portAttache);
+        System.out.println("Port attache: " + getPortAttache());
         System.out.println("Longueur: " + _longueur);
         System.out.println("Tonnage: " + getTonnage());
         System.out.println("Pavillon: " + _pavillon);
@@ -65,7 +65,7 @@ public class Bateau extends MoyenDeTransportSurEau implements AUnIdentifiant{
     public String getIdentifiant()
     {
         String id;
-        id = _nom + _portAttache;
+        id = _nom + getPortAttache();
         return id;
     }
 
@@ -101,6 +101,20 @@ public class Bateau extends MoyenDeTransportSurEau implements AUnIdentifiant{
     
     public void setTonnage(int _tonnage) {
         this._tonnage = _tonnage;
+    }
+
+    /**
+     * @return the _portAttache
+     */
+    public String getPortAttache() {
+        return _portAttache;
+    }
+
+    /**
+     * @param _portAttache the _portAttache to set
+     */
+    public void setPortAttache(String _portAttache) {
+        this._portAttache = _portAttache;
     }
     
 }
