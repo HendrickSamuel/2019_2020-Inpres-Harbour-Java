@@ -312,10 +312,10 @@ public class Phare extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAutorisationEntreeActionPerformed
 
     private void btnEntreRadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntreRadeActionPerformed
-        if(this.reponseCapitainerieTF.getText().compareTo("??") == 0)
+        if(this.reponseCapitainerieTF.getText().compareTo("??") != 0)
         {
             this._phareBrain.envoiMsgRade(_phareBrain.ENVOI_ENTRE_RADE, "OK");
-            String reponse = this._phareBrain.getReponseBateauIdentifie();
+            String reponse = this._phareBrain.getReponseBateauEntreRade();
                         System.out.println(_phareBrain.Now() + " Phare | Reponse recue : " + reponse);
             if(reponse.length() > 0)
             {

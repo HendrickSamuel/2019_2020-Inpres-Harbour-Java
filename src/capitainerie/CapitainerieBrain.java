@@ -7,9 +7,10 @@
 package capitainerie;
 
 import Amarrages.*;
+import Equipage.Equipage;
+import Equipage.SailorWithoutIdentificationException;
 import HarbourGlobal.MyLogger;
-import VehiculesMarins.Bateau;
-import VehiculesMarins.MoyenDeTransportSurEau;
+import VehiculesMarins.*;
 import inpresharbour.InpresHarbour;
 import java.io.EOFException;
 import java.io.FileInputStream;
@@ -30,6 +31,9 @@ import network.NetworkBasicServer;
 
 
 public final class CapitainerieBrain {
+       
+    private String[] _etapes;
+    private int _etape;
     
     private NetworkBasicServer _nbs = null;
     private int PORT_ECOUTE = 50000;
@@ -55,6 +59,8 @@ public final class CapitainerieBrain {
         Load();
         setCoteSelectionne(-1);
         setEmplacementSelectione(-1);
+        
+        _etapes = new String[4];
     }
     
     public void Save()
@@ -165,27 +171,63 @@ public final class CapitainerieBrain {
     }
     
     
-    public void AmarrerBateau(Bateau bateau)
+    public boolean AmarrerBateau(Bateau bateau, Amarrage amarrage, int cote, int emplacement)
     {
         // verifi la validite 
-        if(getAmarrageSelectionne() instanceof Ponton)
+        if(amarrage instanceof Ponton)
         {
-            Ponton ponton = (Ponton)getAmarrageSelectionne();
+            Ponton ponton = (Ponton)amarrage;
             // verifier la taille disponible + coté
-            MoyenDeTransportSurEau[] cote = ponton.getListe(getCoteSelectionne());
+            MoyenDeTransportSurEau[] liste = ponton.getListe(cote);
             // verif == null
-            cote[getEmplacementSelectione()] = bateau;
+            if(liste[emplacement] == null)
+            {
+                liste[emplacement] = bateau;
+                return true;
+            }
+            else
+                return false;
         }
         else
-        if(getAmarrageSelectionne() instanceof Quai)
+        if(amarrage instanceof Quai)
         {
-            Quai quai = (Quai)getAmarrageSelectionne();
+            Quai quai = (Quai)amarrage;
             // verifier la taille disponible
-            MoyenDeTransportSurEau[] emplacements = quai.getListe();
+            MoyenDeTransportSurEau[] liste = quai.getListe();
             // verif == null
-            emplacements[getEmplacementSelectione()] = bateau;
+            if(liste[emplacement] == null)
+            {
+                liste[emplacement] = bateau;
+                return true;
+            }
+            else
+                return false;
         }
-        setBateauEnCoursAmarrage(null);
+        else
+            return false;
+    }
+    
+    public Bateau GetBateauAmarre(Amarrage amarrage, int cote, int emplacement)
+    {
+        if(amarrage instanceof Ponton)
+        {
+            Ponton ponton = (Ponton)amarrage;
+            // verifier la taille disponible + coté
+            MoyenDeTransportSurEau[] liste = ponton.getListe(cote);
+            // verif == null
+            return (Bateau)liste[emplacement];
+        }
+        else
+        if(amarrage instanceof Quai)
+        {
+            Quai quai = (Quai)amarrage;
+            // verifier la taille disponible
+            MoyenDeTransportSurEau[] liste = quai.getListe();
+            // verif == null
+            return (Bateau)liste[emplacement];
+        }
+        else
+            return null;
     }
     
     public boolean IsAmarrageValide()
@@ -306,31 +348,43 @@ public final class CapitainerieBrain {
             return true;
     }
     
-    public void sendMessage(String amarrage)
+    public void sendMessage(int etape)
     {
-        _nbs.sendMessage(amarrage);
+        _etape = etape; // trace du dernier message envoyé
+        etape--;
+        System.out.println("Envoi de: " + _etapes[etape]);
+        _nbs.sendMessage(_etapes[etape]);
     }
+    
+    
     
     public String ReadMessage()
     {
         if(IsServerOn())
         {
             String message = _nbs.getMessage();
+            int etape = Integer.parseInt(message.substring(0,1));
+            _etape = etape;
+            SetMessage(etape, message);
             return message;
         }
         else
             return "";
     }
-
-    public String getMessageAEnvoyer() {
-        return _messageAEnvoyer;
-    }
-
-    public void setMessageAEnvoyer(String _messageAEnvoyer) {
-        this._messageAEnvoyer = _messageAEnvoyer;
+    
+    public String getMessage(int etape)
+    {
+        etape--;
+        return _etapes[etape];
     }
     
-    public void SetBateauFromText(String text)
+    public void SetMessage(int etape, String msg)
+    {
+        etape--;
+        _etapes[etape] = msg;
+    }
+    
+    public void SelectBateauFromText(String text)
     {
         boolean found = false;
         //division de la chaine de charactere passée au format Test -- Peche -- FR -> Q2*4 OU Test -- Plaisance -- FR -> P22*4
@@ -361,9 +415,7 @@ public final class CapitainerieBrain {
                 amarrage = amarrage.substring(0,amarrage.length()-1);
                 break;         
         }
-
-        String emplacement = st.nextToken();        
-        // recherche l'amarrage
+        String emplacement = st.nextToken();     
         
         Enumeration enu = ListeAmarrages.elements();
         while(enu.hasMoreElements() && !found)
@@ -373,19 +425,77 @@ public final class CapitainerieBrain {
             {
                 found = true;
                 System.out.println("Trouvé");
-                this.setAmarrageSelectionne(am);
-                this.setEmplacementSelectione(Integer.parseInt(emplacement));
-                this.setCoteSelectionne(Integer.parseInt(cote));
+                setAmarrageSelectionne(am);
+                setCoteSelectionne(Integer.parseInt(cote));
+                setEmplacementSelectione(Integer.parseInt(emplacement));
                 
-                //verifier que l'emplacement contient le bateau en cours ? 
+                setBateauEnCoursAmarrage(GetBateauAmarre(am,Integer.parseInt(cote),Integer.parseInt(emplacement)));
+                
+                System.out.println(IsAmarrageValide());
+                System.out.println(getBateauEnCoursAmarrage());
+            }
+        }
+    }
+    
+    public Bateau CreerBateauFromString(String text)
+    {
+        try {
+            // "nom/type/pavillon/longueur"
+            
+            StringTokenizer st = new StringTokenizer(text,"/");
+            String nom = st.nextToken();
+            String type = st.nextToken();
+            String pavillon = st.nextToken();
+            int longueur = Integer.parseInt(st.nextToken());
+            
+            switch(type)
+            {
+                case "Peche":
+                    return new BateauPeche(nom, "?", longueur, 0, pavillon, true, new Equipage(), Energie.autre, type);
+                    
+                case "Plaisance":
+                   return new BateauPlaisance(nom,"?",longueur,0,pavillon, new Equipage(), true ,Energie.autre, type);
+
+                default: return null; 
+            }
+        } catch (SailorWithoutIdentificationException ex) {
+            return null;
+        } catch (ShipWithoutIdentificationException ex) {
+            return null;
+        }
+    }
+    
+    public boolean AmarrerBateauToID(Bateau bateau, String text)
+    {
+        StringTokenizer st = new StringTokenizer(text,"\\*");
+        
+        String amarrage = st.nextToken();
+        String emplacement = st.nextToken();
+        
+        String cote = "";
+        switch(amarrage.substring(0,1))
+        {
+            case "Q":
+                cote = "-1";
+                break;
+                
+            case "P":
+                cote = amarrage.substring(amarrage.length()-1);
+                amarrage = amarrage.substring(0,amarrage.length()-1);
+                break;         
+        }
+        
+        Enumeration enu = ListeAmarrages.elements();
+        while(enu.hasMoreElements())
+        {
+            Amarrage am = (Amarrage)enu.nextElement();
+            if(am.getIdentifiant().compareTo(amarrage) == 0)
+            {
+               return AmarrerBateau(bateau, am, Integer.parseInt(cote), Integer.parseInt(emplacement));
             }
         }
         
-        if(!found)
-        {
-            System.out.println("Pas Trouvé");
-        }
-        
+        return false;  
     }
     
 }

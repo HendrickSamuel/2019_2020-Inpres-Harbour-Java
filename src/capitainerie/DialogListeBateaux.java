@@ -9,13 +9,12 @@ import Amarrages.Amarrage;
 import Amarrages.Ponton;
 import Amarrages.Quai;
 import VehiculesMarins.Bateau;
-import VehiculesMarins.BateauPlaisance;
 import VehiculesMarins.MoyenDeTransportSurEau;
-import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
-import java.awt.List;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Vector;
+import java.util.regex.PatternSyntaxException;
+import javax.swing.RowFilter;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
@@ -127,7 +126,9 @@ public class DialogListeBateaux extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         TableBateaux = new javax.swing.JTable();
         PanelSearch = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        SearchButton = new javax.swing.JButton();
+        InputNom = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -142,30 +143,61 @@ public class DialogListeBateaux extends javax.swing.JDialog {
             Class[] types = new Class [] {
                 java.lang.Object.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
         jScrollPane1.setViewportView(TableBateaux);
 
-        jLabel1.setText("Test");
+        jLabel2.setText("Recherche Bateau");
+
+        SearchButton.setText("Recherche");
+        SearchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SearchButtonActionPerformed(evt);
+            }
+        });
+
+        InputNom.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                InputNomKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout PanelSearchLayout = new javax.swing.GroupLayout(PanelSearch);
         PanelSearch.setLayout(PanelSearchLayout);
         PanelSearchLayout.setHorizontalGroup(
             PanelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelSearchLayout.createSequentialGroup()
-                .addGap(203, 203, 203)
-                .addComponent(jLabel1)
+                .addGroup(PanelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelSearchLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(InputNom, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PanelSearchLayout.createSequentialGroup()
+                        .addGap(122, 122, 122)
+                        .addComponent(SearchButton)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         PanelSearchLayout.setVerticalGroup(
             PanelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelSearchLayout.createSequentialGroup()
-                .addGap(53, 53, 53)
-                .addComponent(jLabel1)
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addGroup(PanelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(InputNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addComponent(SearchButton)
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -187,6 +219,26 @@ public class DialogListeBateaux extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
+        
+    }//GEN-LAST:event_SearchButtonActionPerformed
+
+    private void InputNomKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_InputNomKeyReleased
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(TableBateaux.getModel());
+        TableBateaux.setRowSorter(sorter);
+        String text = InputNom.getText();
+            if(text.length() == 0) {
+               sorter.setRowFilter(null);
+            } else {
+               try {
+                  sorter.setRowFilter(RowFilter.regexFilter(text));
+               } catch(PatternSyntaxException pse) {
+                     System.out.println("Bad regex pattern");
+               }
+             }
+    }//GEN-LAST:event_InputNomKeyReleased
+ 
+    
     /**
      * @param args the command line arguments
      */
@@ -230,9 +282,11 @@ public class DialogListeBateaux extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField InputNom;
     private javax.swing.JPanel PanelSearch;
+    private javax.swing.JButton SearchButton;
     private javax.swing.JTable TableBateaux;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

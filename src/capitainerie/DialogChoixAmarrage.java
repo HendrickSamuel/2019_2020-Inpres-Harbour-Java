@@ -36,7 +36,9 @@ public class DialogChoixAmarrage extends javax.swing.JDialog {
     {
         this(parent,modal);
         _amarrages = listeAmarrages;
-        _type = typeBateau;
+        _type = typeBateau.toUpperCase();
+        _type = _type.replaceAll("\\s+",""); // enleve les espaces
+        
         InitTable();
         
         ButtonChoose.setEnabled(false); // disable le bouton pour eviter le choix d'un amarrage utilisé
@@ -60,7 +62,7 @@ public class DialogChoixAmarrage extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Ponton", "Emplacement", "Bateau", "port d'attache"
+                "???", "Emplacement", "Bateau", "port d'attache"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -216,19 +218,21 @@ public class DialogChoixAmarrage extends javax.swing.JDialog {
 
     private void InitTable()
     { 
-        if(_type == "Plaisance")
+        System.out.println("TYPE EST: " + _type);
+        
+        if(_type.compareTo("PLAISANCE") == 0)
             TableAmarrages.getColumnModel().getColumn(0).setHeaderValue("Ponton(s)");
-        else if(_type == "Peche")
+        else if(_type.compareTo("PECHE") == 0)
             TableAmarrages.getColumnModel().getColumn(0).setHeaderValue("Quai(s)");
         
         Enumeration enu = _amarrages.elements();
         while(enu.hasMoreElements())
         {
             Amarrage am = (Amarrage)enu.nextElement();
-            if(_type == "Plaisance" && am instanceof Ponton)
+            if(_type.compareTo("PLAISANCE") == 0 && am instanceof Ponton)
                 AjouterPonton((Ponton)am);
             else
-            if(_type == "Peche" && am instanceof Quai)
+            if(_type.compareTo("PECHE") == 0 && am instanceof Quai)
             AjouterQuai((Quai)am);
         }
     }

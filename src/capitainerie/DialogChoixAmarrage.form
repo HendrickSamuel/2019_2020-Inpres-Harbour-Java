@@ -78,7 +78,7 @@
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="4" rowCount="0">
-                <Column editable="false" title="Ponton" type="java.lang.Object"/>
+                <Column editable="false" title="???" type="java.lang.Object"/>
                 <Column editable="false" title="Emplacement" type="java.lang.Object"/>
                 <Column editable="false" title="Bateau" type="java.lang.Object"/>
                 <Column editable="false" title="port d&apos;attache" type="java.lang.Object"/>
