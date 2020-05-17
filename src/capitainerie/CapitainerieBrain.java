@@ -55,7 +55,8 @@ public final class CapitainerieBrain {
     private boolean _isUserConnected;
     
     public CapitainerieBrain() {
-        _logger = new MyLogger();
+        _logger = new MyLogger("capitainerie");
+        _logger.Write("capitainerieBrain", "démarrage de la capitainerie");
         Load();
         setCoteSelectionne(-1);
         setEmplacementSelectione(-1);
@@ -72,7 +73,7 @@ public final class CapitainerieBrain {
             FileOutputStream fos = new FileOutputStream(rep+sep+"bateaux.data");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(ListeBateauxEntree);
-            // dire combien on a encodés
+            getLogger().Write("capitainerieBrain", "sauvegarde de " + ListeBateauxEntree.size() + "éléments dans " + rep+sep+"bateaux.data");
         } 
         catch (IOException ex) {
             Logger.getLogger(InpresHarbour.class.getName()).log(Level.SEVERE, null, ex);
@@ -82,7 +83,7 @@ public final class CapitainerieBrain {
             FileOutputStream fos = new FileOutputStream(rep+sep+"amarrages.data");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(ListeAmarrages);
-            // dire combien on a encodés
+            getLogger().Write("capitainerieBrain", "sauvegarde de " + ListeAmarrages.size() + "éléments dans " + rep+sep+"amarrages.data");
         } 
         catch (IOException ex) {
             Logger.getLogger(InpresHarbour.class.getName()).log(Level.SEVERE, null, ex);
@@ -98,10 +99,11 @@ public final class CapitainerieBrain {
             FileInputStream fis = new FileInputStream(rep+sep+"bateaux.data");
             ObjectInputStream ois = new ObjectInputStream(fis);
             ListeBateauxEntree = (Vector<String>)ois.readObject();
-            System.out.println("j'ai chargé " + ListeBateauxEntree.size() + " bateaux en attente");
+            getLogger().Write("capitainerieBrain", "chargement de " + ListeBateauxEntree.size() + "éléments de " + rep+sep+"bateaux.data");
         } 
         catch(FileNotFoundException ex)
         {
+            getLogger().Write("capitainerieBrain", "création d'une nouvelle liste de bateaux en entrée car aucun fichier de sauvegarde n'éxiste");
             ListeBateauxEntree = new Vector<String>();
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(InpresHarbour.class.getName()).log(Level.SEVERE, null, ex);
@@ -111,11 +113,11 @@ public final class CapitainerieBrain {
            FileInputStream fis = new FileInputStream(rep+sep+"amarrages.data");
            ObjectInputStream ois = new ObjectInputStream(fis);
            ListeAmarrages = (Vector<Amarrage>)ois.readObject();
-           System.out.println("j'ai chargé " + ListeAmarrages.size() + " amarrages");
+            getLogger().Write("capitainerieBrain", "chargement de " + ListeAmarrages.size() + "éléments de " + rep+sep+"amarrages.data");
         } 
         catch(FileNotFoundException ex)
         {
-            System.out.println("Fichier non trouvé, Initialisation de InpresHarbour");
+            getLogger().Write("capitainerieBrain", "Initialisation de InpresHarbour car aucun fichier des amarrages n'éxiste");
             ListeAmarrages = new Vector<Amarrage>();
             InitHarbour();
         } catch (IOException | ClassNotFoundException ex) {
@@ -163,13 +165,7 @@ public final class CapitainerieBrain {
 
     public String getConnectedUser() {
         return _connectedUser;
-    }
-    
-    public String Now()
-    {
-        return _logger.Now();
-    }
-    
+    }   
     
     public boolean AmarrerBateau(Bateau bateau, Amarrage amarrage, int cote, int emplacement)
     {
@@ -327,6 +323,7 @@ public final class CapitainerieBrain {
         if(!IsServerOn())
         {
             _nbs = new NetworkBasicServer(PORT_ECOUTE, check);
+            _logger.Write("CapitainerieBrain","Démarrage du serveur");
         }
         else
             System.out.println("Le serveur est déja en cours");
@@ -338,6 +335,7 @@ public final class CapitainerieBrain {
         {
             _nbs.setEndReceiving();
             _nbs = null;
+            _logger.Write("CapitainerieBrain","Arret du serveur");
         }
     }
 
@@ -352,7 +350,7 @@ public final class CapitainerieBrain {
     {
         _etape = etape; // trace du dernier message envoyé
         etape--;
-        System.out.println("Envoi de: " + _etapes[etape]);
+        _logger.Write("CapitainerieBrain","Envoi du message: "+ "Envoi de: " + _etapes[etape] +" à l'étape "+_etape);
         _nbs.sendMessage(_etapes[etape]);
     }
     
@@ -365,6 +363,7 @@ public final class CapitainerieBrain {
             String message = _nbs.getMessage();
             int etape = Integer.parseInt(message.substring(0,1));
             _etape = etape;
+            _logger.Write("CapitainerieBrain","Lecture du message: "+ message +" à l'étape "+_etape);
             SetMessage(etape, message);
             return message;
         }
@@ -451,10 +450,14 @@ public final class CapitainerieBrain {
             switch(type)
             {
                 case "Peche":
-                    return new BateauPeche(nom, "?", longueur, 0, pavillon, true, new Equipage(), Energie.autre, type);
+                    BateauPeche bpe = new BateauPeche(nom, "?", longueur, 0, pavillon, true, new Equipage(), Energie.autre, type);
+                    _logger.Write("CapitainerieBrain","Création du bateau: " + bpe);
+                    return bpe;
                     
                 case "Plaisance":
-                   return new BateauPlaisance(nom,"?",longueur,0,pavillon, new Equipage(), true ,Energie.autre, type);
+                   BateauPlaisance bp = new BateauPlaisance(nom,"?",longueur,0,pavillon, new Equipage(), true ,Energie.autre, type);
+                   _logger.Write("CapitainerieBrain","Création du bateau " + bp);
+                   return bp;
 
                 default: return null; 
             }
@@ -496,6 +499,10 @@ public final class CapitainerieBrain {
         }
         
         return false;  
+    }
+
+    public MyLogger getLogger() {
+        return _logger;
     }
     
 }

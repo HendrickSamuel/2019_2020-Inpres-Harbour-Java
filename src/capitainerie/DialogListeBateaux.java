@@ -55,6 +55,11 @@ public class DialogListeBateaux extends javax.swing.JDialog {
         
         TableRowSorter<TableModel> sorter = new TableRowSorter<>(TableBateaux.getModel());
         TableBateaux.setRowSorter(sorter);
+        //TableBateaux.removeColumn(TableBateaux.getColumnModel().getColumn(3));
+        
+        TableBateaux.getColumnModel().getColumn(3).setMinWidth(0);
+        TableBateaux.getColumnModel().getColumn(3).setMaxWidth(0);
+        TableBateaux.getColumnModel().getColumn(3).setWidth(0);
         
         ArrayList<RowSorter.SortKey> sortKeys = new ArrayList<>();
 
@@ -84,6 +89,7 @@ public class DialogListeBateaux extends javax.swing.JDialog {
                     ligne.add(bp.getNom());
                     ligne.add(bp.getPortAttache()); // port attache
                     ligne.add(ponton.getIdentifiant()+y + "*" + (i+1));
+                    ligne.add(bp);
                     
                     dtm.addRow(ligne);
                 }
@@ -107,7 +113,8 @@ public class DialogListeBateaux extends javax.swing.JDialog {
 
                 ligne.add(bp.getNom());
                 ligne.add(bp.getPortAttache());
-                ligne.add(quai.getIdentifiant() + "*"+(i+1));            
+                ligne.add(quai.getIdentifiant() + "*"+(i+1)); 
+                ligne.add(bp);
                 
                 dtm.addRow(ligne);
             }
@@ -127,8 +134,8 @@ public class DialogListeBateaux extends javax.swing.JDialog {
         TableBateaux = new javax.swing.JTable();
         PanelSearch = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        SearchButton = new javax.swing.JButton();
         InputNom = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -137,14 +144,14 @@ public class DialogListeBateaux extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Nom du bateau", "Port d'attache", "Amarrage"
+                "Nom du bateau", "Port d'attache", "Amarrage", "Title 4"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -155,16 +162,14 @@ public class DialogListeBateaux extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        TableBateaux.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TableBateauxMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(TableBateaux);
 
         jLabel2.setText("Recherche Bateau");
-
-        SearchButton.setText("Recherche");
-        SearchButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SearchButtonActionPerformed(evt);
-            }
-        });
 
         InputNom.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -177,16 +182,11 @@ public class DialogListeBateaux extends javax.swing.JDialog {
         PanelSearchLayout.setHorizontalGroup(
             PanelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelSearchLayout.createSequentialGroup()
-                .addGroup(PanelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PanelSearchLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(InputNom, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(PanelSearchLayout.createSequentialGroup()
-                        .addGap(122, 122, 122)
-                        .addComponent(SearchButton)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(InputNom, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(268, Short.MAX_VALUE))
         );
         PanelSearchLayout.setVerticalGroup(
             PanelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,10 +195,15 @@ public class DialogListeBateaux extends javax.swing.JDialog {
                 .addGroup(PanelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(InputNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
-                .addComponent(SearchButton)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jButton1.setText("OK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -206,22 +211,24 @@ public class DialogListeBateaux extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
             .addComponent(PanelSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(230, 230, 230)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PanelSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addGap(21, 21, 21))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
-        
-    }//GEN-LAST:event_SearchButtonActionPerformed
 
     private void InputNomKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_InputNomKeyReleased
         TableRowSorter<TableModel> sorter = new TableRowSorter<>(TableBateaux.getModel());
@@ -237,6 +244,16 @@ public class DialogListeBateaux extends javax.swing.JDialog {
                }
              }
     }//GEN-LAST:event_InputNomKeyReleased
+
+    private void TableBateauxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableBateauxMouseClicked
+        Bateau bat = (Bateau)TableBateaux.getValueAt(TableBateaux.getSelectedRow(),3);
+        DialogDétailBateau ddb = new DialogDétailBateau((java.awt.Frame)getParent(), true, bat);
+        ddb.setVisible(true);
+    }//GEN-LAST:event_TableBateauxMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
  
     
     /**
@@ -284,8 +301,8 @@ public class DialogListeBateaux extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField InputNom;
     private javax.swing.JPanel PanelSearch;
-    private javax.swing.JButton SearchButton;
     private javax.swing.JTable TableBateaux;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables

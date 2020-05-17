@@ -42,10 +42,6 @@ public class Capitainerie extends javax.swing.JFrame {
         
         CB = new CapitainerieBrain();
         
-        //<editor-fold defaultstate="collapsed" desc="GUI print">
-
-        System.out.println(CB.Now() + " | création du cerveau de l'application");
-        //</editor-fold>
        
         if(this.UserLogin() == false)
         {
@@ -343,6 +339,11 @@ public class Capitainerie extends javax.swing.JFrame {
 
         jMenuItem6.setText("Fichier log");
         BoutonsLogin.add(jMenuItem6);
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem6);
 
         HeureVisibleChack.setSelected(true);
@@ -604,11 +605,10 @@ public class Capitainerie extends javax.swing.JFrame {
         CB.SetMessage(4, 4+"/OK"); // preparer l'envoi
         CB.sendMessage(4); // envoyer
         // faire des choses
-        
-        System.out.println("refaire un bateau à partir de: " + CB.getMessage(1) + " | " + CB.getMessage(2));
         Bateau bat = CB.CreerBateauFromString(CB.getMessage(1).substring(2)); // retirer le 1/ et garder que test/Peche/CH/333  "nom/type/pavillon/longueur"
         String[] tmp = CB.getMessage(2).split("/");
         String amarrage = tmp[2]+"*"+tmp[3];
+        
         boolean res = CB.AmarrerBateauToID(bat, amarrage);
         
         if(res)
@@ -621,21 +621,31 @@ public class Capitainerie extends javax.swing.JFrame {
         
         CB.Save();
     }//GEN-LAST:event_ButtonSendConfirmationActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        // TODO add your handling code here:
+        DialogLogs dl = new DialogLogs(this, true, CB);
+        dl.setVisible(true);
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
     
     private void ButtonBateauAmarreActionPerformed(java.awt.event.ActionEvent evt) {      
         if(CB.getBateauEnCoursAmarrage() != null && CB.IsAmarrageValide() == true)
         {
-
+            CB.getLogger().Write("Capitainerie", "Ouverture de la fenetre d'amarrage pour le bateau: " + CB.getBateauEnCoursAmarrage() + "à l'emplacement: " + CB.GetEmplacement());
             DialogAmarage am = new DialogAmarage(CB.getBateauEnCoursAmarrage(), CB.GetEmplacement() ,this, true);
             am.setVisible(true);
             // bloquant jusqu'au retour 
 
             if(am.getResult() == DialogResult.ok && _selectedListIndex != -1) // si appui sur annuler ? 
             {
+                CB.getLogger().Write("Capitainerie", "Validation de l'ammarage pour le bateau: " + CB.getBateauEnCoursAmarrage() + "à l'emplacement: " + CB.GetEmplacement());
                 ((DefaultListModel) ListeBateauxEntree.getModel()).remove(_selectedListIndex); // retirer de la liste 
                 _selectedListIndex = -1;
             }
-
+            else
+            {
+                CB.getLogger().Write("Capitainerie", "Annulation de l'ammarage pour le bateau: " + CB.getBateauEnCoursAmarrage() + "à l'emplacement: " + CB.GetEmplacement());
+            }
         }
         else
         {
@@ -671,12 +681,13 @@ public class Capitainerie extends javax.swing.JFrame {
     private void MenuItemLoginActionPerformed(java.awt.event.ActionEvent evt) {                                              
         if(!CB.isUserConnected())
         {
-            UserLogin();
-            SetButtons(true);
+            if (UserLogin());
+                SetButtons(true);
         }
     }
 
-    private void MenuItemLogoutActionPerformed(java.awt.event.ActionEvent evt) {                                               
+    private void MenuItemLogoutActionPerformed(java.awt.event.ActionEvent evt) {
+        CB.getLogger().Write("Capitainerie", "Le dernier utilisateur s'est déconnecté");
         CB.LogoutUser();
         SetButtons(false);
         this.SetTitre("offline");
@@ -784,29 +795,31 @@ public class Capitainerie extends javax.swing.JFrame {
         
     public boolean UserLogin()
     {
-         DialogLogin dlg = new DialogLogin(this, true);
+        CB.getLogger().Write("Capitainerie", "Affichage de la fenetre de login");
+        DialogLogin dlg = new DialogLogin(this, true);
         dlg.setVisible(true);
         
-        if(dlg.getResult() == DialogResult.ok)
+        if(null == dlg.getResult())
         {
-            System.out.println("c'est ok");
-            CB.RegisterUser(dlg.getConnectedUserName());
-            this.SetTitre(CB.getConnectedUser());
-            return true;
-            
-        }
-        else if (dlg.getResult() == DialogResult.cancel)
-        {
-            System.out.println("c'est annulé");
+            CB.getLogger().Write("Capitainerie", "Un cas imprévu s'est produit");
             return false;
         }
-        else if (dlg.getResult() == DialogResult.untouched)
-        {
-            System.out.println("c'est ferme sans y toucher");
-            return false;
+        else switch (dlg.getResult()) {
+            case ok:
+                CB.RegisterUser(dlg.getConnectedUserName());
+                this.SetTitre(CB.getConnectedUser());
+                CB.getLogger().Write("Capitainerie","( "+ CB.getConnectedUser() + " ) s'est connecté");
+                return true;
+            case cancel:
+                CB.getLogger().Write("Capitainerie", "Annulation du login");
+                return false;
+            case untouched:
+                CB.getLogger().Write("Capitainerie", "Annulation du login");
+                return false;
+            default:
+                CB.getLogger().Write("Capitainerie", "Un cas imprévu s'est produit");
+                return false;
         }
-        else
-            return false;
     }
     
     private void InitListe()
