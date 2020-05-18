@@ -11,6 +11,7 @@ import Equipage.Equipage;
 import Equipage.SailorWithoutIdentificationException;
 import HarbourGlobal.MyLogger;
 import VehiculesMarins.*;
+import capitainerie.Beans.*;
 import inpresharbour.InpresHarbour;
 import java.io.EOFException;
 import java.io.FileInputStream;
@@ -30,7 +31,7 @@ import javax.swing.JCheckBox;
 import network.NetworkBasicServer;
 
 
-public final class CapitainerieBrain {
+public final class CapitainerieBrain implements DepartListener {
        
     private String[] _etapes;
     private int _etape;
@@ -39,6 +40,7 @@ public final class CapitainerieBrain {
     private int PORT_ECOUTE = 50000;
     private String _messageAEnvoyer;
     
+    private DepartBean dbean = null;
 
     public Vector<Amarrage> ListeAmarrages;
     public Vector<String> ListeBateauxEntree;
@@ -503,6 +505,38 @@ public final class CapitainerieBrain {
 
     public MyLogger getLogger() {
         return _logger;
+    }
+    
+    public void ConnectClient()
+    {
+        if(dbean == null)
+        {
+            dbean = new DepartBean();
+            dbean.addDepartListener(this);
+            dbean.init();
+        }
+        dbean.Connect();
+    }
+    
+    public void DisconnectClient()
+    {
+        if(dbean != null)
+        {
+            dbean.setEnMarche(false);
+            dbean.Deconnect();
+        }
+    }
+    
+    public void SendDepart(MoyenDeTransportSurEau mte)
+    {
+        dbean.setBateauEnDepart(mte);
+        if(dbean.getState() == Thread.State.NEW)
+            dbean.start();
+    }
+
+    @Override
+    public void OnDepartReturn(DepartEvent e) {
+        System.out.println("CAPITAINERIE A RECU: " + e.getResult());
     }
     
 }

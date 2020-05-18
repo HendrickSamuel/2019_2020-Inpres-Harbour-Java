@@ -8,13 +8,16 @@ package phare;
 
 import HarbourGlobal.MyLogger;
 import java.util.Vector;
+import javax.swing.JCheckBox;
 import network.NetworkBasicClient;
+import network.NetworkBasicServer;
 
 public class PhareBrain {
     //<editor-fold defaultstate="collapsed" desc="Variables">
+    
+
+    //<editor-fold defaultstate="collapsed" desc="Client">
     private NetworkBasicClient _nbc = null;
-
-
     private boolean _estConnecte = false;
     private Vector<String> _bateauxEnAttente;
     private String _bateauIdentifie;
@@ -30,13 +33,19 @@ public class PhareBrain {
     public static final String ENVOI_ENTRE_RADE = "3";
     public static final String RECEP_ENTRE_RADE = "4";
     //</editor-fold>
+    
+    
+    private NetworkBasicServer _nbs = null;
+    private final int PORT_DEPART = 50001;
+    
+    //</editor-fold>
   
     //<editor-fold defaultstate="collapsed" desc="Constructeur">
     public PhareBrain()
     {
         //<editor-fold defaultstate="collapsed" desc="Init des variables">
         this.setBateauxEnAttente(new Vector<String>());
-        this.setLogger(new MyLogger());
+        this.setLogger(new MyLogger("phare"));
         //</editor-fold>
     }
     //</editor-fold>
@@ -125,6 +134,8 @@ public class PhareBrain {
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Publique">
+    
+    //<editor-fold defaultstate="collapsed" desc="NetworkClient">
     public void connexionServeur()
     {
         System.out.println("1 :" + this.getNbc());
@@ -186,6 +197,50 @@ public class PhareBrain {
     { 
         _reponseBateauEntreRade = this._nbc.sendString(typeEnvoi + "/" + msg);
     }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="NetworkClient">
+    public void StartServeur(JCheckBox check){
+        if(!IsServeurRunning())
+        {
+            _nbs = new NetworkBasicServer(PORT_DEPART, check);
+            _logger.Write("PhareBrain","Démarrage du serveur"); 
+            
+        }
+    }
+    
+    public void ArreterServeur()
+    {
+        if(IsServeurRunning())
+        {
+            _nbs.setEndReceiving();
+            _nbs = null;
+            _logger.Write("PhareBrain","Arret du serveur");
+        }
+    }
+        
+    public boolean IsServeurRunning()
+    {
+        return _nbs != null;
+    }
+    
+    public void sendMessage(String message)
+    {
+        _logger.Write("PhareBrain","Envoi du message: " + message);
+        _nbs.sendMessage(message);
+    }
+    
+    public String ReadMessage()
+    {
+        if(IsServeurRunning())
+        {
+            String message = _nbs.getMessage();
+            return message;
+        }
+        else
+            return "";
+    }
+    //</editor-fold>
     //</editor-fold>
     
     //</editor-fold>
