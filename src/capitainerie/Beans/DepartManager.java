@@ -18,6 +18,5 @@ public class DepartManager implements DepartListener {
     public void OnDepartReturn(DepartEvent e) {
         System.out.println("réveillé par un signal");
         System.out.println(e.getResult());
-    }
-    
+    } 
 }

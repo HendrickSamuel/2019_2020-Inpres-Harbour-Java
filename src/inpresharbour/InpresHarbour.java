@@ -1,6 +1,8 @@
 package inpresharbour;
 
+import HarbourGlobal.MyAppProperties;
 import HarbourGlobal.MyLogger;
+import HarbourGlobal.PropertiesEnum;
 import capitainerie.Beans.DepartBean;
 import capitainerie.Beans.DepartManager;
 import network.NetworkBasicServer;
@@ -8,19 +10,22 @@ import network.NetworkBasicServer;
 public class InpresHarbour {
 
     public static void main(String[] args) {
-        /*MyLogger ml = new MyLogger();
-        ml.Write("coucou");
-        ml.Write("coucou");
-        ml.ReadAll();*/
-
-        DepartBean db = new DepartBean();
-        DepartManager dm = new DepartManager();
+        MyAppProperties mp = new MyAppProperties();
+        mp.setPropertie(PropertiesEnum.PortDepart, "50001");
+        mp.setPropertie(PropertiesEnum.PortArrive, "50000");
+        mp.setPropertie(PropertiesEnum.ReferencesSimulation, "7");
+        mp.setPropertie(PropertiesEnum.TempsSommeil, "7");
         
-        db.addDepartListener(dm);
+        mp.setPropertie(PropertiesEnum.FileAmarrages, "amarrages.data");
+        mp.setPropertie(PropertiesEnum.FileBateauxAttente, "bateaux.data");
+        mp.setPropertie(PropertiesEnum.FileLogCapitainerie, "capitainerie.log");
+        mp.setPropertie(PropertiesEnum.FileLogCapitainerie, "phare.log");
+        mp.setPropertie(PropertiesEnum.PortDepart, "50000");
         
-        db.init();
-        db.start();
-        System.out.println("apres thread");
+        String test = mp.getPropertie(PropertiesEnum.PortDepart);
+        System.out.println(test);
+        
+        mp.Save();
         
     }
 }

@@ -13,7 +13,7 @@ public class DepartBean extends Thread implements Serializable
     private MoyenDeTransportSurEau _bateauxEnDepart;
     private NetworkBasicClient _nbc = null;
     private boolean _estConnecte = false;
-    private final int PORT_SERVICE = 50001;
+    private int PORT_SERVICE = 50001;
     
     private boolean _enMarche = false;
     
@@ -54,8 +54,21 @@ public class DepartBean extends Thread implements Serializable
         _bateauxEnDepart = mte;
     }
     
+    public MoyenDeTransportSurEau getBateauEnDepart()
+    {
+        return _bateauxEnDepart;
+    }
+    
     public void setEnMarche(boolean enMarche) {
         this._enMarche = enMarche;
+    }
+    
+    public void setPortEcoute(int port)
+    {
+        if(!isEnMarche())
+        {
+            PORT_SERVICE = port;
+        }
     }
     
     public boolean isEnMarche()

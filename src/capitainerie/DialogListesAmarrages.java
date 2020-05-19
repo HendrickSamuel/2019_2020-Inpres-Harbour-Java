@@ -87,8 +87,8 @@ public class DialogListesAmarrages extends javax.swing.JDialog {
                 .addGap(208, 208, 208))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(132, 132, 132)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(91, 91, 91)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 657, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(133, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(

@@ -10,6 +10,8 @@ package capitainerie;
 import Equipage.SailorWithoutIdentificationException;
 import HarbourGlobal.DialogErreurModifiable;
 import HarbourGlobal.DialogResult;
+import HarbourGlobal.MyAppProperties;
+import HarbourGlobal.PropertiesEnum;
 import utilisateurs.DialogLogin;
 import VehiculesMarins.*;
 import java.awt.Image;
@@ -17,6 +19,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Locale;
+import java.util.StringTokenizer;
 import javax.swing.AbstractButton;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -54,9 +57,12 @@ public class Capitainerie extends javax.swing.JFrame {
         {
             SetButtons(true);
             _DialogErreur = new DialogErreurModifiable(this, true);
-            _fuseau = Locale.FRANCE;
-            _formatDate = 1;
-            _formatHeure = 1;
+            
+            MyAppProperties map = CB.getAppProperties();
+            _fuseau = stringToLocale(map.getPropertie(PropertiesEnum.Locale));
+            
+            _formatDate = Integer.parseInt(map.getPropertie(PropertiesEnum.FormatDate));
+            _formatHeure = Integer.parseInt(map.getPropertie(PropertiesEnum.FormatHeure));
             
             InitListe();
             
@@ -81,7 +87,21 @@ public class Capitainerie extends javax.swing.JFrame {
             timer.schedule(task,0, 1*1000);
         }
     }
-            
+   public String localeToString(Locale l) {
+    return l.getLanguage() + "," + l.getCountry();
+}
+
+public Locale stringToLocale(String s) {
+    StringTokenizer tempStringTokenizer = new StringTokenizer(s,",");
+    String l = "FR";
+    String c = "fr";
+    if(tempStringTokenizer.hasMoreTokens())
+        l = tempStringTokenizer.nextElement().toString();
+    if(tempStringTokenizer.hasMoreTokens())
+        c = tempStringTokenizer.nextElement().toString();
+    
+    return new Locale(l,c);
+}  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -109,7 +129,6 @@ public class Capitainerie extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         MenuUser = new javax.swing.JMenu();
@@ -224,13 +243,6 @@ public class Capitainerie extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setText("Interaction avec le phare");
-
-        jButton1.setText("Envoi du bateau");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
 
         jButton2.setText("Connection Serveur");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -406,43 +418,41 @@ public class Capitainerie extends javax.swing.JFrame {
                 .addGap(71, 71, 71))
             .addComponent(jSeparator1)
             .addComponent(jSeparator2)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(70, 70, 70)
-                        .addComponent(TextFieldChoice, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(ButtonSendConfirmation)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(CheckRequestPending)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(ButtonRead))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel1)
-                                        .addComponent(LabelAmaragePossible))
-                                    .addGap(36, 36, 36)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(ButtonChoose, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(TextFieldAmarrage)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(ButtonSendChoise))
-                                        .addComponent(TextFieldPendingRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 586, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(47, 47, 47))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(428, 428, 428)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(428, 428, 428)
+                        .addComponent(jLabel3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(70, 70, 70)
+                                .addComponent(TextFieldChoice, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(ButtonSendConfirmation)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(CheckRequestPending)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(ButtonRead))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel1)
+                                            .addComponent(LabelAmaragePossible))
+                                        .addGap(36, 36, 36)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(ButtonChoose, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(TextFieldAmarrage)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(ButtonSendChoise))
+                                            .addComponent(TextFieldPendingRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 586, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(jButton2)
-                .addGap(47, 47, 47))
+                .addGap(24, 24, 24))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -459,16 +469,11 @@ public class Capitainerie extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jButton2))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(CheckRequestPending)
-                            .addComponent(ButtonRead)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(CheckRequestPending)
+                    .addComponent(ButtonRead))
+                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TextFieldPendingRequest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
@@ -591,7 +596,7 @@ public class Capitainerie extends javax.swing.JFrame {
         {
             case "1":
                 vec = CB.getMessage(1).split("/");
-                TextFieldPendingRequest.setText(vec[1] + " / " +vec[3] +"m");
+                TextFieldPendingRequest.setText(vec[1] + " / " +vec[2] +"m");
                 break;
                 
             case "3":
@@ -607,8 +612,12 @@ public class Capitainerie extends javax.swing.JFrame {
 
     private void ListeBateauxEntreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ListeBateauxEntreeMouseClicked
         String msg = ListeBateauxEntree.getSelectedValue();
-        CB.SelectBateauFromText(msg);
+        boolean res = CB.SelectBateauFromText(msg);
         _selectedListIndex = ListeBateauxEntree.getSelectedIndex();
+        if(!res)
+        {
+            ((DefaultListModel) ListeBateauxEntree.getModel()).remove(_selectedListIndex);
+        }
     }//GEN-LAST:event_ListeBateauxEntreeMouseClicked
 
     private void MenuItemPlaisanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemPlaisanceActionPerformed
@@ -622,13 +631,21 @@ public class Capitainerie extends javax.swing.JFrame {
     }//GEN-LAST:event_MenuItemPecheActionPerformed
 
     private void MenuItemListerBateauxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemListerBateauxActionPerformed
-        DialogListeBateaux dlb = new DialogListeBateaux(this, true, CB.ListeAmarrages, false);
+        DialogListeBateaux dlb = new DialogListeBateaux(this, true, CB.ListeAmarrages, false, CB.CanSendRequest());
         dlb.setVisible(true);
+        if(dlb.getResult() == DialogResult.ok)
+        {
+            CB.SendDepart(dlb.getBateauDepart());
+        }
     }//GEN-LAST:event_MenuItemListerBateauxActionPerformed
 
     private void MenuItemRechercherBateauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemRechercherBateauActionPerformed
-        DialogListeBateaux dlb = new DialogListeBateaux(this, true, CB.ListeAmarrages, true);
+        DialogListeBateaux dlb = new DialogListeBateaux(this, true, CB.ListeAmarrages, true, CB.CanSendRequest());
         dlb.setVisible(true);
+        if(dlb.getResult() == DialogResult.ok)
+        {
+            CB.SendDepart(dlb.getBateauDepart());
+        }
     }//GEN-LAST:event_MenuItemRechercherBateauActionPerformed
 
     private void ButtonSendConfirmationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonSendConfirmationActionPerformed
@@ -653,7 +670,6 @@ public class Capitainerie extends javax.swing.JFrame {
     }//GEN-LAST:event_ButtonSendConfirmationActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        // TODO add your handling code here:
         DialogLogs dl = new DialogLogs(this, true, CB);
         dl.setVisible(true);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
@@ -661,18 +677,6 @@ public class Capitainerie extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         CB.ConnectClient();
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Bateau bat;
-        try {
-            bat = new BateauPeche();
-            CB.SendDepart(bat);
-        } catch (SailorWithoutIdentificationException ex) {
-            Logger.getLogger(Capitainerie.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ShipWithoutIdentificationException ex) {
-            Logger.getLogger(Capitainerie.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
     
     private void ButtonBateauAmarreActionPerformed(java.awt.event.ActionEvent evt) {      
         if(CB.getBateauEnCoursAmarrage() != null && CB.IsAmarrageValide() == true)
@@ -711,9 +715,18 @@ public class Capitainerie extends javax.swing.JFrame {
         
         if(ddp.getResult() == DialogResult.ok)
         {
-            _formatDate = ddp.getFormatDate();
-            _formatHeure = ddp.getFormatHeure();
-            _fuseau = ddp.getFuseauPays(); 
+            MyAppProperties map = CB.getAppProperties();
+            
+            map.setPropertie(PropertiesEnum.Locale, localeToString(ddp.getFuseauPays()));
+            map.setPropertie(PropertiesEnum.FormatDate, Integer.toString(ddp.getFormatDate()));
+            map.setPropertie(PropertiesEnum.FormatHeure, Integer.toString(ddp.getFormatHeure()));
+            map.Save();
+            
+            _fuseau = stringToLocale(map.getPropertie(PropertiesEnum.Locale));
+            
+            _formatDate = Integer.parseInt(map.getPropertie(PropertiesEnum.FormatDate));
+            _formatHeure = Integer.parseInt(map.getPropertie(PropertiesEnum.FormatHeure));
+
             ShowTime();
         }
     }
@@ -808,7 +821,6 @@ public class Capitainerie extends javax.swing.JFrame {
     private javax.swing.JTextField TextFieldAmarrage;
     private javax.swing.JTextField TextFieldChoice;
     private javax.swing.JTextField TextFieldPendingRequest;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

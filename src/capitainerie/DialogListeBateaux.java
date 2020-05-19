@@ -8,6 +8,7 @@ package capitainerie;
 import Amarrages.Amarrage;
 import Amarrages.Ponton;
 import Amarrages.Quai;
+import HarbourGlobal.DialogResult;
 import VehiculesMarins.Bateau;
 import VehiculesMarins.MoyenDeTransportSurEau;
 import java.util.ArrayList;
@@ -28,16 +29,22 @@ import javax.swing.table.TableRowSorter;
 public class DialogListeBateaux extends javax.swing.JDialog {
 
     private ArrayList<String> test;
+    private boolean _departPossible;
+    
+    private Bateau _bateauDepart = null;
+    
+    private DialogResult _result = DialogResult.untouched;
     
     public DialogListeBateaux(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
     
-    public DialogListeBateaux(java.awt.Frame parent, boolean modal, Vector<Amarrage> listeAmarrages, boolean search) {
+    public DialogListeBateaux(java.awt.Frame parent, boolean modal, Vector<Amarrage> listeAmarrages, boolean search, boolean departpossible) {
         this(parent, modal);
         InitListe(listeAmarrages);
         PanelSearch.setVisible(search); // true ou false
+        _departPossible = departpossible;
     }
     
     private void InitListe(Vector<Amarrage> listeAmarrages)
@@ -247,8 +254,16 @@ public class DialogListeBateaux extends javax.swing.JDialog {
 
     private void TableBateauxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableBateauxMouseClicked
         Bateau bat = (Bateau)TableBateaux.getValueAt(TableBateaux.getSelectedRow(),3);
-        DialogDétailBateau ddb = new DialogDétailBateau((java.awt.Frame)getParent(), true, bat);
+        DialogDétailBateau ddb = new DialogDétailBateau((java.awt.Frame)getParent(), true, bat, _departPossible);
         ddb.setVisible(true);
+        if(ddb.getResult() == DialogResult.ok)
+        {
+            _bateauDepart = ddb.getBateau();
+            _result = DialogResult.ok;
+            
+            this.setVisible(false);
+            
+        }
     }//GEN-LAST:event_TableBateauxMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -306,4 +321,14 @@ public class DialogListeBateaux extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
+    public DialogResult getResult()
+    {
+        return _result;
+    }
+    
+    public Bateau getBateauDepart()
+    {
+        return _bateauDepart;
+    }
 }

@@ -236,6 +236,10 @@ public class DialogAmarage extends javax.swing.JDialog {
 
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
         _result = DialogResult.ok;
+        
+        _bateauEnCours.setPortAttache(InputPortAttache.getText());
+        _bateauEnCours.setTonnage(Integer.parseInt(InputTonnage.getText()));
+        
         this.setVisible(false);
     }//GEN-LAST:event_OkButtonActionPerformed
 

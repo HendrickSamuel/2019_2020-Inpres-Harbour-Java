@@ -9,39 +9,48 @@ package capitainerie;
 import Amarrages.*;
 import Equipage.Equipage;
 import Equipage.SailorWithoutIdentificationException;
+import HarbourGlobal.MyAppProperties;
 import HarbourGlobal.MyLogger;
+import HarbourGlobal.PropertiesEnum;
 import VehiculesMarins.*;
 import capitainerie.Beans.*;
 import inpresharbour.InpresHarbour;
-import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.control.CheckBox;
 import javax.swing.JCheckBox;
 import network.NetworkBasicServer;
 
 
 public final class CapitainerieBrain implements DepartListener {
-       
+    
+    //<editor-fold defaultstate="collapsed" desc="Variables">
+    private MyAppProperties _MyAppProperties = null;
+    
+    //<editor-fold defaultstate="collapsed" desc="Serveur">
     private String[] _etapes;
     private int _etape;
-    
     private NetworkBasicServer _nbs = null;
     private int PORT_ECOUTE = 50000;
     private String _messageAEnvoyer;
+    //</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="Client">
     private DepartBean dbean = null;
-
+    private int PORT_DEPART = 50001;
+    private boolean _requeteEnAttente = false;
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Capitainerie">
     public Vector<Amarrage> ListeAmarrages;
     public Vector<String> ListeBateauxEntree;
     private MyLogger _logger;
@@ -55,37 +64,56 @@ public final class CapitainerieBrain implements DepartListener {
     
     private String _connectedUser;
     private boolean _isUserConnected;
+    //</editor-fold>
+    //</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="Constructeur">
     public CapitainerieBrain() {
-        _logger = new MyLogger("capitainerie");
+        _MyAppProperties = new MyAppProperties();
+        _logger = new MyLogger(_MyAppProperties.getPropertie(PropertiesEnum.FileLogCapitainerie));
         _logger.Write("capitainerieBrain", "démarrage de la capitainerie");
+        
+        PORT_ECOUTE = Integer.parseInt(_MyAppProperties.getPropertie(PropertiesEnum.PortArrive));
+        PORT_DEPART = Integer.parseInt(_MyAppProperties.getPropertie(PropertiesEnum.PortDepart));
+
         Load();
         setCoteSelectionne(-1);
         setEmplacementSelectione(-1);
         
         _etapes = new String[4];
     }
+    //</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="Methodes">
+   
+    public MyAppProperties getAppProperties(){
+        return _MyAppProperties;
+    }
+    
+    //<editor-fold defaultstate="collapsed" desc="Persistance (Save - Load - Init - getLogger)">
     public void Save()
     {
         String sep = System.getProperty("file.separator");
         String rep = System.getProperty("user.dir");
+        String fichierbateaux = _MyAppProperties.getPropertie(PropertiesEnum.FileAmarrages);
         
          try{
-            FileOutputStream fos = new FileOutputStream(rep+sep+"bateaux.data");
+            FileOutputStream fos = new FileOutputStream(rep+sep+fichierbateaux);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(ListeBateauxEntree);
-            getLogger().Write("capitainerieBrain", "sauvegarde de " + ListeBateauxEntree.size() + "éléments dans " + rep+sep+"bateaux.data");
+            getLogger().Write("capitainerieBrain", "sauvegarde de " + ListeBateauxEntree.size() + "éléments dans " + rep+sep+fichierbateaux);
         } 
         catch (IOException ex) {
             Logger.getLogger(InpresHarbour.class.getName()).log(Level.SEVERE, null, ex);
         }
       
+        String fichieramarrages = _MyAppProperties.getPropertie(PropertiesEnum.FileBateauxAttente);
+
         try{
-            FileOutputStream fos = new FileOutputStream(rep+sep+"amarrages.data");
+            FileOutputStream fos = new FileOutputStream(rep+sep+fichieramarrages);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(ListeAmarrages);
-            getLogger().Write("capitainerieBrain", "sauvegarde de " + ListeAmarrages.size() + "éléments dans " + rep+sep+"amarrages.data");
+            getLogger().Write("capitainerieBrain", "sauvegarde de " + ListeAmarrages.size() + "éléments dans " + rep+sep+fichieramarrages);
         } 
         catch (IOException ex) {
             Logger.getLogger(InpresHarbour.class.getName()).log(Level.SEVERE, null, ex);
@@ -96,12 +124,13 @@ public final class CapitainerieBrain implements DepartListener {
     {
        String sep = System.getProperty("file.separator");
        String rep = System.getProperty("user.dir");
+       String fichierbateaux = _MyAppProperties.getPropertie(PropertiesEnum.FileAmarrages);
        
        try{
-            FileInputStream fis = new FileInputStream(rep+sep+"bateaux.data");
+            FileInputStream fis = new FileInputStream(rep+sep+fichierbateaux);
             ObjectInputStream ois = new ObjectInputStream(fis);
             ListeBateauxEntree = (Vector<String>)ois.readObject();
-            getLogger().Write("capitainerieBrain", "chargement de " + ListeBateauxEntree.size() + "éléments de " + rep+sep+"bateaux.data");
+            getLogger().Write("capitainerieBrain", "chargement de " + ListeBateauxEntree.size() + "éléments de " + rep+sep+fichierbateaux);
         } 
         catch(FileNotFoundException ex)
         {
@@ -111,11 +140,12 @@ public final class CapitainerieBrain implements DepartListener {
             Logger.getLogger(InpresHarbour.class.getName()).log(Level.SEVERE, null, ex);
         }
             
+       String fichieramarrages = _MyAppProperties.getPropertie(PropertiesEnum.FileBateauxAttente);
         try{
-           FileInputStream fis = new FileInputStream(rep+sep+"amarrages.data");
+           FileInputStream fis = new FileInputStream(rep+sep+fichieramarrages);
            ObjectInputStream ois = new ObjectInputStream(fis);
            ListeAmarrages = (Vector<Amarrage>)ois.readObject();
-            getLogger().Write("capitainerieBrain", "chargement de " + ListeAmarrages.size() + "éléments de " + rep+sep+"amarrages.data");
+            getLogger().Write("capitainerieBrain", "chargement de " + ListeAmarrages.size() + "éléments de " + rep+sep+fichieramarrages);
         } 
         catch(FileNotFoundException ex)
         {
@@ -149,6 +179,12 @@ public final class CapitainerieBrain implements DepartListener {
 
     }
     
+    public MyLogger getLogger() {
+        return _logger;
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Utilisateurs (Register - Logout - Connection)">
     public void RegisterUser(String newUser)
     {
         _connectedUser = newUser;
@@ -169,6 +205,9 @@ public final class CapitainerieBrain implements DepartListener {
         return _connectedUser;
     }   
     
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Amarrage bateau">
     public boolean AmarrerBateau(Bateau bateau, Amarrage amarrage, int cote, int emplacement)
     {
         // verifi la validite 
@@ -320,6 +359,124 @@ public final class CapitainerieBrain implements DepartListener {
         
     }
     
+    public boolean SelectBateauFromText(String text)
+    {
+        boolean found = false;
+        //division de la chaine de charactere passée au format Test -- Peche -- FR -> Q2*4 OU Test -- Plaisance -- FR -> P22*4
+        
+        text = text.replaceAll("\\s+",""); // prendre char espace ?
+        text = text.replaceAll("--"," ");
+        text = text.replaceAll("->"," ");
+        text = text.replaceAll("\\*"," ");
+        
+        StringTokenizer st = new StringTokenizer(text);
+
+        String nomBateau = st.nextToken();
+        
+        String typeBateau = st.nextToken();
+        
+        String pavillon = st.nextToken();
+        
+        String amarrage = st.nextToken(); // P11 ou Q1
+        String cote = "";
+        switch(amarrage.substring(0,1))
+        {
+            case "Q":
+                cote = "-1";
+                break;
+                
+            case "P":
+                cote = amarrage.substring(amarrage.length()-1);
+                amarrage = amarrage.substring(0,amarrage.length()-1);
+                break;         
+        }
+        String emplacement = st.nextToken();     
+        
+        Enumeration enu = ListeAmarrages.elements();
+        while(enu.hasMoreElements() && !found)
+        {
+            Amarrage am = (Amarrage)enu.nextElement();
+            if(am.getIdentifiant().compareTo(amarrage) == 0)
+            {
+                System.out.println("Trouvé");
+                setAmarrageSelectionne(am);
+                setCoteSelectionne(Integer.parseInt(cote));
+                setEmplacementSelectione(Integer.parseInt(emplacement));
+                
+                setBateauEnCoursAmarrage(GetBateauAmarre(am,Integer.parseInt(cote),Integer.parseInt(emplacement)));
+                
+                return getBateauEnCoursAmarrage() != null; // vrai si le bateau est sur le quai et faux si est parti
+            }
+        }
+        return false;
+    }
+    
+    public Bateau CreerBateauFromString(String text)
+    {
+        try {
+            // "nom/type/pavillon/longueur"
+            
+            StringTokenizer st = new StringTokenizer(text,"/");
+            String nom = st.nextToken();
+            String type = st.nextToken();
+            String pavillon = st.nextToken();
+            int longueur = Integer.parseInt(st.nextToken());
+            
+            switch(type)
+            {
+                case "Peche":
+                    BateauPeche bpe = new BateauPeche(nom, "?", longueur, 0, pavillon, true, new Equipage(), Energie.autre, type);
+                    _logger.Write("CapitainerieBrain","Création du bateau: " + bpe);
+                    return bpe;
+                    
+                case "Plaisance":
+                   BateauPlaisance bp = new BateauPlaisance(nom,"?",longueur,0,pavillon, new Equipage(), true ,Energie.autre, type);
+                   _logger.Write("CapitainerieBrain","Création du bateau " + bp);
+                   return bp;
+
+                default: return null; 
+            }
+        } catch (SailorWithoutIdentificationException | ShipWithoutIdentificationException ex) {
+            return null;
+        }
+    }
+    
+    public boolean AmarrerBateauToID(Bateau bateau, String text)
+    {
+        StringTokenizer st = new StringTokenizer(text,"\\*");
+        
+        String amarrage = st.nextToken();
+        String emplacement = st.nextToken();
+        
+        String cote = "";
+        switch(amarrage.substring(0,1))
+        {
+            case "Q":
+                cote = "-1";
+                break;
+                
+            case "P":
+                cote = amarrage.substring(amarrage.length()-1);
+                amarrage = amarrage.substring(0,amarrage.length()-1);
+                break;         
+        }
+        
+        Enumeration enu = ListeAmarrages.elements();
+        while(enu.hasMoreElements())
+        {
+            Amarrage am = (Amarrage)enu.nextElement();
+            if(am.getIdentifiant().compareTo(amarrage) == 0)
+            {
+               return AmarrerBateau(bateau, am, Integer.parseInt(cote), Integer.parseInt(emplacement)-1);
+            }
+        }
+        
+        return false;  
+    }
+    
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Serveur">
     public void DemarrerServeur(JCheckBox check)
     {
         if(!IsServerOn())
@@ -385,134 +542,16 @@ public final class CapitainerieBrain implements DepartListener {
         _etapes[etape] = msg;
     }
     
-    public void SelectBateauFromText(String text)
-    {
-        boolean found = false;
-        //division de la chaine de charactere passée au format Test -- Peche -- FR -> Q2*4 OU Test -- Plaisance -- FR -> P22*4
-        
-        text = text.replaceAll("\\s+",""); // prendre char espace ?
-        text = text.replaceAll("--"," ");
-        text = text.replaceAll("->"," ");
-        text = text.replaceAll("\\*"," ");
-        
-        StringTokenizer st = new StringTokenizer(text);
-
-        String nomBateau = st.nextToken();
-        
-        String typeBateau = st.nextToken();
-        
-        String pavillon = st.nextToken();
-        
-        String amarrage = st.nextToken(); // P11 ou Q1
-        String cote = "";
-        switch(amarrage.substring(0,1))
-        {
-            case "Q":
-                cote = "-1";
-                break;
-                
-            case "P":
-                cote = amarrage.substring(amarrage.length()-1);
-                amarrage = amarrage.substring(0,amarrage.length()-1);
-                break;         
-        }
-        String emplacement = st.nextToken();     
-        
-        Enumeration enu = ListeAmarrages.elements();
-        while(enu.hasMoreElements() && !found)
-        {
-            Amarrage am = (Amarrage)enu.nextElement();
-            if(am.getIdentifiant().compareTo(amarrage) == 0)
-            {
-                found = true;
-                System.out.println("Trouvé");
-                setAmarrageSelectionne(am);
-                setCoteSelectionne(Integer.parseInt(cote));
-                setEmplacementSelectione(Integer.parseInt(emplacement));
-                
-                setBateauEnCoursAmarrage(GetBateauAmarre(am,Integer.parseInt(cote),Integer.parseInt(emplacement)));
-                
-                System.out.println(IsAmarrageValide());
-                System.out.println(getBateauEnCoursAmarrage());
-            }
-        }
-    }
+    //</editor-fold>
     
-    public Bateau CreerBateauFromString(String text)
-    {
-        try {
-            // "nom/type/pavillon/longueur"
-            
-            StringTokenizer st = new StringTokenizer(text,"/");
-            String nom = st.nextToken();
-            String type = st.nextToken();
-            String pavillon = st.nextToken();
-            int longueur = Integer.parseInt(st.nextToken());
-            
-            switch(type)
-            {
-                case "Peche":
-                    BateauPeche bpe = new BateauPeche(nom, "?", longueur, 0, pavillon, true, new Equipage(), Energie.autre, type);
-                    _logger.Write("CapitainerieBrain","Création du bateau: " + bpe);
-                    return bpe;
-                    
-                case "Plaisance":
-                   BateauPlaisance bp = new BateauPlaisance(nom,"?",longueur,0,pavillon, new Equipage(), true ,Energie.autre, type);
-                   _logger.Write("CapitainerieBrain","Création du bateau " + bp);
-                   return bp;
-
-                default: return null; 
-            }
-        } catch (SailorWithoutIdentificationException ex) {
-            return null;
-        } catch (ShipWithoutIdentificationException ex) {
-            return null;
-        }
-    }
-    
-    public boolean AmarrerBateauToID(Bateau bateau, String text)
-    {
-        StringTokenizer st = new StringTokenizer(text,"\\*");
-        
-        String amarrage = st.nextToken();
-        String emplacement = st.nextToken();
-        
-        String cote = "";
-        switch(amarrage.substring(0,1))
-        {
-            case "Q":
-                cote = "-1";
-                break;
-                
-            case "P":
-                cote = amarrage.substring(amarrage.length()-1);
-                amarrage = amarrage.substring(0,amarrage.length()-1);
-                break;         
-        }
-        
-        Enumeration enu = ListeAmarrages.elements();
-        while(enu.hasMoreElements())
-        {
-            Amarrage am = (Amarrage)enu.nextElement();
-            if(am.getIdentifiant().compareTo(amarrage) == 0)
-            {
-               return AmarrerBateau(bateau, am, Integer.parseInt(cote), Integer.parseInt(emplacement));
-            }
-        }
-        
-        return false;  
-    }
-
-    public MyLogger getLogger() {
-        return _logger;
-    }
-    
+    //<editor-fold defaultstate="collapsed" desc="Client (démarrage bateau)">
     public void ConnectClient()
     {
         if(dbean == null)
         {
             dbean = new DepartBean();
             dbean.addDepartListener(this);
+            dbean.setPortEcoute(PORT_DEPART);
             dbean.init();
         }
         dbean.Connect();
@@ -530,6 +569,7 @@ public final class CapitainerieBrain implements DepartListener {
     public void SendDepart(MoyenDeTransportSurEau mte)
     {
         dbean.setBateauEnDepart(mte);
+        _requeteEnAttente = true;
         if(dbean.getState() == Thread.State.NEW)
             dbean.start();
     }
@@ -537,6 +577,67 @@ public final class CapitainerieBrain implements DepartListener {
     @Override
     public void OnDepartReturn(DepartEvent e) {
         System.out.println("CAPITAINERIE A RECU: " + e.getResult());
+        if(e.getResult() == true)
+        {
+           Bateau bat = (Bateau)dbean.getBateauEnDepart();
+           Search(ListeAmarrages, bat);
+        }
+        _requeteEnAttente = false;
     }
     
+    private void Search(Vector<Amarrage> listeAmarrages, Bateau bat)
+    {
+         Enumeration enu = listeAmarrages.elements();
+        while(enu.hasMoreElements())
+        {
+            Amarrage am = (Amarrage)enu.nextElement();
+            if(am instanceof Ponton)
+                AjouterPonton((Ponton)am, bat);
+            else
+            if(am instanceof Quai)
+            AjouterQuai((Quai)am, bat);
+        }
+    }
+    
+    private void AjouterPonton(Ponton ponton, Bateau bat)
+    {
+        Vector ligne;
+
+        for(int y = 1; y <= 2; y++)
+        {
+            MoyenDeTransportSurEau[] mte = ponton.getListe(y);
+            for(int i = 0; i < mte.length; i++)
+            {
+                Bateau bp = (Bateau)mte[i];
+                if(bp == bat)
+                {
+                    mte[i] = null;
+                    System.out.println("Bateau trouvé");
+                }
+
+            }
+        }
+    }
+
+    private void AjouterQuai(Quai quai, Bateau bat)
+    {  
+        MoyenDeTransportSurEau[] mte = quai.getListe();
+        for(int i = 0; i < mte.length; i++)
+        {
+            Bateau bp = (Bateau)mte[i];
+            if(bp == bat)
+            {
+                mte[i] = null;
+                System.out.println("Bateau trouvé");
+            }
+        }
+    }
+
+    
+    public boolean CanSendRequest()
+    {
+        return !_requeteEnAttente;
+    }
+    //</editor-fold>
+    //</editor-fold>
 }

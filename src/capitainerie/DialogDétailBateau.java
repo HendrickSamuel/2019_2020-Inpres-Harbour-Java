@@ -6,13 +6,15 @@
 package capitainerie;
 
 import Equipage.Equipage;
+import HarbourGlobal.DialogResult;
 import VehiculesMarins.Bateau;
 import java.awt.Image;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 
 public class DialogDétailBateau extends javax.swing.JDialog {
-
+    
+    private DialogResult _result = DialogResult.untouched;
     private Bateau _bateau;
     
     public DialogDétailBateau(java.awt.Frame parent, boolean modal) {
@@ -20,11 +22,12 @@ public class DialogDétailBateau extends javax.swing.JDialog {
         initComponents();
     }
     
-    public DialogDétailBateau(java.awt.Frame parent, boolean modal, Bateau bateau) {
+    public DialogDétailBateau(java.awt.Frame parent, boolean modal, Bateau bateau, boolean departPossible) {
         super(parent, modal);
         initComponents();
         _bateau = bateau;
         InitPage();
+        jButton1.setEnabled(departPossible);
     }
     
     private void InitPage(){
@@ -63,6 +66,7 @@ public class DialogDétailBateau extends javax.swing.JDialog {
         LabelPortAttache = new javax.swing.JLabel();
         LabelTonnage = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -88,6 +92,13 @@ public class DialogDétailBateau extends javax.swing.JDialog {
         LabelTonnage.setText("jLabel7");
 
         jLabel8.setText("équipage");
+
+        jButton1.setText("Départ du bateau");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -124,8 +135,10 @@ public class DialogDétailBateau extends javax.swing.JDialog {
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(226, 226, 226)
-                .addComponent(OkButton)
+                .addGap(40, 40, 40)
+                .addComponent(OkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(48, 48, 48)
+                .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -157,16 +170,24 @@ public class DialogDétailBateau extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(OkButton)
-                .addGap(5, 5, 5))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(OkButton)
+                    .addComponent(jButton1))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
+        _result = DialogResult.closed;
         this.setVisible(false);
     }//GEN-LAST:event_OkButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        _result = DialogResult.ok;
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -217,6 +238,7 @@ public class DialogDétailBateau extends javax.swing.JDialog {
     private javax.swing.JLabel LabelPortAttache;
     private javax.swing.JLabel LabelTonnage;
     private javax.swing.JButton OkButton;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -239,5 +261,14 @@ public class DialogDétailBateau extends javax.swing.JDialog {
         equipage.getMarins().forEach(m -> dcbm.addElement(m));
 
         ComboBoxMarins.setModel(dcbm);
+    }
+    
+    public DialogResult getResult()
+    {
+        return _result;
+    }
+    
+    public Bateau getBateau(){
+        return _bateau;
     }
 }

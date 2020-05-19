@@ -6,7 +6,9 @@
 /******************************************************/
 package phare;
 
+import HarbourGlobal.MyAppProperties;
 import HarbourGlobal.MyLogger;
+import HarbourGlobal.PropertiesEnum;
 import java.util.Vector;
 import javax.swing.JCheckBox;
 import network.NetworkBasicClient;
@@ -15,13 +17,14 @@ import network.NetworkBasicServer;
 public class PhareBrain {
     //<editor-fold defaultstate="collapsed" desc="Variables">
     
-
+    MyAppProperties _mMyAppProperties = null;
+    
     //<editor-fold defaultstate="collapsed" desc="Client">
     private NetworkBasicClient _nbc = null;
     private boolean _estConnecte = false;
     private Vector<String> _bateauxEnAttente;
     private String _bateauIdentifie;
-    private final int PORT_SERVICE = 50000;
+    private int PORT_SERVICE = 50000;
     private MyLogger _logger;
     private String _reponseBateauIdentifie;
     private String _reponseBateauEntreRade;
@@ -34,9 +37,10 @@ public class PhareBrain {
     public static final String RECEP_ENTRE_RADE = "4";
     //</editor-fold>
     
-    
+    //<editor-fold defaultstate="collapsed" desc="Serveur">
     private NetworkBasicServer _nbs = null;
-    private final int PORT_DEPART = 50001;
+    private int PORT_DEPART = 50001;
+    //</editor-fold>
     
     //</editor-fold>
   
@@ -44,16 +48,17 @@ public class PhareBrain {
     public PhareBrain()
     {
         //<editor-fold defaultstate="collapsed" desc="Init des variables">
+        _mMyAppProperties = new MyAppProperties();
+        PORT_SERVICE = Integer.parseInt(_mMyAppProperties.getPropertie(PropertiesEnum.PortArrive));
+        PORT_DEPART = Integer.parseInt(_mMyAppProperties.getPropertie(PropertiesEnum.PortDepart));
+        
         this.setBateauxEnAttente(new Vector<String>());
-        this.setLogger(new MyLogger("phare"));
+        this.setLogger(new MyLogger(_mMyAppProperties.getPropertie(PropertiesEnum.FileLogPhare)));
         //</editor-fold>
     }
     //</editor-fold>
 
 
-    
-    
-    
     //<editor-fold defaultstate="collapsed" desc="Méthodes">
     //<editor-fold defaultstate="collapsed" desc="Getters">
     public NetworkBasicClient getNbc() {
@@ -199,7 +204,7 @@ public class PhareBrain {
     }
     //</editor-fold>
     
-    //<editor-fold defaultstate="collapsed" desc="NetworkClient">
+    //<editor-fold defaultstate="collapsed" desc="NetworkServer">
     public void StartServeur(JCheckBox check){
         if(!IsServeurRunning())
         {
