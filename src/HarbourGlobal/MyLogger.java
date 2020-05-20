@@ -30,7 +30,7 @@ public class MyLogger
     {
        String sep = System.getProperty("file.separator");
        String rep = System.getProperty("user.dir");
-       String fichier = rep+sep+text+".log";
+       String fichier = rep+sep+text;
        _fileDest = fichier;
        
     }

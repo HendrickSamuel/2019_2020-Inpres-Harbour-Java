@@ -596,7 +596,7 @@ public Locale stringToLocale(String s) {
         {
             case "1":
                 vec = CB.getMessage(1).split("/");
-                TextFieldPendingRequest.setText(vec[1] + " / " +vec[2] +"m");
+                TextFieldPendingRequest.setText(vec[1] + " / " +vec[4] +"m");
                 break;
                 
             case "3":

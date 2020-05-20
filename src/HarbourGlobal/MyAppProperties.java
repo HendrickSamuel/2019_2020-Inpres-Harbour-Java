@@ -52,7 +52,7 @@ public class MyAppProperties {
             this.setPropertie(PropertiesEnum.FileAmarrages, "amarrages.data");
             this.setPropertie(PropertiesEnum.FileBateauxAttente, "bateaux.data");
             this.setPropertie(PropertiesEnum.FileLogCapitainerie, "capitainerie.log");
-            this.setPropertie(PropertiesEnum.FileLogCapitainerie, "phare.log");
+            this.setPropertie(PropertiesEnum.FileLogPhare, "phare.log");
             this.setPropertie(PropertiesEnum.Locale, "FR,fr");
             this.setPropertie(PropertiesEnum.FormatDate, "1");
             this.setPropertie(PropertiesEnum.FormatHeure, "1");
