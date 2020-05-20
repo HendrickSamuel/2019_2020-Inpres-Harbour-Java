@@ -5,9 +5,14 @@
  */
 package capitainerie;
 
+import HarbourGlobal.MyLogger;
+import HarbourGlobal.PropertiesEnum;
+
 public class DialogLogs extends javax.swing.JDialog {
 
     private CapitainerieBrain _cb;
+    private MyLogger _logger;
+    
     public DialogLogs(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -17,7 +22,8 @@ public class DialogLogs extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         _cb = cb;
-        jTextArea1.setText(cb.getLogger().ReadAll());
+        _logger = cb.getLogger();
+        jTextArea1.setText(_logger.ReadAll());
     }
 
     /**
@@ -34,9 +40,13 @@ public class DialogLogs extends javax.swing.JDialog {
         jTextArea1 = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        LogsPhare = new javax.swing.JButton();
+        LogCapitainerie = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Logs de l'application");
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Logs");
 
         jTextArea1.setColumns(20);
@@ -57,6 +67,20 @@ public class DialogLogs extends javax.swing.JDialog {
             }
         });
 
+        LogsPhare.setText("Logs Phare");
+        LogsPhare.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LogsPhareActionPerformed(evt);
+            }
+        });
+
+        LogCapitainerie.setText("Logs Capitainerie");
+        LogCapitainerie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LogCapitainerieActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -65,14 +89,19 @@ public class DialogLogs extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(273, 273, 273)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(252, 252, 252)
+                        .addGap(87, 87, 87)
                         .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2)))
-                .addContainerGap(300, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 225, Short.MAX_VALUE)
+                        .addComponent(LogCapitainerie)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(LogsPhare))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(84, 84, 84)
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -81,22 +110,34 @@ public class DialogLogs extends javax.swing.JDialog {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2)))
+                    .addComponent(jButton2)
+                    .addComponent(LogsPhare)
+                    .addComponent(LogCapitainerie)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        jTextArea1.setText(_cb.getLogger().ReadAll());
+        jTextArea1.setText(_logger.ReadAll());
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void LogsPhareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogsPhareActionPerformed
+        _logger = new MyLogger(_cb.getProperties().getPropertie(PropertiesEnum.FileLogPhare));
+        jTextArea1.setText(_logger.ReadAll());
+    }//GEN-LAST:event_LogsPhareActionPerformed
+
+    private void LogCapitainerieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogCapitainerieActionPerformed
+        _logger = new MyLogger(_cb.getProperties().getPropertie(PropertiesEnum.FileLogCapitainerie));
+        jTextArea1.setText(_logger.ReadAll());
+    }//GEN-LAST:event_LogCapitainerieActionPerformed
 
     /**
      * @param args the command line arguments
@@ -141,6 +182,8 @@ public class DialogLogs extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton LogCapitainerie;
+    private javax.swing.JButton LogsPhare;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;

@@ -12,12 +12,11 @@ import java.awt.Image;
 import java.util.StringTokenizer;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import phare.beans.BoatBean;
+import phare.beans.KindOfBoatBean;
+import phare.beans.NotifyBean;
 import utilisateurs.DialogLogin;
 
-/**
- *
- * @author benka
- */
 public class Phare extends javax.swing.JFrame {
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
@@ -49,6 +48,9 @@ public class Phare extends javax.swing.JFrame {
             Image scaleImage1 = icon1.getImage().getScaledInstance(300, 200,Image.SCALE_SMOOTH);
             this.imgPhare.setIcon(new javax.swing.ImageIcon(scaleImage1));                   
             //</editor-fold>
+            
+            _phareBrain.InitBeans(bateauxEnAttenteJL);
+            
         }
     }
 
@@ -87,6 +89,7 @@ public class Phare extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Phare d'entrée d'Inpres-Harbour");
+        setResizable(false);
 
         btnConnexionServeur.setText("Se connecter au serveur");
         btnConnexionServeur.addActionListener(new java.awt.event.ActionListener() {
@@ -157,7 +160,7 @@ public class Phare extends javax.swing.JFrame {
             }
         });
 
-        MessagePendingCheck.setText("jCheckBox1");
+        MessagePendingCheck.setText("Message en attente");
 
         jButton1.setText("Lire requete");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -180,27 +183,20 @@ public class Phare extends javax.swing.JFrame {
             }
         });
 
-        MessageRequete.setText("jTextField1");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(48, 48, 48)
-                        .addComponent(bateauIdentifieTF, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(304, 304, 304))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(248, 248, 248)
-                                .addComponent(btnRAZ))
+                                .addComponent(jLabel2)
+                                .addGap(48, 48, 48)
+                                .addComponent(bateauIdentifieTF, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(btnSuivant)
-                            .addComponent(jLabel3)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(imgPhare, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(48, 48, 48)
@@ -216,31 +212,37 @@ public class Phare extends javax.swing.JFrame {
                                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addComponent(btnAutorisationEntree)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnEntreRade)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(reponseCapitainerieTF, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(confirmationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(199, 199, 199)
+                                .addComponent(confirmationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel3)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(199, 199, 199)
+                                .addComponent(reponseCapitainerieTF, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnEntreRade))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(274, 274, 274)
+                        .addComponent(btnRAZ)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(163, 163, 163)
-                        .addComponent(jLabel4))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(100, 100, 100)
                         .addComponent(ServeurButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1)
-                            .addComponent(MessagePendingCheck)
-                            .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jButton2)
-                                .addGap(50, 50, 50)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButton3))
-                            .addComponent(MessageRequete))))
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(MessagePendingCheck, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(MessageRequete, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(115, 115, 115)
+                        .addComponent(jLabel4)))
                 .addGap(86, 86, 86))
         );
         layout.setVerticalGroup(
@@ -255,11 +257,11 @@ public class Phare extends javax.swing.JFrame {
                         .addComponent(btnConnexionServeur)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnDecoServeur))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSuivant)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -268,16 +270,17 @@ public class Phare extends javax.swing.JFrame {
                     .addComponent(bateauIdentifieTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnAutorisationEntree)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(reponseCapitainerieTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEntreRade)
                     .addComponent(confirmationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
-                .addComponent(btnRAZ))
+                .addGap(18, 18, 18)
+                .addComponent(btnRAZ)
+                .addGap(0, 18, Short.MAX_VALUE))
             .addComponent(jSeparator1)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -286,11 +289,11 @@ public class Phare extends javax.swing.JFrame {
                 .addComponent(ServeurButton)
                 .addGap(18, 18, 18)
                 .addComponent(MessagePendingCheck)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addGap(28, 28, 28)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(MessageRequete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton3))
@@ -437,6 +440,7 @@ public class Phare extends javax.swing.JFrame {
                     this.reponseCapitainerieTF.setText("??");
                     this.reponseCapitainerieTF.setBackground(Color.WHITE);
                     this.bateauIdentifieTF.setBackground(Color.WHITE);
+                    this.RemoveFirstBoat();
                     System.out.println(_phareBrain.Now() + " Phare | Bon TYPE Reponse - Entre dans la rade");
                 }
                 else
@@ -525,6 +529,13 @@ public class Phare extends javax.swing.JFrame {
             dlm.addElement(bateauEnAttente);
         
         this.bateauxEnAttenteJL.setModel(dlm); 
+    }
+    
+    private void RemoveFirstBoat()
+    {
+        DefaultListModel dlm = (DefaultListModel)bateauxEnAttenteJL.getModel();
+        if(!dlm.isEmpty())
+            dlm.remove(0);
     }
     
     //</editor-fold>

@@ -90,6 +90,18 @@ public final class CapitainerieBrain implements DepartListener {
         return _MyAppProperties;
     }
     
+    public void RemoveList(String champ)
+    {
+        System.out.println("Avant: " + ListeBateauxEntree.size());
+        ListeBateauxEntree.remove(champ);
+        System.out.println("Apres: " + ListeBateauxEntree.size());
+    }
+    
+    public MyAppProperties getProperties()
+    {
+        return _MyAppProperties;
+    }
+    
     //<editor-fold defaultstate="collapsed" desc="Persistance (Save - Load - Init - getLogger)">
     public void Save()
     {
@@ -246,6 +258,8 @@ public final class CapitainerieBrain implements DepartListener {
     
     public Bateau GetBateauAmarre(Amarrage amarrage, int cote, int emplacement)
     {
+        emplacement--; // mettre la valeur min 1 à 0;
+        
         if(amarrage instanceof Ponton)
         {
             Ponton ponton = (Ponton)amarrage;

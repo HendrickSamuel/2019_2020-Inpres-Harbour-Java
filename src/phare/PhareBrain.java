@@ -11,8 +11,12 @@ import HarbourGlobal.MyLogger;
 import HarbourGlobal.PropertiesEnum;
 import java.util.Vector;
 import javax.swing.JCheckBox;
+import javax.swing.JList;
 import network.NetworkBasicClient;
 import network.NetworkBasicServer;
+import phare.beans.BoatBean;
+import phare.beans.KindOfBoatBean;
+import phare.beans.NotifyBean;
 
 public class PhareBrain {
     //<editor-fold defaultstate="collapsed" desc="Variables">
@@ -42,6 +46,12 @@ public class PhareBrain {
     private int PORT_DEPART = 50001;
     //</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="BeansGenerator">
+    private KindOfBoatBean _KOBbean = null;
+    private NotifyBean _notifyBean = null;
+    private BoatBean _boatBean = null;
+    //</editor-fold>
+    
     //</editor-fold>
   
     //<editor-fold defaultstate="collapsed" desc="Constructeur">
@@ -55,6 +65,10 @@ public class PhareBrain {
         this.setBateauxEnAttente(new Vector<String>());
         this.setLogger(new MyLogger(_mMyAppProperties.getPropertie(PropertiesEnum.FileLogPhare)));
         //</editor-fold>
+        
+        _KOBbean = new KindOfBoatBean();
+        _notifyBean = new NotifyBean();
+        _boatBean = new BoatBean();
     }
     //</editor-fold>
 
@@ -245,10 +259,22 @@ public class PhareBrain {
         else
             return "";
     }
-    //</editor-fold>
+    //</editor-fold>.
+    
+    public void InitBeans(JList liste)
+    {
+        _notifyBean.setJListe(liste);
+        _boatBean.AddBoatListener(_notifyBean);
+        _KOBbean.AddPropertyChangedListener(_boatBean);
+        _KOBbean.setDelai(Integer.parseInt(_mMyAppProperties.getPropertie(PropertiesEnum.TempsSommeil)));
+        _KOBbean.setMultiplePeche(Integer.parseInt(_mMyAppProperties.getPropertie(PropertiesEnum.SimulationPeche)));
+        _KOBbean.setMultiplePlaisance(Integer.parseInt(_mMyAppProperties.getPropertie(PropertiesEnum.SimulationPlaisance)));
+        _notifyBean.init();
+        _KOBbean.init();
+        _KOBbean.run();
+    }
     //</editor-fold>
     
     //</editor-fold>
-
-
+    
 }

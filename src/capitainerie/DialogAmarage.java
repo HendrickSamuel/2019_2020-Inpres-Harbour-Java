@@ -70,8 +70,7 @@ public class DialogAmarage extends javax.swing.JDialog {
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -90,6 +89,7 @@ public class DialogAmarage extends javax.swing.JDialog {
         ImagePavillon = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("Emplacement:");
 
@@ -103,10 +103,8 @@ public class DialogAmarage extends javax.swing.JDialog {
 
         ButtonEqupiage.setText("Equipage");
         ButtonEqupiage.setToolTipText("");
-        ButtonEqupiage.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        ButtonEqupiage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ButtonEqupiageActionPerformed(evt);
             }
         });
@@ -116,19 +114,15 @@ public class DialogAmarage extends javax.swing.JDialog {
         InputPortAttache.setText("jTextField2");
 
         OkButton.setText("OK");
-        OkButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        OkButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 OkButtonActionPerformed(evt);
             }
         });
 
         CancelButton.setText("Cancel");
-        CancelButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        CancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CancelButtonActionPerformed(evt);
             }
         });

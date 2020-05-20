@@ -28,6 +28,8 @@ public class DialogDétailBateau extends javax.swing.JDialog {
         _bateau = bateau;
         InitPage();
         jButton1.setEnabled(departPossible);
+        LabelPortAttache.setText(_bateau.getPortAttache());
+        LabelTonnage.setText(Integer.toString(_bateau.getTonnage()));
     }
     
     private void InitPage(){
@@ -69,6 +71,8 @@ public class DialogDétailBateau extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Détail du bateau");
+        setResizable(false);
 
         jLabel2.setText("Bateau:");
 

@@ -62,8 +62,7 @@ public class DialogEquipage extends javax.swing.JDialog {
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         ButtonGroupGrade = new javax.swing.ButtonGroup();
         jLabel2 = new javax.swing.JLabel();
@@ -89,14 +88,14 @@ public class DialogEquipage extends javax.swing.JDialog {
         ErrorLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Equipage");
+        setResizable(false);
 
         jLabel2.setText("Nom:");
 
         ButtonAjoutEquipage.setText("Ajouter");
-        ButtonAjoutEquipage.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        ButtonAjoutEquipage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ButtonAjoutEquipageActionPerformed(evt);
             }
         });
@@ -104,27 +103,22 @@ public class DialogEquipage extends javax.swing.JDialog {
         jLabel3.setText("Prénom:");
 
         ButtonValider.setText("Valider équipage");
-        ButtonValider.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        ButtonValider.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ButtonValiderActionPerformed(evt);
             }
         });
 
         ButtonAbandonner.setText("Abandonner");
-        ButtonAbandonner.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        ButtonAbandonner.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ButtonAbandonnerActionPerformed(evt);
             }
         });
 
         jLabel4.setText("Date de naissance:");
 
-        ListeMarins.setModel(new javax.swing.AbstractListModel<String>()
-        {
+        ListeMarins.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -153,10 +147,8 @@ public class DialogEquipage extends javax.swing.JDialog {
         LabelBateau.setText("Nom du bateau");
 
         ButtonEmpty.setText("Vider Equpiage");
-        ButtonEmpty.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        ButtonEmpty.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ButtonEmptyActionPerformed(evt);
             }
         });

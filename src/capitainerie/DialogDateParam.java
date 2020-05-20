@@ -28,8 +28,7 @@ public class DialogDateParam extends javax.swing.JDialog {
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         ComboLocations = new javax.swing.JComboBox<>();
         ComboDate = new javax.swing.JComboBox<>();
@@ -43,6 +42,7 @@ public class DialogDateParam extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Date options");
+        setResizable(false);
 
         ComboLocations.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "France", "Royaume-Uni", "Allemagne", "Italie", "U.S.A" }));
 
@@ -60,19 +60,15 @@ public class DialogDateParam extends javax.swing.JDialog {
         jLabel4.setText("Format Date");
 
         ApplyButton.setText("Appliquer");
-        ApplyButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        ApplyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ApplyButtonActionPerformed(evt);
             }
         });
 
         Cancel.setText("Annuler");
-        Cancel.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        Cancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CancelActionPerformed(evt);
             }
         });

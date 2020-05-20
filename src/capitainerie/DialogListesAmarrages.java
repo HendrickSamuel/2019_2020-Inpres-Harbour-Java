@@ -51,6 +51,8 @@ public class DialogListesAmarrages extends javax.swing.JDialog {
         ButtonChoose = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Liste des Amarrages");
+        setResizable(false);
 
         TableAmarrages.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

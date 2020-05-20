@@ -46,7 +46,9 @@ public class MyAppProperties {
             // si fichier non trouvé 
             this.setPropertie(PropertiesEnum.PortDepart, "50001");
             this.setPropertie(PropertiesEnum.PortArrive, "50000");
-            this.setPropertie(PropertiesEnum.ReferencesSimulation, "7");
+            this.setPropertie(PropertiesEnum.SimulationPeche, "7");
+            this.setPropertie(PropertiesEnum.SimulationPlaisance, "17");
+            
             this.setPropertie(PropertiesEnum.TempsSommeil, "7");
 
             this.setPropertie(PropertiesEnum.FileAmarrages, "amarrages.data");

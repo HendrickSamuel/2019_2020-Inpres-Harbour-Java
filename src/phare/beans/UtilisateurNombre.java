@@ -10,5 +10,6 @@ package phare.beans;
  * @author benka
  */
 public interface UtilisateurNombre {
-    
+     String getIdentifiant();
+     void traiteNombre(int n); 
 }
