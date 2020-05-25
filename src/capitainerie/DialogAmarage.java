@@ -64,8 +64,6 @@ public class DialogAmarage extends javax.swing.JDialog {
             System.out.println(_logger.Now() + " | création de l'image du bateau au pavillon inconnu");
             //</editor-fold>
         }
-        
-        
     }
     
     @SuppressWarnings("unchecked")
@@ -224,7 +222,6 @@ public class DialogAmarage extends javax.swing.JDialog {
             getBateauEnCours().setEquipage(equip);
             
             InitCombobox(equip);
-            
         }
     }//GEN-LAST:event_ButtonEqupiageActionPerformed
 

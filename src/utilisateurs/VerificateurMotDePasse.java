@@ -24,7 +24,6 @@ public final class VerificateurMotDePasse {
         Load();
         
         Save();
-        //AddUser("sam","333");
     }
     
     public void Save()
@@ -47,6 +46,7 @@ public final class VerificateurMotDePasse {
             login.load(input);
         } catch (IOException io) {
             System.out.println("chargement de fichier problematique "+io.getMessage());
+            AddUser("root","root");
         }
     }
     

@@ -8,8 +8,9 @@
 package Equipage;
 
 import HarbourGlobal.AUnIdentifiant;
+import java.io.Serializable;
 
-public class Humain implements AUnIdentifiant{
+public class Humain implements AUnIdentifiant, Serializable{
 
     private String _nom;
     private String _prenom;

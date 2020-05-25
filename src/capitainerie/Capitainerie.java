@@ -130,6 +130,7 @@ public Locale stringToLocale(String s) {
         jSeparator2 = new javax.swing.JSeparator();
         jLabel3 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         MenuUser = new javax.swing.JMenu();
         MenuItemLogin = new javax.swing.JMenuItem();
@@ -252,6 +253,8 @@ public Locale stringToLocale(String s) {
             }
         });
 
+        jLabel4.setText("Départ bateaux");
+
         MenuUser.setText("Utilisateurs");
 
         MenuItemLogin.setText("login");
@@ -330,10 +333,20 @@ public Locale stringToLocale(String s) {
 
         MenuItemEquipageBateau.setText("Equipage d'un bateau");
         BoutonsLogin.add(MenuItemEquipageBateau);
+        MenuItemEquipageBateau.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuItemEquipageBateauActionPerformed(evt);
+            }
+        });
         MenuPersonnel.add(MenuItemEquipageBateau);
 
         MenuItemRechercheMarin.setText("Rechercher un marin");
         BoutonsLogin.add(MenuItemRechercheMarin);
+        MenuItemRechercheMarin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuItemRechercheMarinActionPerformed(evt);
+            }
+        });
         MenuPersonnel.add(MenuItemRechercheMarin);
 
         jMenuBar1.add(MenuPersonnel);
@@ -407,7 +420,7 @@ public Locale stringToLocale(String s) {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(Image1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(Image2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -419,16 +432,20 @@ public Locale stringToLocale(String s) {
                 .addGap(71, 71, 71))
             .addComponent(jSeparator1)
             .addComponent(jSeparator2)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(LabelAmaragePossible)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(428, 428, 428)
-                        .addComponent(jLabel3))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addComponent(CheckRequestPending)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(ButtonRead))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(428, 428, 428)
+                        .addComponent(jLabel3))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -451,13 +468,11 @@ public Locale stringToLocale(String s) {
                                 .addComponent(TextFieldAmarrage, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(ButtonSendChoise)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(24, 24, 24))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(LabelAmaragePossible)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(jButton2))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -473,11 +488,12 @@ public Locale stringToLocale(String s) {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jButton2))
-                .addGap(6, 6, 6)
+                    .addComponent(jLabel4))
+                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CheckRequestPending)
-                    .addComponent(ButtonRead))
+                    .addComponent(ButtonRead)
+                    .addComponent(jButton2))
                 .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TextFieldPendingRequest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -639,7 +655,7 @@ public Locale stringToLocale(String s) {
     }//GEN-LAST:event_MenuItemPecheActionPerformed
 
     private void MenuItemListerBateauxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemListerBateauxActionPerformed
-        DialogListeBateaux dlb = new DialogListeBateaux(this, true, CB.ListeAmarrages, false, CB.CanSendRequest());
+        DialogListeBateaux dlb = new DialogListeBateaux(this, true, CB.ListeAmarrages, false, true, CB.CanSendRequest());
         dlb.setVisible(true);
         if(dlb.getResult() == DialogResult.ok)
         {
@@ -648,7 +664,7 @@ public Locale stringToLocale(String s) {
     }//GEN-LAST:event_MenuItemListerBateauxActionPerformed
 
     private void MenuItemRechercherBateauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemRechercherBateauActionPerformed
-        DialogListeBateaux dlb = new DialogListeBateaux(this, true, CB.ListeAmarrages, true, CB.CanSendRequest());
+        DialogListeBateaux dlb = new DialogListeBateaux(this, true, CB.ListeAmarrages, true, true, CB.CanSendRequest());
         dlb.setVisible(true);
         if(dlb.getResult() == DialogResult.ok)
         {
@@ -685,6 +701,16 @@ public Locale stringToLocale(String s) {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         CB.ConnectClient();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void MenuItemEquipageBateauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemEquipageBateauActionPerformed
+        DialogListeBateaux dlb = new DialogListeBateaux(this, true, CB.ListeAmarrages, true, false, CB.CanSendRequest());
+        dlb.setVisible(true);
+    }//GEN-LAST:event_MenuItemEquipageBateauActionPerformed
+
+    private void MenuItemRechercheMarinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemRechercheMarinActionPerformed
+        DialogRechercheMarin drm = new DialogRechercheMarin(this, true, CB.ListeAmarrages);
+        drm.setVisible(true);
+    }//GEN-LAST:event_MenuItemRechercheMarinActionPerformed
     
     private void ButtonBateauAmarreActionPerformed(java.awt.event.ActionEvent evt) {      
         if(CB.getBateauEnCoursAmarrage() != null && CB.IsAmarrageValide() == true)
@@ -837,6 +863,7 @@ public Locale stringToLocale(String s) {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem6;

@@ -10,7 +10,7 @@ package VehiculesMarins;
 public enum Energie {
     essence,
     diesel,
-    kérosène,
+    kerosene,
     vapeur,
     autre
 }

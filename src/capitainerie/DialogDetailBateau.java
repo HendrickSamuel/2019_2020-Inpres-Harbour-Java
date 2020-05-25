@@ -12,17 +12,17 @@ import java.awt.Image;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 
-public class DialogDétailBateau extends javax.swing.JDialog {
+public class DialogDetailBateau extends javax.swing.JDialog {
     
     private DialogResult _result = DialogResult.untouched;
     private Bateau _bateau;
     
-    public DialogDétailBateau(java.awt.Frame parent, boolean modal) {
+    public DialogDetailBateau(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
     
-    public DialogDétailBateau(java.awt.Frame parent, boolean modal, Bateau bateau, boolean departPossible) {
+    public DialogDetailBateau(java.awt.Frame parent, boolean modal, Bateau bateau, boolean departPossible) {
         super(parent, modal);
         initComponents();
         _bateau = bateau;
@@ -210,20 +210,21 @@ public class DialogDétailBateau extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DialogDétailBateau.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogDetailBateau.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DialogDétailBateau.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogDetailBateau.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DialogDétailBateau.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogDetailBateau.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DialogDétailBateau.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogDetailBateau.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                DialogDétailBateau dialog = new DialogDétailBateau(new javax.swing.JFrame(), true);
+                DialogDetailBateau dialog = new DialogDetailBateau(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

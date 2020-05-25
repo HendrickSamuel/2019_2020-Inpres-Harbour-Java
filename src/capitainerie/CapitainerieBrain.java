@@ -14,7 +14,6 @@ import HarbourGlobal.MyLogger;
 import HarbourGlobal.PropertiesEnum;
 import VehiculesMarins.*;
 import capitainerie.Beans.*;
-import inpresharbour.InpresHarbour;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -116,7 +115,7 @@ public final class CapitainerieBrain implements DepartListener {
             getLogger().Write("capitainerieBrain", "sauvegarde de " + ListeBateauxEntree.size() + "éléments dans " + rep+sep+fichierbateaux);
         } 
         catch (IOException ex) {
-            Logger.getLogger(InpresHarbour.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CapitainerieBrain.class.getName()).log(Level.SEVERE, null, ex);
         }
       
         String fichieramarrages = _MyAppProperties.getPropertie(PropertiesEnum.FileBateauxAttente);
@@ -128,7 +127,7 @@ public final class CapitainerieBrain implements DepartListener {
             getLogger().Write("capitainerieBrain", "sauvegarde de " + ListeAmarrages.size() + "éléments dans " + rep+sep+fichieramarrages);
         } 
         catch (IOException ex) {
-            Logger.getLogger(InpresHarbour.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CapitainerieBrain.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -149,7 +148,7 @@ public final class CapitainerieBrain implements DepartListener {
             getLogger().Write("capitainerieBrain", "création d'une nouvelle liste de bateaux en entrée car aucun fichier de sauvegarde n'éxiste");
             ListeBateauxEntree = new Vector<String>();
         } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(InpresHarbour.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CapitainerieBrain.class.getName()).log(Level.SEVERE, null, ex);
         }
             
        String fichieramarrages = _MyAppProperties.getPropertie(PropertiesEnum.FileBateauxAttente);
@@ -165,7 +164,7 @@ public final class CapitainerieBrain implements DepartListener {
             ListeAmarrages = new Vector<Amarrage>();
             InitHarbour();
         } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(InpresHarbour.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CapitainerieBrain.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

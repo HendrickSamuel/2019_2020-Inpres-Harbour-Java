@@ -8,8 +8,9 @@
 package Equipage;
 
 import HarbourGlobal.AUnIdentifiant;
+import java.io.Serializable;
 
-public class Marin extends Humain implements AUnIdentifiant{
+public class Marin extends Humain implements AUnIdentifiant, Serializable{
     
     private String _fonction;
     

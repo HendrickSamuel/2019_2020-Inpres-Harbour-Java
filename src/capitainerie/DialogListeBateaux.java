@@ -31,6 +31,8 @@ public class DialogListeBateaux extends javax.swing.JDialog {
     private ArrayList<String> test;
     private boolean _departPossible;
     
+    private boolean _fenetre;
+    
     private Bateau _bateauDepart = null;
     
     private DialogResult _result = DialogResult.untouched;
@@ -40,11 +42,12 @@ public class DialogListeBateaux extends javax.swing.JDialog {
         initComponents();
     }
     
-    public DialogListeBateaux(java.awt.Frame parent, boolean modal, Vector<Amarrage> listeAmarrages, boolean search, boolean departpossible) {
+    public DialogListeBateaux(java.awt.Frame parent, boolean modal, Vector<Amarrage> listeAmarrages, boolean search, boolean fenetre,boolean departpossible) {
         this(parent, modal);
         InitListe(listeAmarrages);
         PanelSearch.setVisible(search); // true ou false
         _departPossible = departpossible;
+        _fenetre = fenetre;
     }
     
     private void InitListe(Vector<Amarrage> listeAmarrages)
@@ -157,7 +160,7 @@ public class DialogListeBateaux extends javax.swing.JDialog {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, true
@@ -256,16 +259,25 @@ public class DialogListeBateaux extends javax.swing.JDialog {
 
     private void TableBateauxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableBateauxMouseClicked
         Bateau bat = (Bateau)TableBateaux.getValueAt(TableBateaux.getSelectedRow(),3);
-        DialogDétailBateau ddb = new DialogDétailBateau((java.awt.Frame)getParent(), true, bat, _departPossible);
-        ddb.setVisible(true);
-        if(ddb.getResult() == DialogResult.ok)
+        if(_fenetre == true)
         {
-            _bateauDepart = ddb.getBateau();
-            _result = DialogResult.ok;
-            
-            this.setVisible(false);
-            
+           DialogDetailBateau ddb = new DialogDetailBateau((java.awt.Frame)getParent(), true, bat, _departPossible);
+            ddb.setVisible(true);
+            if(ddb.getResult() == DialogResult.ok)
+            {
+                _bateauDepart = ddb.getBateau();
+                _result = DialogResult.ok;
+
+                this.setVisible(false);
+
+            } 
         }
+        else
+        {
+            DialogDetailEquipage dde = new DialogDetailEquipage((java.awt.Frame)getParent(), true, bat.getEquipage());
+            dde.setVisible(true);
+        }
+        
     }//GEN-LAST:event_TableBateauxMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
