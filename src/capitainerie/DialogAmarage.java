@@ -107,10 +107,6 @@ public class DialogAmarage extends javax.swing.JDialog {
             }
         });
 
-        InputTonnage.setText("jTextField1");
-
-        InputPortAttache.setText("jTextField2");
-
         OkButton.setText("OK");
         OkButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

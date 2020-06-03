@@ -57,17 +57,19 @@ public class DialogChoixAmarrage extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Choix d'un amarrage");
+        setResizable(false);
 
         TableAmarrages.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "???", "Emplacement", "Bateau", "port d'attache"
+                "???", "Emplacement", "Bateau", "port d'attache", "Date d'arrivée"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -117,11 +119,11 @@ public class DialogChoixAmarrage extends javax.swing.JDialog {
                         .addComponent(SelectedEmplacement, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(99, 99, 99))
             .addGroup(layout.createSequentialGroup()
-                .addGap(42, 42, 42)
+                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(64, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 698, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -269,9 +271,11 @@ public class DialogChoixAmarrage extends javax.swing.JDialog {
                 {
                     ligne.add(bp.getNom());
                     ligne.add(bp.getPortAttache());
+                    ligne.add(bp.GetDateArrivee());
                 }
                 else
                 {
+                    ligne.add("");
                     ligne.add("");
                     ligne.add("");
                 }
@@ -301,9 +305,11 @@ public class DialogChoixAmarrage extends javax.swing.JDialog {
             {
                 ligne.add(bp.getNom());
                 ligne.add(bp.getPortAttache());
+                ligne.add(bp.GetDateArrivee());
             }
             else
             {
+                ligne.add("");
                 ligne.add("");
                 ligne.add("");
             }

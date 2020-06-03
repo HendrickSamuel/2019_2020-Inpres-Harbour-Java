@@ -100,6 +100,7 @@ public class DialogListeBateaux extends javax.swing.JDialog {
                     ligne.add(bp.getPortAttache()); // port attache
                     ligne.add(ponton.getIdentifiant()+y + "*" + (i+1));
                     ligne.add(bp);
+                    ligne.add(bp.GetDateArrivee());
                     
                     dtm.addRow(ligne);
                 }
@@ -125,6 +126,7 @@ public class DialogListeBateaux extends javax.swing.JDialog {
                 ligne.add(bp.getPortAttache());
                 ligne.add(quai.getIdentifiant() + "*"+(i+1)); 
                 ligne.add(bp);
+                ligne.add(bp.GetDateArrivee());
                 
                 dtm.addRow(ligne);
             }
@@ -156,14 +158,14 @@ public class DialogListeBateaux extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Nom du bateau", "Port d'attache", "Amarrage", "Title 4"
+                "Nom du bateau", "Port d'attache", "Amarrage", "Title 4", "Date d'arrivée"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, true
+                false, false, false, true, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -198,7 +200,7 @@ public class DialogListeBateaux extends javax.swing.JDialog {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(InputNom, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(268, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         PanelSearchLayout.setVerticalGroup(
             PanelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,12 +223,14 @@ public class DialogListeBateaux extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
             .addComponent(PanelSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(230, 230, 230)
                 .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 762, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -19,15 +19,13 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Locale;
-import java.util.StringTokenizer;
 import javax.swing.AbstractButton;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import utilisateurs.NewPwdDialog;
+import HarbourGlobal.GestionLocale;
 
 public class Capitainerie extends javax.swing.JFrame {
     
@@ -59,7 +57,7 @@ public class Capitainerie extends javax.swing.JFrame {
             _DialogErreur = new DialogErreurModifiable(this, true);
             
             MyAppProperties map = CB.getAppProperties();
-            _fuseau = stringToLocale(map.getPropertie(PropertiesEnum.Locale));
+            _fuseau = GestionLocale.stringToLocale(map.getPropertie(PropertiesEnum.Locale));
             
             _formatDate = Integer.parseInt(map.getPropertie(PropertiesEnum.FormatDate));
             _formatHeure = Integer.parseInt(map.getPropertie(PropertiesEnum.FormatHeure));
@@ -86,22 +84,7 @@ public class Capitainerie extends javax.swing.JFrame {
             };
             timer.schedule(task,0, 1*1000);
         }
-    }
-   public String localeToString(Locale l) {
-    return l.getLanguage() + "," + l.getCountry();
-}
-
-public Locale stringToLocale(String s) {
-    StringTokenizer tempStringTokenizer = new StringTokenizer(s,",");
-    String l = "FR";
-    String c = "fr";
-    if(tempStringTokenizer.hasMoreTokens())
-        l = tempStringTokenizer.nextElement().toString();
-    if(tempStringTokenizer.hasMoreTokens())
-        c = tempStringTokenizer.nextElement().toString();
-    
-    return new Locale(l,c);
-}  
+    } 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -723,11 +706,13 @@ public Locale stringToLocale(String s) {
             if(am.getResult() == DialogResult.ok && _selectedListIndex != -1) // si appui sur annuler ? 
             {
                 CB.getLogger().Write("Capitainerie", "Validation de l'ammarage pour le bateau: " + CB.getBateauEnCoursAmarrage() + "à l'emplacement: " + CB.GetEmplacement());
+                CB.getBateauEnCoursAmarrage().SetDateArrivee(new Date());
                 String tmp = ((DefaultListModel) ListeBateauxEntree.getModel()).get(_selectedListIndex).toString();
                 CB.RemoveList(tmp);
                 ((DefaultListModel) ListeBateauxEntree.getModel()).remove(_selectedListIndex); // retirer de la liste 
-                _selectedListIndex = -1;
                 
+                _selectedListIndex = -1;
+                CB.setBateauEnCoursAmarrage(null);
                 CB.Save();
             }
             else
@@ -755,12 +740,12 @@ public Locale stringToLocale(String s) {
         {
             MyAppProperties map = CB.getAppProperties();
             
-            map.setPropertie(PropertiesEnum.Locale, localeToString(ddp.getFuseauPays()));
+            map.setPropertie(PropertiesEnum.Locale, GestionLocale.localeToString(ddp.getFuseauPays()));
             map.setPropertie(PropertiesEnum.FormatDate, Integer.toString(ddp.getFormatDate()));
             map.setPropertie(PropertiesEnum.FormatHeure, Integer.toString(ddp.getFormatHeure()));
             map.Save();
             
-            _fuseau = stringToLocale(map.getPropertie(PropertiesEnum.Locale));
+            _fuseau = GestionLocale.stringToLocale(map.getPropertie(PropertiesEnum.Locale));
             
             _formatDate = Integer.parseInt(map.getPropertie(PropertiesEnum.FormatDate));
             _formatHeure = Integer.parseInt(map.getPropertie(PropertiesEnum.FormatHeure));

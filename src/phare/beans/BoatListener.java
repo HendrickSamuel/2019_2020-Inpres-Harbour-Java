@@ -1,5 +1,5 @@
 package phare.beans;
 
 public interface BoatListener {
-    void OnBoatEvent(BoatEvent e);
+        void OnBoatEvent(BoatEvent e);
 }

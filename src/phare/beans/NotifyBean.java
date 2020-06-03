@@ -1,5 +1,8 @@
 package phare.beans;
 
+import HarbourGlobal.MyAppProperties;
+import HarbourGlobal.MyLogger;
+import HarbourGlobal.PropertiesEnum;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -8,6 +11,9 @@ public class NotifyBean implements BoatListener {
     
     private DefaultListModel _liste = null;
     private boolean _running = false;
+    private MyLogger _logger = null;
+    private MyAppProperties _MyAppProperties = null;
+    
     
     public NotifyBean()
     {
@@ -18,6 +24,9 @@ public class NotifyBean implements BoatListener {
     {
         if(liste != null)
             _liste = (DefaultListModel)liste.getModel();
+        
+        _MyAppProperties = new MyAppProperties();
+       _logger = new MyLogger(_MyAppProperties.getPropertie(PropertiesEnum.FileLogPhare));
     }
     
     public void setJListe(JList liste)
@@ -49,16 +58,17 @@ public class NotifyBean implements BoatListener {
         {
             System.out.println("EVENT RECU");
             System.out.println("event recu" + e.Affiche());
-            JOptionPane.showMessageDialog(null, "Bateau en approche", "Titre", JOptionPane.INFORMATION_MESSAGE);
             
             if(_liste != null)
             {
+                JOptionPane.showMessageDialog(null, "Bateau en approche", "Titre", JOptionPane.INFORMATION_MESSAGE);
                 String nouveau = e.getType()+"/"+e.getPavillon();
                 _liste.addElement(nouveau);
+                _logger.Write("NotifyBean", "Arrivée du bateau: " + nouveau);
             }
         }
         else
-            System.out.println("Bean mal configuré");
+            _logger.Write("NotifyBean", "Bean mal configuré n'a pas pu démarrer ");
         
     }
     

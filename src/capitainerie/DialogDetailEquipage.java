@@ -44,6 +44,7 @@ public class DialogDetailEquipage extends javax.swing.JDialog {
         TableEquipage = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         TableEquipage.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

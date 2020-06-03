@@ -148,6 +148,7 @@ public class DialogRechercheMarin extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Recherche Marin");
+        setResizable(false);
 
         TableEquipage.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

@@ -428,21 +428,23 @@ public final class CapitainerieBrain implements DepartListener {
     {
         try {
             // "nom/type/pavillon/longueur"
+            _logger.Write("CapitainerieBrain","création d'un bateau à partir de : " + text);
             
             StringTokenizer st = new StringTokenizer(text,"/");
             String nom = st.nextToken();
             String type = st.nextToken();
+            type = type.toUpperCase();
             String pavillon = st.nextToken();
             int longueur = Integer.parseInt(st.nextToken());
             
             switch(type)
             {
-                case "Peche":
+                case "PECHE":
                     BateauPeche bpe = new BateauPeche(nom, "?", longueur, 0, pavillon, true, new Equipage(), Energie.autre, type);
                     _logger.Write("CapitainerieBrain","Création du bateau: " + bpe);
                     return bpe;
                     
-                case "Plaisance":
+                case "PLAISANCE":
                    BateauPlaisance bp = new BateauPlaisance(nom,"?",longueur,0,pavillon, new Equipage(), true ,Energie.autre, type);
                    _logger.Write("CapitainerieBrain","Création du bateau " + bp);
                    return bp;

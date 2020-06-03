@@ -16,7 +16,7 @@ import network.NetworkBasicClient;
 import network.NetworkBasicServer;
 import phare.beans.BoatBean;
 import phare.beans.KindOfBoatBean;
-import phare.beans.NotifyBean;
+import phare.beans.NotifyBean;  
 
 public class PhareBrain {
     //<editor-fold defaultstate="collapsed" desc="Variables">
@@ -83,6 +83,10 @@ public class PhareBrain {
         return _bateauxEnAttente;
     }
     /*-----------------------------------------------------------*/
+    public MyAppProperties getProperties() {
+        return _mMyAppProperties;
+    }
+    /*-----------------------------------------------------------*/
     public String getDelimiteur() {
         return _delimiteur;
     }
@@ -124,10 +128,12 @@ public class PhareBrain {
     /*-----------------------------------------------------------*/
     public void setBateauxEnAttente(Vector<String> _bateauxEnAttente) {
         this._bateauxEnAttente = _bateauxEnAttente;
+        /*
         this._bateauxEnAttente.add("Peche / CH");
         this._bateauxEnAttente.add("Plaisance / UK");
         this._bateauxEnAttente.add("Plaisance / FR");
         this._bateauxEnAttente.add("Peche / BE");
+        */
     }
     /*-----------------------------------------------------------*/
     public void setBateauIdentifie(String _bateauIdentifie) {
@@ -161,28 +167,14 @@ public class PhareBrain {
         if(this._nbc == null)
         {
             this.setNbc(new NetworkBasicClient("localhost", PORT_SERVICE));
-            System.out.println(this.Now() + " PhareBrain | le phare est (init) connecté au serveur");
+            this.getLogger().Write("PhareBrain", "le phare est (init) connecté au serveur");
+            
             this._estConnecte = true; // utile ? 
             System.out.println("2 :" + this.getNbc());
-            
-            /*catch(java.lang.NullPointerException e)
-            {
-                this._nbc = null;
-                System.out.println(this.Now() + "PhareBrain NULL| le phare ne peut "
-                        + "pas se connecter au serveur, ce dernier n'est pas lancé");
-                System.out.println(e.getMessage());
-                this._estConnecte = false;
-            }
-            catch (java.net.ConnectException e) {
-                this._nbc = null;
-                System.out.println(this.Now() + "PhareBrain ConnectException | le phare ne peut "
-                        + "pas se connecter au serveur, ce dernier n'est pas lancé");
-                System.out.println(e.getMessage());
-                this._estConnecte = false;
-            }*/
+
         }
         else
-            System.out.println(this.Now() + " PhareBrain | le phare est déjà connecté au serveur");
+            this.getLogger().Write("PhareBrain", "le phare est déjà connecté au serveur");
     }
     /*-----------------------------------------------------------*/
     public void deconnexionServeur()
@@ -192,29 +184,28 @@ public class PhareBrain {
             this.getNbc().setEndSending();
             this._nbc = null;
             this._estConnecte = false; // utile ? 
-            System.out.println(this.Now() + " PhareBrain | le phare est deconnecté au serveur");
+            this.getLogger().Write("PhareBrain", "le phare est déconnecté du serveur");
         }
         else
         {
-            System.out.println(this.Now() + " PhareBrain | le phare n'est pas connecté au serveur");
+            this.getLogger().Write("PhareBrain", "le phare a tenté de se déconnecter mais il l'était déja");
         }
-    }
-    /*-----------------------------------------------------------*/
-    public String Now()
-    {
-        return _logger.Now();
     }
     /*-----------------------------------------------------------*/
     //BateauQuiAEteIdentifie - 1
     public void envoiMsg(String typeEnvoi, String nomBateau , String Type , String pavillon , String longueur)
     { 
+        this.getLogger().Write("PhareBrain", "le phare a envoyé: "+ typeEnvoi + "/" + nomBateau + "/" + Type + "/" + pavillon + "/" + longueur);
         _reponseBateauIdentifie = this._nbc.sendString(typeEnvoi + "/" + nomBateau + "/" + Type + "/" + pavillon + "/" + longueur);
+        this.getLogger().Write("PhareBrain", "le phare a recu en reponse: "+ _reponseBateauIdentifie);
     }
     /*-----------------------------------------------------------*/
     //BateauEntreRade - 3
     public void envoiMsgRade(String typeEnvoi, String msg)
     { 
+        this.getLogger().Write("PhareBrain", "le phare a envoyé: "+ typeEnvoi + "/" + msg);
         _reponseBateauEntreRade = this._nbc.sendString(typeEnvoi + "/" + msg);
+        this.getLogger().Write("PhareBrain", "le phare a recu en reponse: "+ _reponseBateauEntreRade);
     }
     //</editor-fold>
     
@@ -259,10 +250,11 @@ public class PhareBrain {
         else
             return "";
     }
-    //</editor-fold>.
+    //</editor-fold>
     
     public void InitBeans(JList liste)
     {
+        this.getLogger().Write("PhareBrain", "Initialisation Beans pour la génération des bateaux");
         _notifyBean.setJListe(liste);
         _boatBean.AddBoatListener(_notifyBean);
         _KOBbean.AddPropertyChangedListener(_boatBean);
