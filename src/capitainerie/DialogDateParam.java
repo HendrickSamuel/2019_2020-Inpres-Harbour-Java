@@ -23,6 +23,7 @@ public class DialogDateParam extends javax.swing.JDialog {
     public DialogDateParam(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setLocationRelativeTo(null);
         InitCombos();
     }
 

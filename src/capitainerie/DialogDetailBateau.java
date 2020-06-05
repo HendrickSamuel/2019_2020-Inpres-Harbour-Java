@@ -20,11 +20,11 @@ public class DialogDetailBateau extends javax.swing.JDialog {
     public DialogDetailBateau(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setLocationRelativeTo(null);
     }
     
     public DialogDetailBateau(java.awt.Frame parent, boolean modal, Bateau bateau, boolean departPossible) {
-        super(parent, modal);
-        initComponents();
+        this(parent, modal);
         _bateau = bateau;
         InitPage();
         jButton1.setEnabled(departPossible);

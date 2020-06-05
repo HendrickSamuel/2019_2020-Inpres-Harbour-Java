@@ -25,6 +25,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import utilisateurs.NewPwdDialog;
 import HarbourGlobal.GestionLocale;
+import java.awt.Color;
 
 public class Capitainerie extends javax.swing.JFrame {
     
@@ -42,6 +43,7 @@ public class Capitainerie extends javax.swing.JFrame {
      /* ----------------------- CONSTRUCTEUR ----------------------*/
     public Capitainerie(){
         initComponents();
+        this.setLocationRelativeTo(null);
         
         CB = new CapitainerieBrain();
         
@@ -697,6 +699,9 @@ public class Capitainerie extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         CB.ConnectClient();
+        jButton2.setEnabled(false);
+        jButton2.setBackground(Color.GREEN); 
+        jButton2.setText("Connecté");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void MenuItemEquipageBateauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemEquipageBateauActionPerformed

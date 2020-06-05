@@ -23,6 +23,7 @@ public class DialogDetailEquipage extends javax.swing.JDialog {
     public DialogDetailEquipage(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setLocationRelativeTo(null);
     }
     
     public DialogDetailEquipage(java.awt.Frame parent, boolean modal, Equipage equip) {

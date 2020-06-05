@@ -27,6 +27,7 @@ public class DialogRechercheMarin extends javax.swing.JDialog {
     public DialogRechercheMarin(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setLocationRelativeTo(null);
     }    
     
     public DialogRechercheMarin(java.awt.Frame parent, boolean modal, Vector<Amarrage> listeAmarrages)

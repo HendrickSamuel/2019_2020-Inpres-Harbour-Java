@@ -40,6 +40,7 @@ public class DialogListeBateaux extends javax.swing.JDialog {
     public DialogListeBateaux(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setLocationRelativeTo(null);
     }
     
     public DialogListeBateaux(java.awt.Frame parent, boolean modal, Vector<Amarrage> listeAmarrages, boolean search, boolean fenetre,boolean departpossible) {

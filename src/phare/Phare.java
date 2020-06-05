@@ -40,6 +40,7 @@ public class Phare extends javax.swing.JFrame {
         initComponents();
         _phareBrain = new PhareBrain();
         _phareBrain.getLogger().Write("Phare","Création du cerveau de l'application");
+        this.setLocationRelativeTo(null);
        
         if(!this.UserLogin())
         {

@@ -27,6 +27,7 @@ public class DialogListesAmarrages extends javax.swing.JDialog {
     public DialogListesAmarrages(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setLocationRelativeTo(null);
     }
     
     public DialogListesAmarrages(java.awt.Frame parent, boolean modal, Vector<Amarrage> listeAmarrages,String typeBateau)

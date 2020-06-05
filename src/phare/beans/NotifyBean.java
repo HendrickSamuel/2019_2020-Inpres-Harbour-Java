@@ -5,6 +5,7 @@ import HarbourGlobal.MyLogger;
 import HarbourGlobal.PropertiesEnum;
 import java.io.Serializable;
 import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 
@@ -14,7 +15,6 @@ public class NotifyBean implements BoatListener, Serializable {
     private boolean _running = false;
     private MyLogger _logger = null;
     private MyAppProperties _MyAppProperties = null;
-    
     
     public NotifyBean()
     {

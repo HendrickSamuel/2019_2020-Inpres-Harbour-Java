@@ -30,6 +30,7 @@ public class DialogChoixAmarrage extends javax.swing.JDialog {
     public DialogChoixAmarrage(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setLocationRelativeTo(null);
     }
    
     public DialogChoixAmarrage(java.awt.Frame parent, boolean modal, Vector<Amarrage> listeAmarrages,String typeBateau)

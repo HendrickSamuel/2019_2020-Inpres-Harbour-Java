@@ -28,6 +28,7 @@ public class DialogEquipage extends javax.swing.JDialog {
     public DialogEquipage(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setLocationRelativeTo(null);
         
          _equipageEnCours = new Equipage();
         InitListe(_equipageEnCours); 
@@ -45,6 +46,7 @@ public class DialogEquipage extends javax.swing.JDialog {
     {
         super(parent, modal);
         initComponents();
+        this.setLocationRelativeTo(null);
         
         _logger = new MyLogger();
         _bateauEnCours = bateau;

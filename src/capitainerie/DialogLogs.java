@@ -16,11 +16,11 @@ public class DialogLogs extends javax.swing.JDialog {
     public DialogLogs(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setLocationRelativeTo(null);
     }
     
     public DialogLogs(java.awt.Frame parent, boolean modal, CapitainerieBrain cb) {
-        super(parent, modal);
-        initComponents();
+        this(parent, modal);
         _cb = cb;
         _logger = cb.getLogger();
         jTextArea1.setText(_logger.ReadAll());

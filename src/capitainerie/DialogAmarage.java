@@ -30,6 +30,7 @@ public class DialogAmarage extends javax.swing.JDialog {
     public DialogAmarage(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setLocationRelativeTo(null);
     }
     
     public DialogAmarage(Bateau bateau, String emplacement, java.awt.Frame parent, boolean modal) {
