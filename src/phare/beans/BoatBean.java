@@ -2,10 +2,11 @@ package phare.beans;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Vector;
 
-public class BoatBean implements PropertyChangeListener  {
+public class BoatBean implements PropertyChangeListener, Serializable  {
 
     private Vector<BoatListener> _boatListeners = null;
     private String[] _pavillons = {"CH", "UK", "BE"}; // liste des pavillons disponibles

@@ -3,11 +3,12 @@ package phare.beans;
 import HarbourGlobal.MyAppProperties;
 import HarbourGlobal.MyLogger;
 import HarbourGlobal.PropertiesEnum;
+import java.io.Serializable;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 
-public class NotifyBean implements BoatListener {
+public class NotifyBean implements BoatListener, Serializable {
     
     private DefaultListModel _liste = null;
     private boolean _running = false;

@@ -203,17 +203,15 @@ public class DialogChoixAmarrage extends javax.swing.JDialog {
         //</editor-fold>
 
         /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                DialogChoixAmarrage dialog = new DialogChoixAmarrage(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            DialogChoixAmarrage dialog = new DialogChoixAmarrage(new javax.swing.JFrame(), true);
+            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+            dialog.setVisible(true);
         });
     }
 
@@ -244,7 +242,7 @@ public class DialogChoixAmarrage extends javax.swing.JDialog {
                 AjouterPonton((Ponton)am);
             else
             if(_type.compareTo("PECHE") == 0 && am instanceof Quai)
-            AjouterQuai((Quai)am);
+                AjouterQuai((Quai)am);
         }
     }
 
