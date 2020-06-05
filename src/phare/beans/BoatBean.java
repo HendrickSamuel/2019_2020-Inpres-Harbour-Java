@@ -8,7 +8,12 @@ import java.util.Vector;
 public class BoatBean implements PropertyChangeListener  {
 
     private Vector<BoatListener> _boatListeners = null;
-    private String[] _pavillons = {"CH", "UK", "BE"}; // liste des pavillons disponibles
+    private String[] _pavillons = {"CH", "UK", "BE", "US", "ID", "BR", "AR", "ES"
+        , "FR", "DE", "NL", "LU", "CN", "IN", "CA", "AU", "LK", "CU", "DK", "MZ"
+        , "FI", "NO", "SL", "PY", "IE", "VA", "MH", "ME", "SZ", "FJ", "CL", "MG"
+        , "PE", "TH", "EG", "JM", "IS", "PK", "NG", "BD", "RU", "JP", "MX", "PH"
+        , "CD", "ZA", "IT", "KR", "SE", "DZ", "MA"}; 
+// liste des pavillons disponibles
     
     public BoatBean() 
     {
