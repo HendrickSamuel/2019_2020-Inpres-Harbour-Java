@@ -58,7 +58,7 @@ public class Phare extends javax.swing.JFrame {
             //</editor-fold>
             
             //<editor-fold defaultstate="collapsed" desc="Affichage de la date au format des proprietes">
-             MyAppProperties map = _phareBrain.getProperties();
+            MyAppProperties map = _phareBrain.getProperties();
             _fuseau = GestionLocale.stringToLocale(map.getPropertie(PropertiesEnum.Locale));
             
             _formatDate = Integer.parseInt(map.getPropertie(PropertiesEnum.FormatDate));
@@ -341,7 +341,7 @@ public class Phare extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-   
+
     
     //<editor-fold defaultstate="collapsed" desc="Event">
     private void btnConnexionServeurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnexionServeurActionPerformed
@@ -365,7 +365,7 @@ public class Phare extends javax.swing.JFrame {
                 //<editor-fold defaultstate="collapsed" desc="Ouverture de la fenetre d'Identification du bateau">
                 identiBateau = new DialogIdentificationBateau(this, true, bateauEnAttente);
                 identiBateau.setVisible(true);
-                 
+                
                 if(identiBateau.getResult() == DialogResult.ok)
                 {
                     _phareBrain.getLogger().Write("Phare", "Bateau identifie : "
@@ -373,9 +373,8 @@ public class Phare extends javax.swing.JFrame {
                         + "\nType : " + identiBateau.getTypeBateau()
                         + "\nPavillon : " + identiBateau.getPavillon()
                         + "\nLongueur : " + identiBateau.getLongueur() + "\n");
-                   this.bateauIdentifieTF.setText(identiBateau.getNom() +" / "+ identiBateau.getLongueur());
-                   
-                   this.bateauIdentifieTF.setBackground(Color.GREEN);    
+                    this.bateauIdentifieTF.setText(identiBateau.getNom() +" / "+ identiBateau.getLongueur());
+                    this.bateauIdentifieTF.setBackground(Color.GREEN);    
                 }
                 //</editor-fold>
             }

@@ -14,9 +14,11 @@ import java.io.OutputStream;
 import java.util.Properties;
 
 public class MyAppProperties {
-    
+    //<editor-fold defaultstate="collapsed" desc="Variables">
     private Properties _properties;
+    //</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="Constructeur">
     public MyAppProperties()
     {
         _properties = new Properties();
@@ -24,7 +26,9 @@ public class MyAppProperties {
         
         //AddUser("sam","333");
     }
+    //</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="Methodes">
     public void Save()
     {
         String sep = System.getProperty("file.separator");
@@ -35,7 +39,7 @@ public class MyAppProperties {
             System.out.println("Erreur de sauvegarder "+io.getMessage());
         }
     }
-    
+    /*------------------------------------------*/
     public void Load()
     {
         String sep = System.getProperty("file.separator");
@@ -62,7 +66,7 @@ public class MyAppProperties {
             this.Save();
         }
     }
-    
+    //<editor-fold defaultstate="collapsed" desc="Getter/Setter">
     public String getPropertie(PropertiesEnum prop)
     {
         if(_properties.containsKey(prop.toString()))
@@ -70,9 +74,11 @@ public class MyAppProperties {
         else
             return "";
     }
-    
+    /*------------------------------------------*/
     public void setPropertie(PropertiesEnum prop, String val)
     {
         _properties.setProperty(prop.toString(), val);
     }
+    //</editor-fold>
+    //</editor-fold>
 }
