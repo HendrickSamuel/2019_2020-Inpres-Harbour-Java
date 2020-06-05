@@ -2,10 +2,11 @@ package phare.beans;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.Vector;
 import javax.swing.JList;
 
-public class KindOfBoatBean implements UtilisateurNombre {
+public class KindOfBoatBean implements UtilisateurNombre,Serializable {
     
     private ThreadRandomGenerator _randomGenerator;
     private boolean _running;

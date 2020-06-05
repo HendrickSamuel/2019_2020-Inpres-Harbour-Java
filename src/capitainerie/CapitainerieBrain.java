@@ -9,6 +9,7 @@ package capitainerie;
 import Amarrages.*;
 import Equipage.Equipage;
 import Equipage.SailorWithoutIdentificationException;
+import HarbourGlobal.GestionLocale;
 import HarbourGlobal.MyAppProperties;
 import HarbourGlobal.MyLogger;
 import HarbourGlobal.PropertiesEnum;
@@ -20,13 +21,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
+import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import network.NetworkBasicServer;
 
 
@@ -34,6 +39,7 @@ public final class CapitainerieBrain implements DepartListener {
     
     //<editor-fold defaultstate="collapsed" desc="Variables">
     private MyAppProperties _MyAppProperties = null;
+    private JLabel _labelDepart = null;
     
     //<editor-fold defaultstate="collapsed" desc="Serveur">
     private String[] _etapes;
@@ -84,7 +90,11 @@ public final class CapitainerieBrain implements DepartListener {
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Methodes">
-   
+   public void SetJlabelDepart(JLabel label)
+   {
+       _labelDepart = label;
+   }
+    
     public MyAppProperties getAppProperties(){
         return _MyAppProperties;
     }
@@ -607,14 +617,14 @@ public final class CapitainerieBrain implements DepartListener {
         {
             Amarrage am = (Amarrage)enu.nextElement();
             if(am instanceof Ponton)
-                AjouterPonton((Ponton)am, bat);
+                DeleteBateauPonton((Ponton)am, bat);
             else
             if(am instanceof Quai)
-            AjouterQuai((Quai)am, bat);
+                DeleteBateauQuai((Quai)am, bat);
         }
     }
     
-    private void AjouterPonton(Ponton ponton, Bateau bat)
+    private void DeleteBateauPonton(Ponton ponton, Bateau bat)
     {
         Vector ligne;
 
@@ -626,15 +636,16 @@ public final class CapitainerieBrain implements DepartListener {
                 Bateau bp = (Bateau)mte[i];
                 if(bp == bat)
                 {
+                    AfficherBateauDepart(bat.getNom());
+                    _logger.Write("CapitainerieBrain", "Bateau validation départ: " + bat.getNom());
                     mte[i] = null;
-                    System.out.println("Bateau trouvé");
                 }
 
             }
         }
     }
 
-    private void AjouterQuai(Quai quai, Bateau bat)
+    private void DeleteBateauQuai(Quai quai, Bateau bat)
     {  
         MoyenDeTransportSurEau[] mte = quai.getListe();
         for(int i = 0; i < mte.length; i++)
@@ -642,12 +653,26 @@ public final class CapitainerieBrain implements DepartListener {
             Bateau bp = (Bateau)mte[i];
             if(bp == bat)
             {
+                AfficherBateauDepart(bat.getNom());
+                _logger.Write("CapitainerieBrain", "Bateau validation départ: " + bat.getNom());
                 mte[i] = null;
-                System.out.println("Bateau trouvé");
             }
         }
     }
+    
+    private void AfficherBateauDepart(String bateau)
+    {
+        Locale fuseau = GestionLocale.stringToLocale(_MyAppProperties.getPropertie(PropertiesEnum.Locale));
 
+        int formatDate = Integer.parseInt(_MyAppProperties.getPropertie(PropertiesEnum.FormatDate));
+        int formatHeure = Integer.parseInt(_MyAppProperties.getPropertie(PropertiesEnum.FormatHeure));
+
+        String date= DateFormat.getDateTimeInstance(formatDate, formatHeure, fuseau).format(new Date());
+        if(_labelDepart != null)
+        {
+            _labelDepart.setText(bateau + " départ: " + date);
+        }
+    }
     
     public boolean CanSendRequest()
     {

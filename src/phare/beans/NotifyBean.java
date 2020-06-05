@@ -3,11 +3,12 @@ package phare.beans;
 import HarbourGlobal.MyAppProperties;
 import HarbourGlobal.MyLogger;
 import HarbourGlobal.PropertiesEnum;
+import java.io.Serializable;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 
-public class NotifyBean implements BoatListener {
+public class NotifyBean implements BoatListener, Serializable {
     
     private DefaultListModel _liste = null;
     private boolean _running = false;
@@ -61,7 +62,7 @@ public class NotifyBean implements BoatListener {
             
             if(_liste != null)
             {
-                JOptionPane.showMessageDialog(null, "Bateau en approche", "Titre", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Bateau en approche", "Nouveau bateau !", JOptionPane.INFORMATION_MESSAGE);
                 String nouveau = e.getType()+"/"+e.getPavillon();
                 _liste.addElement(nouveau);
                 _logger.Write("NotifyBean", "Arrivée du bateau: " + nouveau);
